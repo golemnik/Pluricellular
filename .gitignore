@@ -1,0 +1,11 @@
+# Project exclude paths
+/.gradle/
+/build/
+/ColonyTerminal/build/
+/ColonyTerminal/build/classes/java/main/
+/Core/build/
+/Core/build/classes/java/main/
+/ShoutingCell/build/
+/ShoutingCell/build/classes/java/main/
+/TicketCell/build/
+/TicketCell/build/classes/java/main/

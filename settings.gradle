@@ -1,0 +1,6 @@
+rootProject.name = 'Pluricellular'
+include 'Core'
+include 'ShoutingCell'
+include 'TicketCell'
+include 'ColonyTerminal'
+
