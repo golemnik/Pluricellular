@@ -1,7 +1,7 @@
 package com.golem.terminal.terminalCommands;
 
 import com.golem.core.schemas.Cell;
-import com.golem.terminal.terminalCommands.commands.TerminalCommandFactory;
+import com.golem.terminal.terminalCommands.schemes.TerminalCommandFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;

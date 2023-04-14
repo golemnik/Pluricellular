@@ -1,4 +1,4 @@
-package com.golem.terminal.terminalCommands.commands;
+package com.golem.terminal.terminalCommands.schemes;
 
 import com.golem.core.schemas.Cell;
 

@@ -1,8 +1,7 @@
 package com.golem.core.basicRealisation;
 
+import com.golem.core.broodQueen.BroodQueen;
 import com.golem.core.coreCell.CoreCell;
-import com.golem.core.innerMechanisms.CellLayer;
-import com.golem.core.innerMechanisms.LoadCells;
 import com.golem.core.schemas.CellBroodMother;
 import com.golem.core.schemas.TerminalCell;
 
@@ -11,6 +10,7 @@ import java.util.Scanner;
 public class BasicTerminalCell implements TerminalCell {
     private CellBroodMother broodMother;
     private CoreCell coreCell;
+    private BroodQueen queen;
     private Scanner scanner;
     public BasicTerminalCell () {
         this.broodMother = new BasicBroodMother();
@@ -26,6 +26,12 @@ public class BasicTerminalCell implements TerminalCell {
     }
 
     @Override
+    public void addQueen(BroodQueen broodQueen) {
+        this.queen = broodQueen;
+    }
+
+
+    @Override
     public void terminalInit() {
         System.out.println("Basic terminal in use...\n");
     }
@@ -33,7 +39,9 @@ public class BasicTerminalCell implements TerminalCell {
     @Override
     public void terminalCycle() {
         while (true) {
-            broodMother.reloadFactoryList(LoadCells.loadFactories(CellLayer.getLayer()));
+            coreCell.updateModuleLayer();
+//            queen.activate();
+            broodMother.reloadFactoryList(BroodQueen.loadAbsFactories(queen.getLayer()));
             System.out.println(broodMother.getFactoryCommands());
             broodMother.createCell(scanner.nextLine()).activate();
         }

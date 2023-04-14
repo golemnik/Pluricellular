@@ -1,10 +1,12 @@
 package com.golem.core.broodQueen;
 
+import com.golem.core.innerMechanisms.CellLayer;
 import com.golem.core.schemas.Cell;
 import com.golem.core.schemas.CellBroodMother;
+import com.golem.core.schemas.TerminalCell;
+import com.golem.core.schemas.abstracts.AbstractCellFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public final class BroodQueen implements Cell {
     private ModuleLayer layer;
@@ -19,13 +21,21 @@ public final class BroodQueen implements Cell {
     public void addLayer (ModuleLayer layer) {
         this.layer = layer;
     }
+    public void updateLayer () {
+        this.layer = CellLayer.getLayer();
+    }
 
     public <T> T createBaseCell (List<T> cellList) {
         Map<String, T> choose = new HashMap<>();
+        if (cellList.size() == 1) {
+            return cellList.get(0);
+        }
+        String print = "";
         for (T cbm : cellList) {
             choose.put(cbm.getClass().getSimpleName(), cbm);
-            System.out.println("- " + cbm.getClass().getSimpleName());
+            print += "- " + cbm.getClass().getSimpleName() + "\n";
         }
+        System.out.println(print);
         T result;
         do {
             result = choose.get(scanner.nextLine());
@@ -38,6 +48,16 @@ public final class BroodQueen implements Cell {
 
     @Override
     public void activate() {
+        updateLayer();
+    }
 
+    public static List<AbstractCellFactory> loadAbsFactories(ModuleLayer layer) {
+        return AbstractCellFactory.getCellFactories(layer);
+    }
+    public static List<CellBroodMother> loadBroodMothers (ModuleLayer layer) {
+        return CellBroodMother.getCellBroodMothers(layer);
+    }
+    public static List<TerminalCell> loadTerminals (ModuleLayer layer) {
+        return TerminalCell.getCellFactories(layer);
     }
 }

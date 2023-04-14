@@ -3,4 +3,6 @@ include 'Core'
 include 'ShoutingCell'
 include 'TicketCell'
 include 'ColonyTerminal'
+include 'ShoutingTwice'
+include 'TerminalHelpCell'
 

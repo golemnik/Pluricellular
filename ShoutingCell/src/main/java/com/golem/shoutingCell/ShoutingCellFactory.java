@@ -1,9 +1,9 @@
 package com.golem.shoutingCell;
 
 import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.CellFactory;
+import com.golem.core.schemas.abstracts.AbstractCellFactory;
 
-public class ShoutingCellFactory implements CellFactory {
+public class ShoutingCellFactory extends AbstractCellFactory {
     @Override
     public Cell create() {
         return new ShoutingCell();

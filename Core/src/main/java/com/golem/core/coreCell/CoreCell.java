@@ -1,11 +1,8 @@
 package com.golem.core.coreCell;
 
 
-import com.golem.core.basicRealisation.BasicBroodMother;
-import com.golem.core.basicRealisation.BasicTerminalCell;
 import com.golem.core.broodQueen.BroodQueen;
 import com.golem.core.innerMechanisms.CellLayer;
-import com.golem.core.innerMechanisms.LoadCells;
 import com.golem.core.schemas.Cell;
 import com.golem.core.schemas.CellBroodMother;
 import com.golem.core.schemas.TerminalCell;
@@ -27,24 +24,26 @@ public class CoreCell implements Cell {
         return terminal;
     }
 
-    private void initModuleLayer () {
+    public void updateModuleLayer() {
         CellLayer.loadLayer("genome");
     }
     @Override
     public void activate() {
-        initModuleLayer();
+        updateModuleLayer();
         queen = new BroodQueen();
         queen.addLayer(CellLayer.getLayer());
         System.out.println("Loading brood...");
-        broodMother = queen.createBaseCell(LoadCells.loadBroodMothers(CellLayer.getLayer()));
+        broodMother = queen.createBaseCell(BroodQueen.loadBroodMothers(CellLayer.getLayer()));
         System.out.println("Loading cell factories...");
-        broodMother.addFactoryList(LoadCells.loadFactories(CellLayer.getLayer()));
+        broodMother.addFactoryList(BroodQueen.loadAbsFactories(CellLayer.getLayer()));
         System.out.println("Loading terminal...");
-        terminal = queen.createBaseCell(LoadCells.loadTerminals(CellLayer.getLayer()));
+        terminal = queen.createBaseCell(BroodQueen.loadTerminals(CellLayer.getLayer()));
         System.out.println("Connecting terminal to Core...");
         terminal.addCore(this);
         System.out.println("Connecting terminal to BroodMother...");
         terminal.addBroodMother(broodMother);
+        System.out.println("Connecting terminal to BroodQueen...");
+        terminal.addQueen(queen);
         System.out.println("Activating terminal cell...");
         while (true) {
             terminal.activate();

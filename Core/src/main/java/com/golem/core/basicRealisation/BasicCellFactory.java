@@ -1,9 +1,9 @@
 package com.golem.core.basicRealisation;
 
 import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.CellFactory;
+import com.golem.core.schemas.abstracts.AbstractCellFactory;
 
-public class BasicCellFactory implements CellFactory {
+public class BasicCellFactory extends AbstractCellFactory {
     @Override
     public Cell create() {
         return new BasicCell();
@@ -18,4 +18,5 @@ public class BasicCellFactory implements CellFactory {
     public String commandDescription() {
         return " - do nothing. Simple testing cell, basic realisation.";
     }
+
 }
