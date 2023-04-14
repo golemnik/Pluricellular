@@ -6,6 +6,9 @@ import com.golem.helpCommand.HelpCommandCell;
 module Pluricellular.TerminalHelpCell.main {
     requires ColonyCore;
 
+    uses Cell;
+    uses AbstractCellFactory;
+
     provides Cell with HelpCommandCell;
     provides AbstractCellFactory with HelpCellFactory;
 }

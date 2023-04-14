@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
-public abstract class AbstractCellFactory extends InnerCellFullCore implements CellFactory {
+public abstract class AbstractCellFactory extends AbstractInnerCellFullCore implements CellFactory {
         public static List<AbstractCellFactory> getCellFactories(ModuleLayer layer) {
         return ServiceLoader
                 .load(layer, AbstractCellFactory.class)

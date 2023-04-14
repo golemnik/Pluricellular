@@ -1,7 +1,5 @@
 package com.golem.core.schemas;
 
-import com.golem.core.broodQueen.BroodQueen;
-import com.golem.core.coreCell.CoreCell;
 import com.golem.core.schemas.abstracts.AbstractCellFactory;
 
 import java.util.List;
@@ -9,9 +7,9 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
-public interface CellBroodMother extends Cell {
+public interface CellBroodMother extends Cell, InnerCellFullCore {
     Map<String, AbstractCellFactory> getFactoryCommands ();
-    void addMainCellDepends ();
+    void addMainCellDepends(AbstractCellFactory factory);
     void addFactory (AbstractCellFactory factory);
     void addFactoryList (List<AbstractCellFactory> factoryList);
     void reloadFactoryList (List<AbstractCellFactory> factoryList);

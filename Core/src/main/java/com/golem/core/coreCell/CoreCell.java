@@ -4,47 +4,43 @@ package com.golem.core.coreCell;
 import com.golem.core.broodQueen.BroodQueen;
 import com.golem.core.innerMechanisms.CellLayer;
 import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.CellBroodMother;
 import com.golem.core.schemas.TerminalCell;
+import com.golem.core.schemas.abstracts.AbstractInnerCellFullCore;
 
-public class CoreCell implements Cell {
-    private BroodQueen queen;
-    private CellBroodMother broodMother;
+public class CoreCell extends AbstractInnerCellFullCore implements Cell {
     private TerminalCell terminal;
-
-    public BroodQueen getQueen() {
-        return queen;
-    }
-
-    public CellBroodMother getBroodMother() {
-        return broodMother;
-    }
 
     public TerminalCell getTerminal() {
         return terminal;
     }
 
+    public void setTerminal(TerminalCell terminal) {
+        this.terminal = terminal;
+    }
+
+    public CoreCell () {
+        addCore(this);
+        addBroodQueen(new BroodQueen());
+        CellLayer.setPath("genome");
+    }
+
     public void updateModuleLayer() {
-        CellLayer.loadLayer("genome");
+        CellLayer.reloadLayer();
     }
     @Override
     public void activate() {
         updateModuleLayer();
-        queen = new BroodQueen();
-        queen.addLayer(CellLayer.getLayer());
+        getBroodQueen().addLayer(CellLayer.getLayer());
         System.out.println("Loading brood...");
-        broodMother = queen.createBaseCell(BroodQueen.loadBroodMothers(CellLayer.getLayer()));
+        addBroodMother(getBroodQueen().createBaseCell(BroodQueen.loadBroodMothers(CellLayer.getLayer())));
+        System.out.println("Producing BroodMother dependencies...");
+        getBroodMother().setAll(this, getBroodMother(), getBroodQueen());
         System.out.println("Loading cell factories...");
-        broodMother.addFactoryList(BroodQueen.loadAbsFactories(CellLayer.getLayer()));
+        getBroodMother().addFactoryList(BroodQueen.loadAbsFactories(CellLayer.getLayer()));
         System.out.println("Loading terminal...");
-        terminal = queen.createBaseCell(BroodQueen.loadTerminals(CellLayer.getLayer()));
-        System.out.println("Connecting terminal to Core...");
-        terminal.addCore(this);
-        System.out.println("Connecting terminal to BroodMother...");
-        terminal.addBroodMother(broodMother);
-        System.out.println("Connecting terminal to BroodQueen...");
-        terminal.addQueen(queen);
-        System.out.println("Activating terminal cell...");
+        setTerminal(getBroodQueen().createBaseCell(BroodQueen.loadTerminals(CellLayer.getLayer())));
+        System.out.println("Producing terminal dependencies...");
+        terminal.setAll(this, getBroodMother(), getBroodQueen());
         while (true) {
             terminal.activate();
         }

@@ -16,7 +16,7 @@ public class BasicCellFactory extends AbstractCellFactory {
 
     @Override
     public String commandDescription() {
-        return " - do nothing. Simple testing cell, basic realisation.";
+        return "do nothing. Simple testing cell, basic realisation.";
     }
 
 }

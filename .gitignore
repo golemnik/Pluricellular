@@ -9,3 +9,10 @@
 /ShoutingCell/build/classes/java/main/
 /TicketCell/build/
 /TicketCell/build/classes/java/main/
+*.jar
+*/*/*.xml
+.idea
+.gradle/*
+/gradle/wrapper/gradle-wrapper.properties
+*.bin
+*.MF

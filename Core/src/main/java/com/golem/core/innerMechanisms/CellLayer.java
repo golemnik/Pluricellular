@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class CellLayer {
     private static ModuleLayer layer;
+    private static String path;
     public static void loadLayer(String genomePath) {
         Path cellDir = Paths.get(genomePath); // cells storage place
 
@@ -37,5 +38,14 @@ public class CellLayer {
     }
     public static ModuleLayer getLayer () {
         return layer;
+    }
+    public static void UnloadLayer () {
+        layer = ModuleLayer.empty();
+    }
+    public static void reloadLayer () {
+        loadLayer(path);
+    }
+    public static void setPath (String path) {
+        CellLayer.path = path;
     }
 }

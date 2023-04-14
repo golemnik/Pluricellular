@@ -22,7 +22,7 @@ public class ColonyTerminalCell implements TerminalCell {
 
     @Override
     public void activate() {
-        terminalCommandsCell.LoadCommands(TerminalCommandFactory.getCommandsFactories(coreCell.getQueen().getLayer()));
+        terminalCommandsCell.LoadCommands(TerminalCommandFactory.getCommandsFactories(coreCell.getBroodQueen().getLayer()));
         terminalCommandsCell.activate();
         terminalInit();
         System.out.println(terminalCommandsCell.getCommandList());
@@ -39,8 +39,8 @@ public class ColonyTerminalCell implements TerminalCell {
         scanner = new Scanner(System.in);
         while (true) {
             coreCell.updateModuleLayer();
-            coreCell.getQueen().updateLayer();
-            broodMother.reloadFactoryList(BroodQueen.loadAbsFactories(coreCell.getQueen().getLayer()));
+            coreCell.getBroodQueen().updateLayer();
+            broodMother.reloadFactoryList(BroodQueen.loadAbsFactories(coreCell.getBroodQueen().getLayer()));
             System.out.println(broodMother.getFactoryCommands());
             broodMother.createCell(scanner.nextLine()).activate();
         }
@@ -52,12 +52,33 @@ public class ColonyTerminalCell implements TerminalCell {
     }
 
     @Override
+    public CellBroodMother getBroodMother() {
+        return null;
+    }
+
+    @Override
     public void addCore(CoreCell coreCell) {
         this.coreCell = coreCell;
     }
 
     @Override
-    public void addQueen(BroodQueen broodQueen) {
-        this.queen = broodQueen;
+    public CoreCell getCoreCell() {
+        return null;
+    }
+
+
+    @Override
+    public void setAll(CoreCell coreCell, CellBroodMother broodMother, BroodQueen broodQueen) {
+
+    }
+
+    @Override
+    public void addBroodQueen(BroodQueen broodQueen) {
+
+    }
+
+    @Override
+    public BroodQueen getBroodQueen() {
+        return null;
     }
 }

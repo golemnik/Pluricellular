@@ -3,11 +3,9 @@ package com.golem.core.schemas.abstracts;
 import com.golem.core.broodQueen.BroodQueen;
 import com.golem.core.coreCell.CoreCell;
 import com.golem.core.schemas.CellBroodMother;
-import com.golem.core.schemas.connections.BroodMotherConnection;
-import com.golem.core.schemas.connections.BroodQueenConnection;
-import com.golem.core.schemas.connections.CoreCellsConnection;
+import com.golem.core.schemas.InnerCellFullCore;
 
-public abstract class InnerCellFullCore implements CoreCellsConnection, BroodMotherConnection, BroodQueenConnection {
+public abstract class AbstractInnerCellFullCore implements InnerCellFullCore {
     private CellBroodMother broodMother;
     private CoreCell coreCell;
     private BroodQueen queen;
