@@ -22,6 +22,7 @@ public final class BroodQueen implements Cell {
         this.layer = layer;
     }
     public void updateLayer () {
+        CellLayer.reloadLayer();
         this.layer = CellLayer.getLayer();
     }
 
