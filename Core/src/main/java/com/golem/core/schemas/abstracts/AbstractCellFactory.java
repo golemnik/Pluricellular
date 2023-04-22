@@ -1,17 +1,15 @@
 package com.golem.core.schemas.abstracts;
 
-import com.golem.core.schemas.CellFactory;
-
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
-public abstract class AbstractCellFactory extends AbstractInnerCellFullCore implements CellFactory {
-        public static List<AbstractCellFactory> getCellFactories(ModuleLayer layer) {
+public abstract class AbstractCellFactory extends AbstractSystemCellFactory {
+    public static List<AbstractCellFactory> getCellFactories(ModuleLayer layer) {
         return ServiceLoader
-                .load(layer, AbstractCellFactory.class)
-                .stream()
-                .map(ServiceLoader.Provider::get)
-                .collect(Collectors.toList());
+            .load(layer, AbstractCellFactory.class)
+            .stream()
+            .map(ServiceLoader.Provider::get)
+            .collect(Collectors.toList());
     }
 }

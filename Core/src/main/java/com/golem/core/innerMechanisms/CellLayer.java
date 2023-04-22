@@ -31,18 +31,19 @@ public class CellLayer {
                 .resolve(cellFinder, ModuleFinder.of(), cells);
         // config check dependency for all modules in the list as a dependency graph
 
-        layer = ModuleLayer
-                .boot()
-                .defineModulesWithOneLoader(cellsConfig, ClassLoader.getSystemClassLoader());
+
+        layer = ModuleLayer.boot().defineModulesWithManyLoaders(cellsConfig, ClassLoader.getSystemClassLoader());
         // create layer for cells
     }
-    public static ModuleLayer getLayer () {
+
+    public static ModuleLayer getLayer() {
         return layer;
     }
-    public static void UnloadLayer () {
-        layer = ModuleLayer.empty();
+    public static void unloadLayer() {
+        layer.modules().clear();
+        layer = null;
     }
-    public static void reloadLayer () {
+    public static void reloadLayer() {
         loadLayer(path);
     }
     public static void setPath (String path) {

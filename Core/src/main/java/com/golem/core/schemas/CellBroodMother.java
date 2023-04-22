@@ -1,6 +1,6 @@
 package com.golem.core.schemas;
 
-import com.golem.core.schemas.abstracts.AbstractCellFactory;
+import com.golem.core.schemas.abstracts.AbstractSystemCellFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -8,11 +8,12 @@ import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
 public interface CellBroodMother extends Cell, InnerCellFullCore {
-    Map<String, AbstractCellFactory> getFactoryCommands ();
-    void addMainCellDepends(AbstractCellFactory factory);
-    void addFactory (AbstractCellFactory factory);
-    void addFactoryList (List<AbstractCellFactory> factoryList);
-    void reloadFactoryList (List<AbstractCellFactory> factoryList);
+    Map<String, AbstractSystemCellFactory> getFactoryCommands ();
+    <T extends AbstractSystemCellFactory> void addMainCellDepends(T factory);
+    <T extends AbstractSystemCellFactory> void addFactory (T factory);
+    void addFactoryList (List<? extends AbstractSystemCellFactory> factoryList);
+    void reloadFactoryList (List<? extends AbstractSystemCellFactory> factoryList);
+    void clearAllFactoryList();
     Cell createCell (String cell);
     static List<CellBroodMother> getCellBroodMothers(ModuleLayer layer) {
         return ServiceLoader

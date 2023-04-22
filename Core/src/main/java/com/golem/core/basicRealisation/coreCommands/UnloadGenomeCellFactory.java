@@ -1,14 +1,15 @@
 package com.golem.core.basicRealisation.coreCommands;
 
 import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.abstracts.AbstractCellFactory;
+import com.golem.core.schemas.abstracts.AbstractSystemCellFactory;
 
-public class UnloadGenomeCellFactory extends AbstractCellFactory {
+public class UnloadGenomeCellFactory extends AbstractSystemCellFactory {
     @Override
     public Cell create() {
         UnloadGenomeCellCommand cell = new UnloadGenomeCellCommand();
-
-        return new UnloadGenomeCellCommand();
+        cell.setQueen(getBroodQueen());
+        cell.setBroodMother(getBroodMother());
+        return cell;
     }
 
     @Override

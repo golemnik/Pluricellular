@@ -3,8 +3,9 @@ package com.golem.core.basicRealisation.coreCommands;
 import com.golem.core.broodQueen.BroodQueen;
 import com.golem.core.schemas.Cell;
 import com.golem.core.schemas.CellBroodMother;
+import com.golem.core.schemas.deepSchemas.SystemCommand;
 
-public class ReloadGenomeCommandCell implements Cell {
+public class ReloadGenomeCommandCell implements Cell, SystemCommand {
     private BroodQueen queen;
     private CellBroodMother broodMother;
     public ReloadGenomeCommandCell() {
@@ -18,6 +19,7 @@ public class ReloadGenomeCommandCell implements Cell {
     @Override
     public void activate() {
         queen.activate();
-        broodMother.reloadFactoryList(BroodQueen.loadAbsFactories(queen.getLayer()));
+        broodMother.addFactoryList(BroodQueen.loadSystemFactories(queen.getLayer()));
+        broodMother.addFactoryList(BroodQueen.loadOuterFactories(queen.getLayer()));
     }
 }

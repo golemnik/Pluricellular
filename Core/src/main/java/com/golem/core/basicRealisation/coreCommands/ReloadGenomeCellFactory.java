@@ -2,8 +2,9 @@ package com.golem.core.basicRealisation.coreCommands;
 
 import com.golem.core.schemas.abstracts.AbstractCellFactory;
 import com.golem.core.schemas.Cell;
+import com.golem.core.schemas.abstracts.AbstractSystemCellFactory;
 
-public class ReloadGenomeCellFactory extends AbstractCellFactory {
+public class ReloadGenomeCellFactory extends AbstractSystemCellFactory {
     @Override
     public Cell create() {
         ReloadGenomeCommandCell cell = new ReloadGenomeCommandCell();

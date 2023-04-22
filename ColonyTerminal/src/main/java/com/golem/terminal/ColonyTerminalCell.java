@@ -38,9 +38,10 @@ public class ColonyTerminalCell implements TerminalCell {
     public void terminalCycle() {
         scanner = new Scanner(System.in);
         while (true) {
-            coreCell.updateModuleLayer();
+            coreCell.updateCoreLayer();
             coreCell.getBroodQueen().updateLayer();
-            broodMother.reloadFactoryList(BroodQueen.loadAbsFactories(coreCell.getBroodQueen().getLayer()));
+            broodMother.reloadFactoryList(BroodQueen.loadSystemFactories(coreCell.getBroodQueen().getLayer()));
+            broodMother.reloadFactoryList(BroodQueen.loadOuterFactories(coreCell.getBroodQueen().getLayer()));
             System.out.println(broodMother.getFactoryCommands());
             broodMother.createCell(scanner.nextLine()).activate();
         }

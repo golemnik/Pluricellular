@@ -24,19 +24,26 @@ public class CoreCell extends AbstractInnerCellFullCore implements Cell {
         CellLayer.setPath("genome");
     }
 
-    public void updateModuleLayer() {
+    public void updateCoreLayer() {
         CellLayer.reloadLayer();
     }
+    public void updateGenomeLayer() {
+        CellLayer.reloadLayer();
+    }
+
     @Override
     public void activate() {
-        updateModuleLayer();
-        getBroodQueen().addLayer(CellLayer.getLayer());
+        updateCoreLayer();
+        updateGenomeLayer();
+        getBroodQueen().addCoreLayer(CellLayer.getLayer());
+
         System.out.println("Loading brood...");
         addBroodMother(getBroodQueen().createBaseCell(BroodQueen.loadBroodMothers(CellLayer.getLayer())));
         System.out.println("Producing BroodMother dependencies...");
         getBroodMother().setAll(this, getBroodMother(), getBroodQueen());
         System.out.println("Loading cell factories...");
-        getBroodMother().addFactoryList(BroodQueen.loadAbsFactories(CellLayer.getLayer()));
+        getBroodMother().reloadFactoryList(BroodQueen.loadSystemFactories(CellLayer.getLayer()));
+        getBroodMother().addFactoryList(BroodQueen.loadOuterFactories(CellLayer.getLayer()));
         System.out.println("Loading terminal...");
         setTerminal(getBroodQueen().createBaseCell(BroodQueen.loadTerminals(CellLayer.getLayer())));
         System.out.println("Producing terminal dependencies...");
@@ -46,3 +53,5 @@ public class CoreCell extends AbstractInnerCellFullCore implements Cell {
         }
     }
 }
+
+// \terminal commands

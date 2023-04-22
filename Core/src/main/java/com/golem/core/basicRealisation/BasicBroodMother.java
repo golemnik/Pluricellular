@@ -1,8 +1,9 @@
 package com.golem.core.basicRealisation;
 
+import com.golem.core.basicRealisation.coreCommands.CorruptedCommandCell;
 import com.golem.core.schemas.Cell;
 import com.golem.core.schemas.CellBroodMother;
-import com.golem.core.schemas.abstracts.AbstractCellFactory;
+import com.golem.core.schemas.abstracts.AbstractSystemCellFactory;
 import com.golem.core.schemas.abstracts.AbstractInnerCellFullCore;
 
 import java.util.HashMap;
@@ -10,38 +11,42 @@ import java.util.List;
 import java.util.Map;
 
 public class BasicBroodMother extends AbstractInnerCellFullCore implements CellBroodMother {
-    private final Map<String, AbstractCellFactory> factories = new HashMap<>();
+    private final Map<String, AbstractSystemCellFactory> factories = new HashMap<>();
 
     @Override
-    public Map<String, AbstractCellFactory> getFactoryCommands() {
+    public Map<String, AbstractSystemCellFactory> getFactoryCommands() {
         return new HashMap<>(factories);
     }
 
     @Override
-    public void addMainCellDepends(AbstractCellFactory factory) {
+    public void addMainCellDepends(AbstractSystemCellFactory factory) {
         factory.addCore(getCoreCell());
         factory.addBroodMother(getBroodMother());
         factory.addBroodQueen(getBroodQueen());
     }
 
     @Override
-    public void addFactory(AbstractCellFactory factory) {
+    public void addFactory(AbstractSystemCellFactory factory) {
         addMainCellDepends(factory);
         factories.put(factory.creationCommand(), factory);
     }
 
     @Override
-    public void addFactoryList(List<AbstractCellFactory> factoryList) {
-        for (AbstractCellFactory factory : factoryList) {
-            addMainCellDepends(factory);
+    public void addFactoryList(List<? extends AbstractSystemCellFactory> factoryList) {
+        for (AbstractSystemCellFactory factory : factoryList) {
             addFactory(factory);
         }
     }
 
     @Override
-    public void reloadFactoryList(List<AbstractCellFactory> factoryList) {
+    public void reloadFactoryList(List<? extends AbstractSystemCellFactory> factoryList) {
         factories.clear();
         addFactoryList(factoryList);
+    }
+
+    @Override
+    public void clearAllFactoryList() {
+        factories.clear();
     }
 
     @Override
@@ -50,7 +55,7 @@ public class BasicBroodMother extends AbstractInnerCellFullCore implements CellB
             return factories.get(cell).create();
         }
         catch (Exception e) {
-            return new CorruptedCell();
+            return new CorruptedCommandCell();
         }
     }
 

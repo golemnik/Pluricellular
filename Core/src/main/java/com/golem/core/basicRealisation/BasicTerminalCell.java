@@ -1,6 +1,5 @@
 package com.golem.core.basicRealisation;
-import com.golem.core.broodQueen.BroodQueen;
-import com.golem.core.schemas.Cell;
+import com.golem.core.innerMechanisms.CellLayer;
 import com.golem.core.schemas.TerminalCell;
 import com.golem.core.schemas.abstracts.AbstractInnerCellFullCore;
 
@@ -20,16 +19,21 @@ public class BasicTerminalCell extends AbstractInnerCellFullCore implements Term
     public void terminalCycle() {
         String input;
         while (true) {
-//            getCoreCell().updateModuleLayer();
-//            queen.activate();
-//            getBroodMother().reloadFactoryList(BroodQueen.loadAbsFactories(getBroodQueen().getLayer()));
             input = scanner.nextLine();
             if (input.equals("\\terminal commands")) {
                 System.out.println(getBroodMother().getFactoryCommands().keySet());
                 continue;
             }
-            Cell cell = getBroodMother().createCell(input);
-            cell.activate();
+            if (input.equals("\\terminal layer")) {
+                System.out.println(CellLayer.getLayer().modules());
+                continue;
+            }
+            try {
+                getBroodMother().createCell(input).activate();
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
