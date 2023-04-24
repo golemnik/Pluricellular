@@ -2,10 +2,12 @@ package com.golem.core.coreCell;
 
 
 import com.golem.core.broodQueen.BroodQueen;
+import com.golem.core.connectorCells.ConnectorQueen;
 import com.golem.core.innerMechanisms.CellLayer;
 import com.golem.core.schemas.Cell;
 import com.golem.core.schemas.TerminalCell;
 import com.golem.core.schemas.abstracts.AbstractInnerCellFullCore;
+import com.golem.core.schemas.providedRealisations.CellPrinter;
 
 public class CoreCell extends AbstractInnerCellFullCore implements Cell {
     private TerminalCell terminal;
@@ -37,16 +39,26 @@ public class CoreCell extends AbstractInnerCellFullCore implements Cell {
         updateGenomeLayer();
         getBroodQueen().addCoreLayer(CellLayer.getLayer());
 
-        System.out.println("Loading brood...");
+        CellPrinter.setMessage("Loading brood...");
         addBroodMother(getBroodQueen().createBaseCell(BroodQueen.loadBroodMothers(CellLayer.getLayer())));
-        System.out.println("Producing BroodMother dependencies...");
+        CellPrinter.setMessage("Producing BroodMother dependencies...");
         getBroodMother().setAll(this, getBroodMother(), getBroodQueen());
-        System.out.println("Loading cell factories...");
+        CellPrinter.setMessage("Loading cell factories...");
         getBroodMother().reloadFactoryList(BroodQueen.loadSystemFactories(CellLayer.getLayer()));
         getBroodMother().addFactoryList(BroodQueen.loadOuterFactories(CellLayer.getLayer()));
-        System.out.println("Loading terminal...");
+
+        CellPrinter.setMessage("Loading connected branch cells...");
+        ConnectorQueen connectorQueen = new ConnectorQueen();
+        connectorQueen.setAll(this, getBroodMother(), getBroodQueen());
+        CellPrinter.setMessage("Producing outer data dependencies & commands...");
+        connectorQueen.activate();
+
+        CellPrinter.setMessage("Loading terminal...");
         setTerminal(getBroodQueen().createBaseCell(BroodQueen.loadTerminals(CellLayer.getLayer())));
-        System.out.println("Producing terminal dependencies...");
+        CellPrinter.setMessage("Producing terminal dependencies...");
+
+
+
         terminal.setAll(this, getBroodMother(), getBroodQueen());
         while (true) {
             terminal.activate();

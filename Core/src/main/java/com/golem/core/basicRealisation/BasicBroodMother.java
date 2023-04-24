@@ -1,9 +1,9 @@
 package com.golem.core.basicRealisation;
 
-import com.golem.core.basicRealisation.coreCommands.CorruptedCommandCell;
+import com.golem.core.schemas.providedRealisations.CorruptedCommandCell;
 import com.golem.core.schemas.Cell;
 import com.golem.core.schemas.CellBroodMother;
-import com.golem.core.schemas.abstracts.AbstractSystemCellFactory;
+import com.golem.core.innerMechanisms.AbstractSystemCellFactory;
 import com.golem.core.schemas.abstracts.AbstractInnerCellFullCore;
 
 import java.util.HashMap;

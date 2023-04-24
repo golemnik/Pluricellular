@@ -5,7 +5,7 @@ import com.golem.core.schemas.Cell;
 import com.golem.core.schemas.CellBroodMother;
 import com.golem.core.schemas.TerminalCell;
 import com.golem.core.schemas.abstracts.AbstractCellFactory;
-import com.golem.core.schemas.abstracts.AbstractSystemCellFactory;
+import com.golem.core.innerMechanisms.AbstractSystemCellFactory;
 
 import java.util.*;
 

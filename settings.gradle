@@ -5,4 +5,5 @@ include 'TicketCell'
 include 'ColonyTerminal'
 include 'ShoutingTwice'
 include 'TerminalHelpCell'
+include 'TicketShowCell'
 

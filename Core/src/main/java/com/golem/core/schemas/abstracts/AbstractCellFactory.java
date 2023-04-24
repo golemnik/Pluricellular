@@ -1,5 +1,7 @@
 package com.golem.core.schemas.abstracts;
 
+import com.golem.core.innerMechanisms.AbstractSystemCellFactory;
+
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;

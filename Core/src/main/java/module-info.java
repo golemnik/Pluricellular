@@ -2,13 +2,13 @@ import com.golem.core.basicRealisation.*;
 import com.golem.core.basicRealisation.BasicBroodMother;
 import com.golem.core.basicRealisation.BasicCell;
 import com.golem.core.basicRealisation.BasicTerminalCell;
-import com.golem.core.basicRealisation.coreCommands.CorruptedCommandCell;
+import com.golem.core.schemas.providedRealisations.CorruptedCommandCell;
 import com.golem.core.basicRealisation.coreCommands.*;
 import com.golem.core.broodQueen.BroodQueen;
 import com.golem.core.coreCell.CoreCell;
 import com.golem.core.schemas.*;
 import com.golem.core.schemas.abstracts.AbstractCellFactory;
-import com.golem.core.schemas.abstracts.AbstractSystemCellFactory;
+import com.golem.core.innerMechanisms.AbstractSystemCellFactory;
 import com.golem.core.schemas.deepSchemas.SystemCommand;
 
 module ColonyCore {
@@ -18,12 +18,15 @@ module ColonyCore {
     exports com.golem.core.schemas.connections;
     exports com.golem.core.schemas.abstracts;
     exports com.golem.core.schemas.deepSchemas;
+    exports com.golem.core.schemas.providedRealisations;
+    exports com.golem.core.innerMechanisms;
 
     uses Cell;
     uses CellBroodMother;
     uses TerminalCell;
     uses AbstractCellFactory;
     uses AbstractSystemCellFactory;
+    uses ConnectedCell;
 
     provides Cell with BasicCell, CorruptedCommandCell, BroodQueen,
             CoreCell, ExitCommandCell, ReloadGenomeCommandCell, UnloadGenomeCellCommand;

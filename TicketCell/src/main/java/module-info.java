@@ -1,14 +1,18 @@
 import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.abstracts.AbstractSystemCellFactory;
-import com.golem.ticketCell.TicketCollectionCell;
-import com.golem.ticketCell.TicketCollectionCellFactory;
+import com.golem.core.schemas.ConnectedCell;
+import com.golem.core.innerMechanisms.AbstractSystemCellFactory;
+import com.golem.ticketCell.TicketDataConnectorCell;
 
 module Pluricellular.TicketCell.main {
     requires ColonyCore;
 
+    exports com.golem.ticketCell.schemas;
+    exports com.golem.ticketCell.collection;
+    exports com.golem.ticketCell.collection.ticket;
+
     uses Cell;
     uses AbstractSystemCellFactory;
+    uses com.golem.ticketCell.schemas.AbstractTCellFactory;
 
-    provides Cell with TicketCollectionCell;
-    provides AbstractSystemCellFactory with TicketCollectionCellFactory;
+    provides ConnectedCell with TicketDataConnectorCell;
 }

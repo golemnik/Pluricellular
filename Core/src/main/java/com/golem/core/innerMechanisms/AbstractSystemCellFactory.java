@@ -1,5 +1,6 @@
-package com.golem.core.schemas.abstracts;
+package com.golem.core.innerMechanisms;
 
+import com.golem.core.schemas.abstracts.AbstractInnerCellFullCore;
 import com.golem.core.schemas.deepSchemas.SystemCommandCellFactory;
 
 import java.util.List;

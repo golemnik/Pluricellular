@@ -1,6 +1,6 @@
 package com.golem.core.schemas;
 
-import com.golem.core.schemas.abstracts.AbstractSystemCellFactory;
+import com.golem.core.innerMechanisms.AbstractSystemCellFactory;
 
 import java.util.List;
 import java.util.Map;

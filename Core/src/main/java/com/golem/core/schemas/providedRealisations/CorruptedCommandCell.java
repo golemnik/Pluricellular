@@ -1,4 +1,4 @@
-package com.golem.core.basicRealisation.coreCommands;
+package com.golem.core.schemas.providedRealisations;
 
 import com.golem.core.schemas.Cell;
 import com.golem.core.schemas.deepSchemas.SystemCommand;

@@ -1,7 +1,7 @@
 package com.golem.core.basicRealisation.coreCommands;
 
 import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.abstracts.AbstractSystemCellFactory;
+import com.golem.core.innerMechanisms.AbstractSystemCellFactory;
 
 public class UnloadGenomeCellFactory extends AbstractSystemCellFactory {
     @Override
