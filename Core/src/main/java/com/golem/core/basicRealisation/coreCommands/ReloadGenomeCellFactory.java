@@ -7,7 +7,7 @@ public class ReloadGenomeCellFactory extends AbstractSystemCellFactory {
     @Override
     public Cell create() {
         ReloadGenomeCommandCell cell = new ReloadGenomeCommandCell();
-        cell.setQueen(getBroodQueen());
+        cell.setQueen(getCoreCell().getQueenConnections());
         cell.setBroodMother(getBroodMother());
         return cell;
     }

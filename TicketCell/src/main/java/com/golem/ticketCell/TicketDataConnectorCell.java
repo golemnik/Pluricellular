@@ -1,13 +1,13 @@
 package com.golem.ticketCell;
 
 import com.golem.core.schemas.ConnectedCell;
-import com.golem.core.schemas.abstracts.AbstractInnerCellFullCore;
+import com.golem.core.schemas.abstracts.AbstractICellCore;
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.schemas.AbstractTCellFactory;
 
 import java.util.List;
 
-public class TicketDataConnectorCell extends AbstractInnerCellFullCore implements ConnectedCell {
+public class TicketDataConnectorCell extends AbstractICellCore implements ConnectedCell {
 
     private TicketCollection ticketCollectionCell;
     public TicketDataConnectorCell () {

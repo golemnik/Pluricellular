@@ -1,11 +1,11 @@
 package com.golem.core.basicRealisation;
 import com.golem.core.innerMechanisms.CellLayer;
 import com.golem.core.schemas.TerminalCell;
-import com.golem.core.schemas.abstracts.AbstractInnerCellFullCore;
+import com.golem.core.schemas.abstracts.AbstractICellCore;
 
 import java.util.Scanner;
 
-public class BasicTerminalCell extends AbstractInnerCellFullCore implements TerminalCell {
+public class BasicTerminalCell extends AbstractICellCore implements TerminalCell {
     private final Scanner scanner;
     public BasicTerminalCell () {
         this.scanner = new Scanner(System.in);

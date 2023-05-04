@@ -2,15 +2,15 @@ package com.golem.core.basicRealisation;
 
 import com.golem.core.schemas.providedRealisations.CorruptedCommandCell;
 import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.CellBroodMother;
+import com.golem.core.schemas.BroodMotherCell;
 import com.golem.core.innerMechanisms.AbstractSystemCellFactory;
-import com.golem.core.schemas.abstracts.AbstractInnerCellFullCore;
+import com.golem.core.schemas.abstracts.AbstractICellCore;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BasicBroodMother extends AbstractInnerCellFullCore implements CellBroodMother {
+public class BasicBroodMotherCell extends AbstractICellCore implements BroodMotherCell {
     private final Map<String, AbstractSystemCellFactory> factories = new HashMap<>();
 
     @Override
@@ -22,7 +22,7 @@ public class BasicBroodMother extends AbstractInnerCellFullCore implements CellB
     public void addMainCellDepends(AbstractSystemCellFactory factory) {
         factory.addCore(getCoreCell());
         factory.addBroodMother(getBroodMother());
-        factory.addBroodQueen(getBroodQueen());
+        factory.addQueenConnection(getQueenConnection());
     }
 
     @Override

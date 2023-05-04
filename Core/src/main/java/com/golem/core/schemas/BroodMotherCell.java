@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
-public interface CellBroodMother extends Cell, InnerCellFullCore {
+public interface BroodMotherCell extends Cell, InnerCellFullCore {
     Map<String, AbstractSystemCellFactory> getFactoryCommands ();
     <T extends AbstractSystemCellFactory> void addMainCellDepends(T factory);
     <T extends AbstractSystemCellFactory> void addFactory (T factory);
@@ -15,9 +15,9 @@ public interface CellBroodMother extends Cell, InnerCellFullCore {
     void reloadFactoryList (List<? extends AbstractSystemCellFactory> factoryList);
     void clearAllFactoryList();
     Cell createCell (String cell);
-    static List<CellBroodMother> getCellBroodMothers(ModuleLayer layer) {
+    static List<BroodMotherCell> getCellBroodMothers(ModuleLayer layer) {
         return ServiceLoader
-                .load(layer, CellBroodMother.class)
+                .load(layer, BroodMotherCell.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)
                 .collect(Collectors.toList());

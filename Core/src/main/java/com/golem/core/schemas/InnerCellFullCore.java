@@ -1,12 +1,10 @@
 package com.golem.core.schemas;
 
-import com.golem.core.broodQueen.BroodQueen;
 import com.golem.core.coreCell.CoreCell;
-import com.golem.core.schemas.CellBroodMother;
 import com.golem.core.schemas.connections.BroodMotherConnection;
-import com.golem.core.schemas.connections.BroodQueenConnection;
-import com.golem.core.schemas.connections.CoreCellsConnection;
+import com.golem.core.schemas.connections.CoreCellConnection;
+import com.golem.core.schemas.connections.QueenConnection;
 
-public interface InnerCellFullCore extends CoreCellsConnection, BroodMotherConnection, BroodQueenConnection {
-    void setAll (CoreCell coreCell, CellBroodMother broodMother, BroodQueen broodQueen);
+public interface InnerCellFullCore extends CoreCellConnection, BroodMotherConnection, QueenConnection {
+    void setAll (CoreCell coreCell, BroodMotherCell broodMother, QueenCell queenCell);
 }

@@ -1,8 +1,8 @@
 package com.golem.core.schemas.connections;
 
-import com.golem.core.schemas.CellBroodMother;
+import com.golem.core.schemas.BroodMotherCell;
 
 public interface BroodMotherConnection {
-    void addBroodMother (CellBroodMother broodMother);
-    CellBroodMother getBroodMother ();
+    void addBroodMother (BroodMotherCell broodMother);
+    BroodMotherCell getBroodMother ();
 }

@@ -1,14 +1,14 @@
 package com.golem.helpCommand;
 
 import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.CellBroodMother;
+import com.golem.core.schemas.BroodMotherCell;
 
 public class HelpCommandCell implements Cell {
-    private CellBroodMother broodMother;
+    private BroodMotherCell broodMother;
 
     public HelpCommandCell (){}
 
-    public void addBroodMother (CellBroodMother broodMother) {
+    public void addBroodMother (BroodMotherCell broodMother) {
         this.broodMother = broodMother;
     }
     @Override

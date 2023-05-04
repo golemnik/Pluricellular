@@ -7,7 +7,6 @@ public class UnloadGenomeCellFactory extends AbstractSystemCellFactory {
     @Override
     public Cell create() {
         UnloadGenomeCellCommand cell = new UnloadGenomeCellCommand();
-        cell.setQueen(getBroodQueen());
         cell.setBroodMother(getBroodMother());
         return cell;
     }

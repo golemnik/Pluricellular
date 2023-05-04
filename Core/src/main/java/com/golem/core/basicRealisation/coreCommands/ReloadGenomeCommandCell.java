@@ -1,25 +1,28 @@
 package com.golem.core.basicRealisation.coreCommands;
 
-import com.golem.core.broodQueen.BroodQueen;
+import com.golem.core.queens.BroodQueen;
 import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.CellBroodMother;
+import com.golem.core.schemas.BroodMotherCell;
+import com.golem.core.schemas.abstracts.AbstractQueenCell;
 import com.golem.core.schemas.deepSchemas.SystemCommand;
 
+import java.util.List;
+
 public class ReloadGenomeCommandCell implements Cell, SystemCommand {
-    private BroodQueen queen;
-    private CellBroodMother broodMother;
+    private List<AbstractQueenCell> queens;
+    private BroodMotherCell broodMother;
     public ReloadGenomeCommandCell() {
     }
-    public void setQueen (BroodQueen queen) {
-        this.queen = queen;
+    public void setQueen (List<AbstractQueenCell> queens) {
+        this.queens = queens;
     }
-    public void setBroodMother (CellBroodMother broodMother) {
+    public void setBroodMother (BroodMotherCell broodMother) {
         this.broodMother = broodMother;
     }
     @Override
     public void activate() {
-        queen.activate();
-        broodMother.addFactoryList(BroodQueen.loadSystemFactories(queen.getLayer()));
-        broodMother.addFactoryList(BroodQueen.loadOuterFactories(queen.getLayer()));
+        queens.forEach(AbstractQueenCell::updateLayer);
+        broodMother.clearAllFactoryList();
+        queens.forEach(queen -> queen.fillBroodMother(queen.getLayer()));
     }
 }
