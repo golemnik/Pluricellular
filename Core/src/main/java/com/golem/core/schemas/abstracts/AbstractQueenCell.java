@@ -1,5 +1,6 @@
 package com.golem.core.schemas.abstracts;
 
+import com.golem.core.innerMechanisms.AbstractSystemCellFactory;
 import com.golem.core.innerMechanisms.CellLayer;
 import com.golem.core.schemas.QueenCell;
 
@@ -43,6 +44,11 @@ public abstract class AbstractQueenCell extends AbstractICellCore implements Que
             }
         } while (result == null);
         return result;
+    }
+
+    @Override
+    public <T extends AbstractSystemCellFactory> void fillFactories(List<T> factories) {
+        getBroodMother().addFactoryList(factories, this);
     }
 
     public static List<AbstractQueenCell> getQueens(ModuleLayer layer) {

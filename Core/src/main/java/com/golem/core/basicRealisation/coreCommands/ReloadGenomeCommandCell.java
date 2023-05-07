@@ -1,6 +1,5 @@
 package com.golem.core.basicRealisation.coreCommands;
 
-import com.golem.core.queens.BroodQueen;
 import com.golem.core.schemas.Cell;
 import com.golem.core.schemas.BroodMotherCell;
 import com.golem.core.schemas.abstracts.AbstractQueenCell;
@@ -23,6 +22,6 @@ public class ReloadGenomeCommandCell implements Cell, SystemCommand {
     public void activate() {
         queens.forEach(AbstractQueenCell::updateLayer);
         broodMother.clearAllFactoryList();
-        queens.forEach(queen -> queen.fillBroodMother(queen.getLayer()));
+        queens.forEach(queen -> queen.extractFactories(queen.getLayer()));
     }
 }

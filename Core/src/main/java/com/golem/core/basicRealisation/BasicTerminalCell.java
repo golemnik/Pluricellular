@@ -1,11 +1,10 @@
 package com.golem.core.basicRealisation;
 import com.golem.core.innerMechanisms.CellLayer;
-import com.golem.core.schemas.TerminalCell;
-import com.golem.core.schemas.abstracts.AbstractICellCore;
+import com.golem.core.schemas.abstracts.AbstractTerminal;
 
 import java.util.Scanner;
 
-public class BasicTerminalCell extends AbstractICellCore implements TerminalCell {
+public class BasicTerminalCell extends AbstractTerminal {
     private final Scanner scanner;
     public BasicTerminalCell () {
         this.scanner = new Scanner(System.in);
@@ -38,8 +37,7 @@ public class BasicTerminalCell extends AbstractICellCore implements TerminalCell
     }
 
     @Override
-    public void activate() {
-        terminalInit();
-        terminalCycle();
+    public int priority() {
+        return 0;
     }
 }

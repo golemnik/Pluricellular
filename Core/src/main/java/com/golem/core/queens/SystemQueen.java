@@ -11,7 +11,7 @@ public class SystemQueen extends AbstractQueenCell {
 
     }
     @Override
-    public List<AbstractSystemCellFactory> fillBroodMother(ModuleLayer layer) {
+    public List<AbstractSystemCellFactory> extractFactories(ModuleLayer layer) {
         return AbstractSystemCellFactory.getSystemCellFactories(layer);
     }
 }

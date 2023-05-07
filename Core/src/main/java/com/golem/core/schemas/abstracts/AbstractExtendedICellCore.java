@@ -1,7 +1,6 @@
 package com.golem.core.schemas.abstracts;
 
 import com.golem.core.coreCell.CoreCell;
-import com.golem.core.schemas.BroodMotherCell;
 import com.golem.core.schemas.ExtendedICellFullCore;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 
 public abstract class AbstractExtendedICellCore implements ExtendedICellFullCore {
 
-    private BroodMotherCell broodMother;
+    private AbstractBroodMother broodMother;
     private CoreCell coreCell;
     private List <AbstractQueenCell> queens = new ArrayList<>();
 
@@ -17,12 +16,12 @@ public abstract class AbstractExtendedICellCore implements ExtendedICellFullCore
     }
 
     @Override
-    public void addBroodMother(BroodMotherCell broodMother) {
+    public void addBroodMother(AbstractBroodMother broodMother) {
         this.broodMother = broodMother;
     }
 
     @Override
-    public BroodMotherCell getBroodMother() {
+    public AbstractBroodMother getBroodMother() {
         return broodMother;
     }
 
@@ -52,7 +51,7 @@ public abstract class AbstractExtendedICellCore implements ExtendedICellFullCore
     }
 
     @Override
-    public void setAll(CoreCell coreCell, BroodMotherCell broodMother, List<AbstractQueenCell> queens) {
+    public void setAll(CoreCell coreCell, AbstractBroodMother broodMother, List<AbstractQueenCell> queens) {
         addCore(coreCell);
         addBroodMother(broodMother);
         addQueenConnection(queens);

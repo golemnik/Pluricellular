@@ -4,14 +4,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
-public interface TerminalCell extends Cell, InnerCellFullCore {
+public interface TerminalCell extends Cell {
     void terminalInit();
     void terminalCycle ();
-    static List<TerminalCell> getCellFactories(ModuleLayer layer) {
-        return ServiceLoader
-                .load(layer, TerminalCell.class)
-                .stream()
-                .map(ServiceLoader.Provider::get)
-                .collect(Collectors.toList());
-    }
 }

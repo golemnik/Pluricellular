@@ -4,6 +4,7 @@ import com.golem.core.basicRealisation.BasicCell;
 import com.golem.core.basicRealisation.BasicTerminalCell;
 import com.golem.core.queens.SystemQueen;
 import com.golem.core.schemas.abstracts.AbstractQueenCell;
+import com.golem.core.schemas.abstracts.AbstractTerminal;
 import com.golem.core.schemas.providedRealisations.CorruptedCommandCell;
 import com.golem.core.basicRealisation.coreCommands.*;
 import com.golem.core.queens.BroodQueen;
@@ -29,6 +30,7 @@ module ColonyCore {
     uses AbstractCellFactory;
     uses AbstractSystemCellFactory;
     uses AbstractQueenCell;
+    uses AbstractTerminal;
 
     provides Cell with BasicCell, CorruptedCommandCell,
             CoreCell, ExitCommandCell, ReloadGenomeCommandCell, UnloadGenomeCellCommand;
@@ -38,7 +40,7 @@ module ColonyCore {
     provides AbstractSystemCellFactory with ExitCellFactory, ReloadGenomeCellFactory, UnloadGenomeCellFactory;
 
     provides BroodMotherCell with BasicBroodMotherCell;
-    provides TerminalCell with BasicTerminalCell;
+    provides AbstractTerminal with BasicTerminalCell;
 }
 
 // java --module-path .\build\libs\Pluricellular-1.0.jar -m core/com.golem.core.Main

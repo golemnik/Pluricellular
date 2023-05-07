@@ -2,11 +2,10 @@ package com.golem.core.schemas.abstracts;
 
 import com.golem.core.coreCell.CoreCell;
 import com.golem.core.schemas.QueenCell;
-import com.golem.core.schemas.BroodMotherCell;
 import com.golem.core.schemas.InnerCellFullCore;
 
 public abstract class AbstractICellCore implements InnerCellFullCore {
-    private BroodMotherCell broodMother;
+    private AbstractBroodMother broodMother;
     private CoreCell coreCell;
     private QueenCell queen;
 
@@ -20,7 +19,7 @@ public abstract class AbstractICellCore implements InnerCellFullCore {
     }
 
     @Override
-    public void addBroodMother(BroodMotherCell broodMother) {
+    public void addBroodMother(AbstractBroodMother broodMother) {
         this.broodMother = broodMother;
     }
 
@@ -35,7 +34,7 @@ public abstract class AbstractICellCore implements InnerCellFullCore {
     }
 
     @Override
-    public BroodMotherCell getBroodMother() {
+    public AbstractBroodMother getBroodMother() {
         return broodMother;
     }
 
@@ -45,7 +44,7 @@ public abstract class AbstractICellCore implements InnerCellFullCore {
     }
 
     @Override
-    public void setAll(CoreCell coreCell, BroodMotherCell broodMother, QueenCell queenCell) {
+    public void setAll(CoreCell coreCell, AbstractBroodMother broodMother, QueenCell queenCell) {
         addCore(coreCell);
         addBroodMother(broodMother);
         addQueenConnection(queenCell);

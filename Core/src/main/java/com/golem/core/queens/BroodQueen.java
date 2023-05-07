@@ -12,7 +12,7 @@ public final class BroodQueen extends AbstractQueenCell {
         updateLayer();
     }
     @Override
-    public List<AbstractCellFactory> fillBroodMother(ModuleLayer layer) {
+    public List<AbstractCellFactory> extractFactories(ModuleLayer layer) {
         return AbstractCellFactory.getCellFactories(layer);
     }
 }

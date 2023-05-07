@@ -1,7 +1,7 @@
 import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.ConnectedCell;
 import com.golem.core.innerMechanisms.AbstractSystemCellFactory;
-import com.golem.ticketCell.TicketDataConnectorCell;
+import com.golem.core.schemas.abstracts.AbstractQueenCell;
+import com.golem.ticketCell.TicketQueen;
 
 module Pluricellular.TicketCell.main {
     requires ColonyCore;
@@ -13,6 +13,7 @@ module Pluricellular.TicketCell.main {
     uses Cell;
     uses AbstractSystemCellFactory;
     uses com.golem.ticketCell.schemas.AbstractTCellFactory;
+    uses AbstractQueenCell;
 
-    provides ConnectedCell with TicketDataConnectorCell;
+    provides AbstractQueenCell with TicketQueen;
 }

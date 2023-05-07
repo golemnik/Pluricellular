@@ -9,6 +9,7 @@ public interface QueenCell extends Cell {
     void addLayer(ModuleLayer layer);
     void updateLayer();
     void updateQueenLayer();
-    <T extends AbstractSystemCellFactory> List<T> fillBroodMother(ModuleLayer layer);
+    <T extends AbstractSystemCellFactory> List<T> extractFactories(ModuleLayer layer);
+    <T extends AbstractSystemCellFactory> void fillFactories(List <T> factories);
     <T> T createBaseCell (List<T> cellList);
 }
