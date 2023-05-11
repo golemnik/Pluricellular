@@ -1,6 +1,6 @@
 package com.golem.ticketShowCell;
 
-import com.golem.core.schemas.Cell;
+import com.golem.core.schemas.basicInterfaces.Cell;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Ticket;

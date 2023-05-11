@@ -1,7 +1,7 @@
 package com.golem.core.queens;
 
-import com.golem.core.innerMechanisms.AbstractSystemCellFactory;
-import com.golem.core.schemas.abstracts.AbstractQueenCell;
+import com.golem.core.schemas.basicAbstractions.AbstractSystemCellFactory;
+import com.golem.core.schemas.basicAbstractions.AbstractQueenCell;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.golem.helpCommand;
 
-import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.abstracts.AbstractCellFactory;
+import com.golem.core.schemas.basicInterfaces.Cell;
+import com.golem.core.schemas.basicAbstractions.AbstractCellFactory;
 
 public class HelpCellFactory extends AbstractCellFactory {
     @Override

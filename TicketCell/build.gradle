@@ -14,5 +14,5 @@ dependencies {
 }
 
 jar {
-    destinationDir = file("../genome/genome")
+    destinationDir = file("../exp/server/genome")
 }

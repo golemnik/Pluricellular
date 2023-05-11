@@ -1,7 +1,7 @@
 package com.golem.helpCommand;
 
-import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.BroodMotherCell;
+import com.golem.core.schemas.basicInterfaces.Cell;
+import com.golem.core.schemas.basicInterfaces.BroodMotherCell;
 
 public class HelpCommandCell implements Cell {
     private BroodMotherCell broodMother;

@@ -1,6 +1,6 @@
 package com.golem.ticketCell.schemas;
 
-import com.golem.core.schemas.abstracts.AbstractCellFactory;
+import com.golem.core.schemas.basicAbstractions.AbstractCellFactory;
 import com.golem.ticketCell.collection.TicketCollection;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-import com.golem.core.schemas.Cell;
+import com.golem.core.schemas.basicInterfaces.Cell;
 import com.golem.ticketCell.schemas.AbstractTCellFactory;
 import com.golem.ticketShowCell.ShowTCellFactory;
 import com.golem.ticketShowCell.ShowTCommandCell;

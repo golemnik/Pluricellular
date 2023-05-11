@@ -1,7 +1,7 @@
 package com.golem.core.schemas.providedRealisations;
 
-import com.golem.core.schemas.Cell;
-import com.golem.core.schemas.deepSchemas.SystemCommand;
+import com.golem.core.schemas.basicInterfaces.Cell;
+import com.golem.core.schemas.basicInterfaces.deepSchemas.SystemCommand;
 
 public class CorruptedCommandCell implements Cell, SystemCommand {
     @Override

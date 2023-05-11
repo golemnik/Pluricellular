@@ -1,6 +1,6 @@
 package com.golem.ticketShowCell;
 
-import com.golem.core.schemas.Cell;
+import com.golem.core.schemas.basicInterfaces.Cell;
 import com.golem.ticketCell.schemas.AbstractTCellFactory;
 
 public class ShowTCellFactory extends AbstractTCellFactory {

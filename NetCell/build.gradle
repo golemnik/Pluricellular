@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group 'com.golem'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':Core')
+}
+
+jar {
+    destinationDir = file("../exp/server/genome")
+}
+
+task copyJar (type: Copy) {
+    from '../exp/server/genome'
+    into '../exp/client/genome'
+}
+compileJava.dependsOn(copyJar)
