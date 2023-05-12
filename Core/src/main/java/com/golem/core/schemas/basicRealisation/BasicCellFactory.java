@@ -1,15 +1,17 @@
 package com.golem.core.schemas.basicRealisation;
 
-import com.golem.core.schemas.basicInterfaces.Cell;
+import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicAbstractions.AbstractCellFactory;
+import com.golem.core.schemas.basicAbstractions.Signature;
+import com.golem.core.schemas.providedRealisations.CorruptedCommandCell;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BasicCellFactory extends AbstractCellFactory {
-    @Override
-    public Cell create() {
-        return new BasicCell();
+    public BasicCellFactory () {
+        super(new Signature(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
     }
-
-    @Override
     public String creationCommand() {
         return "basic";
     }
@@ -19,4 +21,9 @@ public class BasicCellFactory extends AbstractCellFactory {
         return "do nothing. Simple testing cell, basic realisation.";
     }
 
+    @Override
+    public AbstractCommand create(List<String> signature) {
+        if (signatureCompare(signature)) return new BasicCell().useSignature(signature);
+        return new CorruptedCommandCell();
+    }
 }

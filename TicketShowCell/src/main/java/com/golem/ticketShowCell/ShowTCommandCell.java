@@ -1,11 +1,10 @@
 package com.golem.ticketShowCell;
 
-import com.golem.core.schemas.basicInterfaces.Cell;
-import com.golem.core.schemas.providedRealisations.CellPrinter;
+import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Ticket;
 
-public class ShowTCommandCell implements Cell {
+public class ShowTCommandCell extends AbstractCommand {
     private TicketCollection collection;
     public ShowTCommandCell () {
 
@@ -18,12 +17,14 @@ public class ShowTCommandCell implements Cell {
     @Override
     public void activate() {
         if (collection.getCollection().size() == 0) {
-            CellPrinter.setMessage("Collection is empty. Nothing to show.");
+            setAnswer("Collection is empty. Nothing to show.");
             return;
         }
+        String answer = "";
         for (Ticket t : collection.getCollection().values()) {
-            CellPrinter.setMessage("- - - -");
-            CellPrinter.setMessage(t.toReadString());
+            answer += "- - - -";
+            answer += t.toReadString();
         }
+        setAnswer(answer);
     }
 }

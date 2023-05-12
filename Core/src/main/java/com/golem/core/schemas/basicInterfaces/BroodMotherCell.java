@@ -20,7 +20,8 @@ public interface BroodMotherCell extends Cell {
     <T extends AbstractSystemCellFactory> void reloadFactoryList(List<T> factoryList, List<AbstractQueenCell> queens);
 
     void clearAllFactoryList();
-    Cell createCell (String cell);
+    Cell createCell (String cell, List<String> signature);
+
     static List<BroodMotherCell> getCellBroodMothers(ModuleLayer layer) {
         return ServiceLoader
                 .load(layer, BroodMotherCell.class)

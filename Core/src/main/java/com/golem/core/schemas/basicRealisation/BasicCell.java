@@ -1,11 +1,17 @@
 package com.golem.core.schemas.basicRealisation;
 
-import com.golem.core.schemas.basicInterfaces.Cell;
+import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 
-public class BasicCell implements Cell {
+import java.util.List;
+
+public class BasicCell extends AbstractCommand {
     @Override
     public void activate() {
-        System.out.println("This is Basic Cell activation.");
+        setAnswer("This is Basic Cell activation.");
     }
 
+    @Override
+    public AbstractCommand useSignature(List<String> signature) {
+        return this;
+    }
 }

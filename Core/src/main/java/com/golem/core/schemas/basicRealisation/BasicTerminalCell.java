@@ -2,6 +2,7 @@ package com.golem.core.schemas.basicRealisation;
 import com.golem.core.innerMechanisms.CellLayer;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BasicTerminalCell extends AbstractTerminal {
@@ -28,7 +29,7 @@ public class BasicTerminalCell extends AbstractTerminal {
                 continue;
             }
             try {
-                getBroodMother().createCell(input).activate();
+                getBroodMother().createCell(input, new ArrayList<>()).activate();
             }
             catch (Exception e) {
                 System.out.println(e.getMessage());

@@ -29,11 +29,11 @@ module ColonyCore {
     uses AbstractTerminal;
 
     provides Cell with BasicCell, CorruptedCommandCell,
-            CoreCell, ExitCommandCell, ReloadGenomeCommandCell, UnloadGenomeCellCommand;
+            CoreCell, ExitCommandCell, ReloadGenomeCommandCell;
     provides AbstractQueenCell with BroodQueen, SystemQueen;
-    provides SystemCommand with ExitCommandCell, ReloadGenomeCommandCell, UnloadGenomeCellCommand;
+    provides SystemCommand with ExitCommandCell, ReloadGenomeCommandCell;
     provides AbstractCellFactory with BasicCellFactory;
-    provides AbstractSystemCellFactory with ExitCellFactory, ReloadGenomeCellFactory, UnloadGenomeCellFactory;
+    provides AbstractSystemCellFactory with ExitCellFactory, ReloadGenomeCellFactory;
 
     provides AbstractBroodMother with BasicBroodMotherCell;
     provides AbstractTerminal with BasicTerminalCell;

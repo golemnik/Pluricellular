@@ -47,8 +47,8 @@ public abstract class AbstractBroodMother extends AbstractExtendedICellCore impl
     }
 
     @Override
-    public Cell createCell(String cell) {
-        Cell n_cell = factories.get(cell).create();
+    public Cell createCell(String cell, List<String> signature) {
+        Cell n_cell = factories.get(cell).create(signature);
         if (n_cell == null) return new CorruptedCommandCell();
         return n_cell;
     }
