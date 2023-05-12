@@ -1,5 +1,6 @@
 package com.golem.core.schemas.basicInterfaces;
 
+import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicAbstractions.AbstractSystemCellFactory;
 import com.golem.core.schemas.basicAbstractions.AbstractQueenCell;
 
@@ -20,7 +21,7 @@ public interface BroodMotherCell extends Cell {
     <T extends AbstractSystemCellFactory> void reloadFactoryList(List<T> factoryList, List<AbstractQueenCell> queens);
 
     void clearAllFactoryList();
-    Cell createCell (String cell, List<String> signature);
+    AbstractCommand createCell (String cell, List<String> signature);
 
     static List<BroodMotherCell> getCellBroodMothers(ModuleLayer layer) {
         return ServiceLoader

@@ -11,7 +11,10 @@ import java.util.List;
 
 public class ExitCellFactory extends AbstractSystemCellFactory implements SystemCommandCellFactory {
     public ExitCellFactory() {
-        super(new Signature(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        super(new Signature(
+                new ArrayList<>(List.of("exit")),
+                new ArrayList<>(List.of("")),
+                new ArrayList<>(List.of("unsupported arguments"))));
     }
 
     @Override

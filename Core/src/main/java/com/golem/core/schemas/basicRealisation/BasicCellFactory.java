@@ -10,7 +10,10 @@ import java.util.List;
 
 public class BasicCellFactory extends AbstractCellFactory {
     public BasicCellFactory () {
-        super(new Signature(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        super(new Signature(
+                new ArrayList<>(List.of("basic")),
+                new ArrayList<>(List.of("")),
+                new ArrayList<>(List.of("unsupported arguments"))));
     }
     public String creationCommand() {
         return "basic";

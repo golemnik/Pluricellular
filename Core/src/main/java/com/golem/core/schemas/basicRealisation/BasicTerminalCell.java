@@ -1,6 +1,11 @@
 package com.golem.core.schemas.basicRealisation;
 import com.golem.core.innerMechanisms.CellLayer;
+import com.golem.core.innerMechanisms.SignatureMechanics;
+import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
+import com.golem.core.schemas.basicAbstractions.Signature;
+import com.golem.core.schemas.basicInterfaces.Cell;
+import com.golem.core.schemas.providedRealisations.CellPrinter;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -28,12 +33,9 @@ public class BasicTerminalCell extends AbstractTerminal {
                 System.out.println(CellLayer.getLayer().modules());
                 continue;
             }
-            try {
-                getBroodMother().createCell(input, new ArrayList<>()).activate();
-            }
-            catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+            AbstractCommand command = SignatureMechanics.consoleInputCycle(scanner, getBroodMother(), input);
+            command.activate();
+            CellPrinter.setMessage(command.getAnswer());
         }
     }
 

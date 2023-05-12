@@ -13,7 +13,7 @@ dependencies {
 }
 
 jar {
-    destinationDir = file("../exp/server")
+    destinationDir = file("../exp/client")
     manifest {
         attributes 'ModuleMainClass': 'com.golem.core.Main'
     }
