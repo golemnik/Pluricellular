@@ -1,8 +1,14 @@
 package com.golem.netCell.transmitter;
 
+import com.golem.core.innerMechanisms.SignatureMechanics;
+import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
+import com.golem.core.schemas.basicAbstractions.Signature;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
-import com.golem.netCell.innerMechanics.AbstractNetConnection;
-import com.golem.netCell.innerMechanics.DataContainer;
+import com.golem.netCell.containers.BaseContainer;
+import com.golem.netCell.containers.ContainerType;
+import com.golem.netCell.containers.DataContainer;
+import com.golem.netCell.containers.SignatureContainer;
+import com.golem.netCell.innerMechanics.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,7 +23,7 @@ public class Transmitter extends AbstractNetConnection {
     private ServerSocketChannel serverSocketChannel;
 
     @Override
-    public void cycle() {
+    public void cycle(AbstractTerminal terminal) {
         try {
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.bind(new InetSocketAddress(60888));
@@ -29,15 +35,16 @@ public class Transmitter extends AbstractNetConnection {
         while (true) {
             try {
                 SocketChannel socket = serverSocketChannel.accept();
+                ObjectInputStream ois = new ObjectInputStream(socket.socket().getInputStream());
+                ObjectOutputStream oos = new ObjectOutputStream(socket.socket().getOutputStream());
+                sendSignatures(SignatureMechanics.signatureList(terminal.getBroodMother()), oos);
                 while (socket.isConnected()) {
-                    ObjectInputStream ois = new ObjectInputStream(socket.socket().getInputStream());
-                    DataContainer dataContainer = safeConvert(ois.readObject());
 
+                    DataContainer dataContainer = safeConvert(ois.readObject());
                     if (!checkSocket(dataContainer, socket)) break;
 
                     System.out.println(dataContainer.data.toString());
 
-                    ObjectOutputStream oos = new ObjectOutputStream(socket.socket().getOutputStream());
                     oos.writeObject(new DataContainer(new ArrayList<>(List.of("Message received."))));
                 }
                 System.out.println("client quieted.");
@@ -56,4 +63,9 @@ public class Transmitter extends AbstractNetConnection {
         }
         return true;
     }
+
+    private void sendSignatures (List<Signature> signatureList, ObjectOutputStream oos) throws IOException {
+        oos.writeObject(new BaseContainer(ContainerType.SIGNATURES, new SignatureContainer(signatureList)));
+    }
+
 }

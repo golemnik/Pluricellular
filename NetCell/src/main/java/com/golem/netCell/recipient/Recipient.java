@@ -1,8 +1,10 @@
 package com.golem.netCell.recipient;
 
+import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
+import com.golem.netCell.containers.SignatureContainer;
 import com.golem.netCell.innerMechanics.AbstractNetConnection;
-import com.golem.netCell.innerMechanics.DataContainer;
+import com.golem.netCell.containers.DataContainer;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,19 +15,26 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Recipient extends AbstractNetConnection {
+    private RecipientSignatureMechanics recipientMech =new RecipientSignatureMechanics();
     private SocketChannel socketChannel;
     private int port = 60888;
     private Scanner scanner = new Scanner(System.in);
     @Override
-    public void cycle() {
+    public void cycle(AbstractTerminal terminal) {
         try {
             socketChannel = SocketChannel.open();
             socketChannel.connect(new InetSocketAddress("localhost", port));
+            ObjectOutputStream oos = new ObjectOutputStream(socketChannel.socket().getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(socketChannel.socket().getInputStream());
+
+            SignatureContainer container = safeConvert(ois.readObject());
+            recipientMech.updateSignatureMap(container.signatures);
             String input = scanner.nextLine();
             do {
-                ObjectOutputStream oos = new ObjectOutputStream(socketChannel.socket().getOutputStream());
+                CellPrinter.setMessage(recipientMech.getSignatureMap().keySet().toString());
+                CellPrinter.setMessage(recipientMech.getSignatureMap().values().toString());
                 oos.writeObject(new DataContainer(new ArrayList<>(List.of(input.split(" ")))));
-                ObjectInputStream ois = new ObjectInputStream(socketChannel.socket().getInputStream());
+
 
                 DataContainer dataContainer = safeConvert(ois.readObject());
                 if (dataContainer != null) CellPrinter.setMessage(dataContainer.data.toString());

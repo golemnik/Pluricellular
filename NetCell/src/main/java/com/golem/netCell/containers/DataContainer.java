@@ -1,4 +1,4 @@
-package com.golem.netCell.innerMechanics;
+package com.golem.netCell.containers;
 
 import java.io.Serializable;
 import java.util.List;

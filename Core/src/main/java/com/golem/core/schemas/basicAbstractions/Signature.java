@@ -1,10 +1,11 @@
 package com.golem.core.schemas.basicAbstractions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public record Signature(List<String> patternSignature, List<String> commentSignature,
-                        List<String> mistakeInputSignature) {
+public record Signature(List<String> patternSignature, List<String> commentSignature, List<String> mistakeInputSignature)
+        implements Serializable {
     public Signature(List<String> patternSignature, List<String> commentSignature, List<String> mistakeInputSignature) {
         this.patternSignature = new ArrayList<>(patternSignature);
         this.commentSignature = new ArrayList<>(commentSignature);

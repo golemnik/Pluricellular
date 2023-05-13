@@ -23,8 +23,8 @@ public class NetTerminal extends AbstractTerminal {
     public void terminalCycle() {
         while (true) {
             switch (scanner.nextLine()) {
-                case "server" -> new Transmitter().cycle();
-                case "client" -> new Recipient().cycle();
+                case "server" -> new Transmitter().cycle(this);
+                case "client" -> new Recipient().cycle(this);
             }
         }
     }
