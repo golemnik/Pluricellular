@@ -13,15 +13,11 @@ public class BasicCellFactory extends AbstractCellFactory {
         super(new Signature(
                 new ArrayList<>(List.of("basic")),
                 new ArrayList<>(List.of("")),
-                new ArrayList<>(List.of("unsupported arguments"))));
+                new ArrayList<>(List.of("unsupported arguments")),
+                    "do nothing. Simple testing cell, basic realisation."));
     }
     public String creationCommand() {
         return "basic";
-    }
-
-    @Override
-    public String commandDescription() {
-        return "do nothing. Simple testing cell, basic realisation.";
     }
 
     @Override

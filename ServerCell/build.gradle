@@ -11,14 +11,10 @@ repositories {
 
 dependencies {
     implementation project(':Core')
+    implementation project(':NetCell')
+
 }
 
 jar {
     destinationDir = file("../exp/server/genome")
 }
-
-task copyJar (type: Copy) {
-    from jar
-    into '../exp/client/genome'
-}
-compileJava.dependsOn(copyJar)

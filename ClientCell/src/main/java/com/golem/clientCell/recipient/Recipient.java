@@ -1,10 +1,11 @@
-package com.golem.netCell.recipient;
+package com.golem.clientCell.recipient;
 
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
+import com.golem.core.schemas.basicAbstractions.Signature;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
+import com.golem.netCell.containers.DataContainer;
 import com.golem.netCell.containers.SignatureContainer;
 import com.golem.netCell.innerMechanics.AbstractNetConnection;
-import com.golem.netCell.containers.DataContainer;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -28,12 +29,13 @@ public class Recipient extends AbstractNetConnection {
             ObjectInputStream ois = new ObjectInputStream(socketChannel.socket().getInputStream());
 
             SignatureContainer container = safeConvert(ois.readObject());
-            recipientMech.updateSignatureMap(container.signatures);
+            recipientMech.updateSignatureMap(container.getSignatures());
             String input = scanner.nextLine();
             do {
-                CellPrinter.setMessage(recipientMech.getSignatureMap().keySet().toString());
-                CellPrinter.setMessage(recipientMech.getSignatureMap().values().toString());
-                oos.writeObject(new DataContainer(new ArrayList<>(List.of(input.split(" ")))));
+                for (Signature s : recipientMech.getSignatureMap().values()) {
+                    CellPrinter.setMessage(s.commandDescription());
+                }
+                oos.writeObject(new DataContainer(recipientMech.signatureToSendCycle(scanner)));
 
 
                 DataContainer dataContainer = safeConvert(ois.readObject());

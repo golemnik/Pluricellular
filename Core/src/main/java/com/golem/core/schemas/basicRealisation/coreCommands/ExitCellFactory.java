@@ -14,17 +14,13 @@ public class ExitCellFactory extends AbstractSystemCellFactory implements System
         super(new Signature(
                 new ArrayList<>(List.of("exit")),
                 new ArrayList<>(List.of("")),
-                new ArrayList<>(List.of("unsupported arguments"))));
+                new ArrayList<>(List.of("unsupported arguments")),
+                "shut the core cell down."));
     }
 
     @Override
     public String creationCommand() {
         return "exit";
-    }
-
-    @Override
-    public String commandDescription() {
-        return "shut the core cell down.";
     }
 
     @Override

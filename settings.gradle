@@ -7,4 +7,7 @@ include 'ShoutingTwice'
 include 'TerminalHelpCell'
 include 'TicketShowCell'
 include 'NetCell'
+include 'ServerCell'
+include 'ClientCell'
+include 'NetCell'
 

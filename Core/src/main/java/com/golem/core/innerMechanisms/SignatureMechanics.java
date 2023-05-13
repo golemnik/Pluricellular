@@ -39,6 +39,10 @@ public class SignatureMechanics {
         return broodMother.createCell(cell.split(" ")[0], inputSignature);
     }
 
+    public static AbstractCommand createWithSignature (String cell, List<String> inputSignature, AbstractBroodMother broodMother) {
+        return broodMother.createCell(cell.split(" ")[0], inputSignature);
+    }
+
     public static List<Signature> signatureList (AbstractBroodMother broodMother) {
         List<Signature> signatureList = new ArrayList<>();
         for (AbstractSystemCellFactory ascf : broodMother.getFactoryCommands().values()) {

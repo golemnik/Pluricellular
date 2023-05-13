@@ -1,4 +1,4 @@
-package com.golem.netCell.transmitter;
+package com.golem.serverCell.transmitter;
 
 import com.golem.core.innerMechanisms.SignatureMechanics;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
@@ -26,6 +26,7 @@ public class Transmitter extends AbstractNetConnection {
     public void cycle(AbstractTerminal terminal) {
         try {
             serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.configureBlocking(false);
             serverSocketChannel.bind(new InetSocketAddress(60888));
         }
         catch (Exception e) {
@@ -65,7 +66,9 @@ public class Transmitter extends AbstractNetConnection {
     }
 
     private void sendSignatures (List<Signature> signatureList, ObjectOutputStream oos) throws IOException {
-        oos.writeObject(new BaseContainer(ContainerType.SIGNATURES, new SignatureContainer(signatureList)));
+        SignatureContainer container = new SignatureContainer(ContainerType.SIGNATURES);
+        container.setSignatures(signatureList);
+        oos.writeObject(container);
     }
 
 }

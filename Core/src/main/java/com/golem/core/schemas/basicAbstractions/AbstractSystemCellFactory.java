@@ -20,6 +20,10 @@ public abstract class AbstractSystemCellFactory extends AbstractICellCore implem
     @Override
     public abstract AbstractCommand create(List<String> signature);
 
+    public String commandDescription() {
+        return getSignature().commandDescription();
+    }
+
     public boolean signatureCompare(List<String> inputSignature) {
         System.out.println(inputSignature);
         System.out.println(getSignature().patternSignature());

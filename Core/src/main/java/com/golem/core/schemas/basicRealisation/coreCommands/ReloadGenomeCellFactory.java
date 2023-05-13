@@ -10,16 +10,15 @@ import java.util.List;
 
 public class ReloadGenomeCellFactory extends AbstractSystemCellFactory {
     public ReloadGenomeCellFactory() {
-        super(new Signature(new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        super(new Signature(
+                new ArrayList<>(List.of("reload_genome")),
+                new ArrayList<>(List.of("")),
+                new ArrayList<>(List.of("unsupported arguments")),
+                "update genome to find new genes can be used."));
     }
     @Override
     public String creationCommand() {
         return "reload_genome";
-    }
-
-    @Override
-    public String commandDescription() {
-        return "update genome to find new genes can be used.";
     }
 
     @Override

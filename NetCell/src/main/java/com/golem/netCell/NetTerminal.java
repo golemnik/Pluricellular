@@ -1,9 +1,9 @@
 package com.golem.netCell;
 
+import com.golem.core.innerMechanisms.CellLayer;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
-import com.golem.netCell.recipient.Recipient;
-import com.golem.netCell.transmitter.Transmitter;
+import com.golem.netCell.innerMechanics.NetConnection;
 
 import java.util.Scanner;
 
@@ -21,11 +21,15 @@ public class NetTerminal extends AbstractTerminal {
 
     @Override
     public void terminalCycle() {
-        while (true) {
-            switch (scanner.nextLine()) {
-                case "server" -> new Transmitter().cycle(this);
-                case "client" -> new Recipient().cycle(this);
-            }
+        try {
+            NetConnection.getConnector(CellLayer.getLayer()).get(0).cycle(this);
+        }
+        catch (NullPointerException np) {
+            CellPrinter.setMessage("Net terminal must be provided with at least one net connector.");
+            System.exit(0);
+        }
+        catch (Exception e) {
+            CellPrinter.setMessage(e.getMessage());
         }
     }
 }
