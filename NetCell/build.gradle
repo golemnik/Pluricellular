@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.golem'
-version '1.0'
+version '1.1'
 
 repositories {
     mavenCentral()
@@ -15,10 +15,10 @@ dependencies {
 
 jar {
     destinationDir = file("../exp/server/genome")
+    doLast {
+        copy {
+            from '../exp/server/genome/NetCell-1.1.jar'
+            into '../exp/client/genome/'
+        }
+    }
 }
-
-task copyJar (type: Copy) {
-    from jar
-    into '../exp/client/genome'
-}
-compileJava.dependsOn(copyJar)

@@ -1,9 +1,8 @@
-package com.golem.core.innerMechanisms;
+package com.golem.core.schemas.signature;
 
 import com.golem.core.schemas.basicAbstractions.AbstractBroodMother;
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicAbstractions.AbstractSystemCellFactory;
-import com.golem.core.schemas.basicAbstractions.Signature;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
 import com.golem.core.schemas.providedRealisations.CorruptedCommandCell;
 
@@ -18,7 +17,7 @@ public class SignatureMechanics {
         if (ascf == null) {
             return new CorruptedCommandCell("Unsupported command.");
         }
-        Signature signature = broodMother.getFactoryCommands().get(cell.split(" ")[0]).getSignature();
+        Signature signature = ascf.getSignature();
         List<String> inputSignature = new ArrayList<>();
         String input = cell;
         for (int i = 0; i < signature.patternSignature().size(); i++) {
@@ -47,6 +46,25 @@ public class SignatureMechanics {
         List<Signature> signatureList = new ArrayList<>();
         for (AbstractSystemCellFactory ascf : broodMother.getFactoryCommands().values()) {
             signatureList.add(ascf.getSignature());
+        }
+        return signatureList;
+    }
+    public static List<Signature> signatureList (AbstractBroodMother broodMother, SignatureStatus type) {
+        List<Signature> signatureList = new ArrayList<>();
+        for (AbstractSystemCellFactory asf : broodMother.getFactoryCommands().values()) {
+            if (asf.getSignature().status() == type) {
+                signatureList.add(asf.getSignature());
+            }
+        }
+        return signatureList;
+    }
+    public static List<Signature> signatureList (AbstractBroodMother broodMother, SignatureStatus status, SignatureStatus changedStatus) {
+        List<Signature> signatureList = new ArrayList<>();
+        for (AbstractSystemCellFactory asf : broodMother.getFactoryCommands().values()) {
+            if (asf.getSignature().status() == status) {
+                asf.getSignature().updateStatus(changedStatus);
+                signatureList.add(asf.getSignature());
+            }
         }
         return signatureList;
     }

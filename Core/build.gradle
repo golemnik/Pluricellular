@@ -13,8 +13,14 @@ dependencies {
 }
 
 jar {
-    destinationDir = file("../exp/client")
+    destinationDir = file("../exp/server")
     manifest {
         attributes 'ModuleMainClass': 'com.golem.core.Main'
+    }
+    doLast {
+        copy {
+            from '../exp/server/Core-1.1.jar'
+            into '../exp/client/'
+        }
     }
 }

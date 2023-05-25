@@ -1,3 +1,4 @@
+import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicInterfaces.Cell;
 import com.golem.core.schemas.basicAbstractions.AbstractCellFactory;
 import com.golem.helpCommand.HelpCellFactory;
@@ -9,6 +10,6 @@ module Pluricellular.TerminalHelpCell.main {
     uses Cell;
     uses AbstractCellFactory;
 
-    provides Cell with HelpCommandCell;
+    provides AbstractCommand with HelpCommandCell;
     provides AbstractCellFactory with HelpCellFactory;
 }

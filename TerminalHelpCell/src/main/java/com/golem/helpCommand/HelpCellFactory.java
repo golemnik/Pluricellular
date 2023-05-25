@@ -1,23 +1,28 @@
 package com.golem.helpCommand;
 
+import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicInterfaces.Cell;
 import com.golem.core.schemas.basicAbstractions.AbstractCellFactory;
+import com.golem.core.schemas.signature.Signature;
+import com.golem.core.schemas.signature.SignatureStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HelpCellFactory extends AbstractCellFactory {
+    public HelpCellFactory () {
+        super(new Signature(
+                "help",
+                "show commands and their descriptions.",
+                SignatureStatus.SYSTEM,
+                new ArrayList<>(List.of("show")),
+                new ArrayList<>(List.of("")),
+                new ArrayList<>(List.of("unsupported arguments"))));
+    }
     @Override
-    public Cell create() {
+    public AbstractCommand create(List<String> signature) {
         HelpCommandCell cell = new HelpCommandCell();
         cell.addBroodMother(getBroodMother());
-        return cell;
-    }
-
-    @Override
-    public String creationCommand() {
-        return "help";
-    }
-
-    @Override
-    public String commandDescription() {
-        return "show available commands and their descriptions.";
+        return cell.useSignature(signature);
     }
 }

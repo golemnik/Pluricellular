@@ -1,6 +1,6 @@
 package com.golem.netCell.containers;
 
-import com.golem.core.schemas.basicAbstractions.Signature;
+import com.golem.core.schemas.signature.Signature;
 
 import java.io.Serializable;
 import java.util.List;

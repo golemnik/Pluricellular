@@ -20,6 +20,7 @@ module ColonyCore {
     exports com.golem.core.schemas.basicInterfaces;
     exports com.golem.core.schemas.basicInterfaces.deepSchemas;
     exports com.golem.core.schemas.basicInterfaces.connections;
+    exports com.golem.core.schemas.signature;
 
     uses Cell;
     uses AbstractBroodMother;

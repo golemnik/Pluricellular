@@ -1,20 +1,17 @@
 package com.golem.clientCell.recipient;
 
-import com.golem.core.schemas.basicAbstractions.AbstractSystemCellFactory;
-import com.golem.core.schemas.basicAbstractions.Signature;
+import com.golem.core.schemas.signature.Signature;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
-import com.golem.core.schemas.providedRealisations.CorruptedCommandCell;
 
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class RecipientSignatureMechanics {
+public class RecipientSignatureMechanisms {
     private Map<String, Signature> signatureMap = new HashMap<>();
-    public RecipientSignatureMechanics () {
+    public RecipientSignatureMechanisms() {
     }
     public void updateSignatureMap (List<Signature> signatureList) {
-        signatureMap.clear();
-        signatureList.forEach(x -> signatureMap.put(x.patternSignature().get(0), x));
+        signatureList.forEach(x -> signatureMap.put(x.command(), x));
     }
 
     public List<String> signatureToSendCycle (Scanner scanner) {
@@ -23,6 +20,10 @@ public class RecipientSignatureMechanics {
         while (true) {
             CellPrinter.setMessage("Input command:...");
             String input = scanner.nextLine();
+            if (input.equals("\\terminal commands")) {
+                CellPrinter.setMessage(signatureMap.keySet().toString());
+                continue;
+            }
             if ((signature = signatureMap.get(input.split(" ")[0])) == null) {
                 CellPrinter.setMessage("Command is not exist.");
                 continue;

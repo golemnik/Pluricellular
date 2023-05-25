@@ -1,55 +1,52 @@
 package com.golem.serverCell.transmitter;
 
-import com.golem.core.innerMechanisms.SignatureMechanics;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
-import com.golem.core.schemas.basicAbstractions.Signature;
+import com.golem.core.schemas.signature.Signature;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
-import com.golem.netCell.containers.BaseContainer;
 import com.golem.netCell.containers.ContainerType;
 import com.golem.netCell.containers.DataContainer;
 import com.golem.netCell.containers.SignatureContainer;
 import com.golem.netCell.innerMechanics.*;
+import com.golem.serverCell.connections.ConnectedClient;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Transmitter extends AbstractNetConnection {
     private ServerSocketChannel serverSocketChannel;
+    private final Map<SocketChannel, ConnectedClient> clients = new HashMap<>();
 
-    @Override
-    public void cycle(AbstractTerminal terminal) {
+    private boolean activateServer () {
         try {
             serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.bind(new InetSocketAddress("localhost", 60888));
             serverSocketChannel.configureBlocking(false);
-            serverSocketChannel.bind(new InetSocketAddress(60888));
+            return true;
         }
         catch (Exception e) {
             CellPrinter.setMessage(e.getMessage());
-            return;
+            return false;
         }
+    }
+
+    @Override
+    public void cycle(AbstractTerminal terminal) {
+        if (!activateServer()) return;
         while (true) {
             try {
-                SocketChannel socket = serverSocketChannel.accept();
-                ObjectInputStream ois = new ObjectInputStream(socket.socket().getInputStream());
-                ObjectOutputStream oos = new ObjectOutputStream(socket.socket().getOutputStream());
-                sendSignatures(SignatureMechanics.signatureList(terminal.getBroodMother()), oos);
-                while (socket.isConnected()) {
-
-                    DataContainer dataContainer = safeConvert(ois.readObject());
-                    if (!checkSocket(dataContainer, socket)) break;
-
-                    System.out.println(dataContainer.data.toString());
-
-                    oos.writeObject(new DataContainer(new ArrayList<>(List.of("Message received."))));
+                while (true) {
+                    SocketChannel socket = serverSocketChannel.accept();
+                    if (!(socket == null)) {
+                        if (socket.isConnected()) {
+                        clients.put(socket, new ConnectedClient(socket, terminal));
+                        }
+                    }
+                    clients.values().stream().filter(ConnectedClient::checkReadiness).forEach(ConnectedClient::iterate);
                 }
-                System.out.println("client quieted.");
-                socket.close();
             }
             catch (Exception e) {
                 CellPrinter.setMessage(e.getMessage());
@@ -65,10 +62,15 @@ public class Transmitter extends AbstractNetConnection {
         return true;
     }
 
-    private void sendSignatures (List<Signature> signatureList, ObjectOutputStream oos) throws IOException {
+    public static void sendSignatures (List<Signature> signatureList, ObjectOutputStream oos) throws IOException {
         SignatureContainer container = new SignatureContainer(ContainerType.SIGNATURES);
         container.setSignatures(signatureList);
         oos.writeObject(container);
+    }
+
+    public static void reply (ObjectOutputStream oos, List<String> message) throws IOException {
+        oos.writeObject(new DataContainer(message));
+        oos.flush();
     }
 
 }

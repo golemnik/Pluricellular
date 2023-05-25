@@ -1,5 +1,7 @@
 package com.golem.core.schemas.basicAbstractions;
 
+import com.golem.core.schemas.signature.Signature;
+
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;

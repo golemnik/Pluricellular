@@ -1,6 +1,7 @@
 package com.golem.core.schemas.basicAbstractions;
 
 import com.golem.core.schemas.basicInterfaces.deepSchemas.SystemCommandCellFactory;
+import com.golem.core.schemas.signature.Signature;
 
 import java.util.List;
 import java.util.ServiceLoader;
@@ -20,8 +21,14 @@ public abstract class AbstractSystemCellFactory extends AbstractICellCore implem
     @Override
     public abstract AbstractCommand create(List<String> signature);
 
+    @Override
     public String commandDescription() {
-        return getSignature().commandDescription();
+        return getSignature().description();
+    }
+
+    @Override
+    public String creationCommand() {
+        return getSignature().command();
     }
 
     public boolean signatureCompare(List<String> inputSignature) {
