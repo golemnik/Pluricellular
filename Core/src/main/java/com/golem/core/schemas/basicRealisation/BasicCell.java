@@ -7,7 +7,7 @@ import java.util.List;
 public class BasicCell extends AbstractCommand {
     @Override
     public void activate() {
-        setAnswer("This is Basic Cell activation.");
+        setAnswer(List.of("This is Basic Cell activation."));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.golem.serverCell.connections;
 
+import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
 import com.golem.core.schemas.signature.Signature;
@@ -27,7 +28,7 @@ public class ConnectedClient {
         this.channel = channel;
         this.terminal = terminal;
         prepareActions();
-        }
+    }
 
     public void prepareActions () {
         try {
@@ -36,7 +37,6 @@ public class ConnectedClient {
                     terminal.getBroodMother(),
                     SignatureStatus.CONNECTED,
                     SignatureStatus.PROVIDED), oos);
-            System.out.println("here");
         } catch (Exception e) {
             CellPrinter.setMessage(e.getMessage());
         }
@@ -59,7 +59,13 @@ public class ConnectedClient {
         try {
             DataContainer dataContainer = (DataContainer) ois.readObject();
             CellPrinter.setMessage(dataContainer.data.toString());
-            Transmitter.reply(oos, new ArrayList<>(List.of("Message received.")));
+            AbstractCommand command = terminal.getBroodMother().createCell(dataContainer.data.get(0), dataContainer.data);
+            command.activate();
+            List<String> answer = command.getAnswer();
+            if (answer == null) {
+                answer = new ArrayList<>(List.of("Message received"));
+            }
+            Transmitter.reply(oos, answer);
         }
         catch (Exception e) {
             CellPrinter.setMessage(e.getMessage());
@@ -75,7 +81,6 @@ public class ConnectedClient {
             return false;
         }
     }
-
 
     public void sendSignatures (List<Signature> signatureList, ObjectOutputStream oos) throws IOException {
         SignatureContainer container = new SignatureContainer(ContainerType.SIGNATURES);

@@ -15,7 +15,7 @@ public class HelpCellFactory extends AbstractCellFactory {
                 "help",
                 "show commands and their descriptions.",
                 SignatureStatus.SYSTEM,
-                new ArrayList<>(List.of("show")),
+                new ArrayList<>(List.of("help")),
                 new ArrayList<>(List.of("")),
                 new ArrayList<>(List.of("unsupported arguments"))));
     }

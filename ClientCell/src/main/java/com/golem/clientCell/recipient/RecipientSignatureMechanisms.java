@@ -32,7 +32,7 @@ public class RecipientSignatureMechanisms {
                 if (i != 0) {
                     input = scanner.nextLine();
                 }
-                CellPrinter.setMessage(signature.commentSignature().get(i));
+//                CellPrinter.setMessage(signature.commentSignature().get(i));
                 if (!Pattern.matches(signature.patternSignature().get(i), input)) {
                     if (i == 0) {
                         CellPrinter.setMessage(signature.mistakeInputSignature().get(i));

@@ -32,7 +32,7 @@ public class BasicTerminalCell extends AbstractTerminal {
             }
             AbstractCommand command = SignatureMechanics.consoleInputCycle(scanner, getBroodMother(), input);
             command.activate();
-            CellPrinter.setMessage(command.getAnswer());
+            CellPrinter.setMessage(command.getAnswer().toString());
         }
     }
 

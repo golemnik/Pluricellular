@@ -10,4 +10,6 @@ include 'NetCell'
 include 'ServerCell'
 include 'ClientCell'
 include 'NetCell'
+include 'ClearCell'
+include 'TicketClearCell'
 

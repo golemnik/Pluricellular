@@ -1,4 +1,4 @@
-package com.golem.ticketShowCell;
+package com.golem.clearCell;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.ticketCell.collection.TicketCollection;
@@ -6,9 +6,9 @@ import com.golem.ticketCell.collection.ticket.Ticket;
 
 import java.util.List;
 
-public class ShowTCommandCell extends AbstractCommand {
+public class ClearTCommandCell extends AbstractCommand {
     private TicketCollection collection;
-    public ShowTCommandCell () {
+    public ClearTCommandCell () {
 
     }
 
@@ -18,16 +18,8 @@ public class ShowTCommandCell extends AbstractCommand {
 
     @Override
     public void activate() {
-        if (collection.getCollection().size() == 0) {
-            setAnswer(List.of("Collection is empty. Nothing to show."));
-            return;
-        }
-        String answer = "";
-        for (Ticket t : collection.getCollection().values()) {
-            answer += "- - - -";
-            answer += t.toReadString();
-        }
-        setAnswer(List.of(answer));
+        collection.getCollection().clear();
+        setAnswer(List.of("Collection is empty now."));
     }
 
     @Override

@@ -35,17 +35,20 @@ public class Transmitter extends AbstractNetConnection {
 
     @Override
     public void cycle(AbstractTerminal terminal) {
+        SocketChannel socket;
         if (!activateServer()) return;
         while (true) {
             try {
                 while (true) {
-                    SocketChannel socket = serverSocketChannel.accept();
+                    socket = serverSocketChannel.accept(); // timeout for waiting?
                     if (!(socket == null)) {
                         if (socket.isConnected()) {
                         clients.put(socket, new ConnectedClient(socket, terminal));
                         }
                     }
+                    clients.keySet().stream().filter(x -> !x.isConnected()).forEach(clients::remove);
                     clients.values().stream().filter(ConnectedClient::checkReadiness).forEach(ConnectedClient::iterate);
+                    Thread.sleep(1);
                 }
             }
             catch (Exception e) {

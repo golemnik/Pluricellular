@@ -1,6 +1,7 @@
 package com.golem.ticketCell.schemas;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCellFactory;
+import com.golem.core.schemas.signature.Signature;
 import com.golem.ticketCell.collection.TicketCollection;
 
 import java.util.List;
@@ -9,6 +10,10 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractTCellFactory extends AbstractCellFactory {
     private TicketCollection collection;
+
+    protected AbstractTCellFactory(Signature signature) {
+        super(signature);
+    }
 
     public void addCollection(TicketCollection collection) {
         this.collection = collection;

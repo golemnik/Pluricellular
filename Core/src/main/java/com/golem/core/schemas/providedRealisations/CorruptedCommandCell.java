@@ -21,10 +21,10 @@ public class CorruptedCommandCell extends AbstractCommand implements SystemComma
     @Override
     public void activate() {
         if (corruptionReason.equals("")) {
-            setAnswer("Smthing went wrong... this cell is corrupted one.");
+            setAnswer(List.of("Smthing went wrong... this cell is corrupted one."));
             return;
         }
-        setAnswer(corruptionReason);
+        setAnswer(List.of(corruptionReason));
     }
 
     @Override

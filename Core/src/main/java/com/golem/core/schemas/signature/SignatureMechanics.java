@@ -60,10 +60,12 @@ public class SignatureMechanics {
     }
     public static List<Signature> signatureList (AbstractBroodMother broodMother, SignatureStatus status, SignatureStatus changedStatus) {
         List<Signature> signatureList = new ArrayList<>();
+        Signature signature;
         for (AbstractSystemCellFactory asf : broodMother.getFactoryCommands().values()) {
             if (asf.getSignature().status() == status) {
-                asf.getSignature().updateStatus(changedStatus);
-                signatureList.add(asf.getSignature());
+                signature = asf.getSignature().copy();
+                signature.updateStatus(changedStatus);
+                signatureList.add(signature);
             }
         }
         return signatureList;
