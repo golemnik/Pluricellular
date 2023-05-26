@@ -85,6 +85,7 @@ public class ConnectedClient {
     public void sendSignatures (List<Signature> signatureList, ObjectOutputStream oos) throws IOException {
         SignatureContainer container = new SignatureContainer(ContainerType.SIGNATURES);
         container.setSignatures(signatureList);
+        container.getSignatures().forEach(x -> System.out.println(x.command()));
         oos.writeObject(container);
         oos.flush();
     }

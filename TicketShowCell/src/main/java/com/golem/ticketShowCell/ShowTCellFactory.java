@@ -14,7 +14,7 @@ public class ShowTCellFactory extends AbstractTCellFactory {
         super (new Signature(
                 "show",
                 "shows all elements from the collection.",
-                SignatureStatus.SYSTEM,
+                SignatureStatus.CONNECTED,
                 new ArrayList<>(List.of("show")),
                 new ArrayList<>(List.of("")),
                 new ArrayList<>(List.of("unsupported arguments"))));

@@ -36,6 +36,7 @@ public class Transmitter extends AbstractNetConnection {
     @Override
     public void cycle(AbstractTerminal terminal) {
         SocketChannel socket;
+        System.out.println(terminal.getBroodMother().getFactoryCommands().keySet()); // todo delete
         if (!activateServer()) return;
         while (true) {
             try {
