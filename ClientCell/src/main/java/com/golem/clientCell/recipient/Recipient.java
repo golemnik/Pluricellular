@@ -37,9 +37,9 @@ public class Recipient extends AbstractNetConnection {
             }
             do {
                 signatureList = recipientMech.signatureToSendCycle(scanner);
-                if (!(terminal.getBroodMother().getFactoryCommands()
-                        .get(signatureList.get(0).split(" ")[0])
-                        .getSignature().status() == SignatureStatus.PROVIDED)) {
+
+                if (!(recipientMech.getSignatureMap().get(signatureList.get(0).split(" ")[0])
+                        .status() == SignatureStatus.PROVIDED)) {
                     command = terminal.getBroodMother().createCell(signatureList.get(0).split(" ")[0], signatureList);
                     command.activate();
                     continue;

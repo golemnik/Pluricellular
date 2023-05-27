@@ -1,16 +1,17 @@
 package com.golem.serverCell.transmitter;
 
+import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
 import com.golem.core.schemas.signature.Signature;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
+import com.golem.core.schemas.signature.SignatureMechanics;
 import com.golem.netCell.containers.ContainerType;
 import com.golem.netCell.containers.DataContainer;
 import com.golem.netCell.containers.SignatureContainer;
 import com.golem.netCell.innerMechanics.*;
 import com.golem.serverCell.connections.ConnectedClient;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
@@ -36,6 +37,8 @@ public class Transmitter extends AbstractNetConnection {
 
     @Override
     public void cycle(AbstractTerminal terminal) {
+        BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
+        AbstractCommand command;
         SocketChannel socket;
         Optional<Boolean> sleep;
         System.out.println(terminal.getBroodMother().getFactoryCommands().keySet()); // todo delete
@@ -53,6 +56,11 @@ public class Transmitter extends AbstractNetConnection {
                     sleep = clients.values().stream().filter(ConnectedClient::checkReadiness)
                             .map(ConnectedClient::iterate)
                             .reduce((x, y) -> x || y);
+                    if (scanner.ready()) {
+                        command = SignatureMechanics.consoleInputCycle(scanner, terminal.getBroodMother(), scanner.readLine());
+                        command.activate();
+                        command.getAnswer().forEach(CellPrinter::setMessage);
+                    }
                     if (sleep.isEmpty()) {
                         Thread.sleep(10);
                     }

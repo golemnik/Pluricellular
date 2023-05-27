@@ -1,4 +1,4 @@
-package com.golem.updateID;
+package com.golem.removeGreater;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.ticketCell.collection.TicketCollection;
@@ -9,10 +9,11 @@ import com.golem.ticketCell.collection.ticket.Venue;
 
 import java.util.List;
 
-public class UpdateIDTCommandCell extends AbstractCommand {
+public class RemoveGreaterTCommandCell extends AbstractCommand {
     private TicketCollection collection;
     private Ticket ticket;
-    public UpdateIDTCommandCell() {
+    public RemoveGreaterTCommandCell() {
+
     }
 
     public void setCollection(TicketCollection collection) {
@@ -21,20 +22,14 @@ public class UpdateIDTCommandCell extends AbstractCommand {
 
     @Override
     public void activate() {
-        if (ticket != null) {
-            System.out.println(ticket.toReadString());
-        }
+        collection.getCollection().values().removeIf(x -> x.compareTo(ticket) < 0);
+        setAnswer(List.of("Collection was successfully updated."));
     }
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
-        if (!otherMechs.checkIdExists(collection, Integer.parseInt(signature.get(0).split(" ")[1]))) {
-            setAnswer(List.of("Element with this id is not exists."));
-            return this;
-        }
-
         ticket = new Ticket();
-        ticket.setId(Integer.parseInt(signature.get(0).split(" ")[1]));
+        ticket.setId(otherMechs.getId(collection));
         collection.getCollection().put(String.valueOf(ticket.getId()), ticket);
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
@@ -55,7 +50,6 @@ public class UpdateIDTCommandCell extends AbstractCommand {
             venue.setAddress(address);
             ticket.setVenue(venue);
         }
-        setAnswer(List.of("Element successfully updated."));
         return this;
     }
 }

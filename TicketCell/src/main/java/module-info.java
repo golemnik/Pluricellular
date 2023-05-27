@@ -3,7 +3,7 @@ import com.golem.ticketCell.TicketQueen;
 import com.golem.ticketCell.schemas.AbstractTCellFactory;
 import com.golem.ticketCell.schemas.TicketCellCommand;
 
-module Pluricellular.TicketCell.main {
+open module Pluricellular.TicketCell.main {
     requires ColonyCore;
 
     exports com.golem.ticketCell.schemas;

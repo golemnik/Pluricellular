@@ -1,4 +1,4 @@
-package com.golem.updateID;
+package com.golem.replaceGreater;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.ticketCell.collection.TicketCollection;
@@ -9,10 +9,13 @@ import com.golem.ticketCell.collection.ticket.Venue;
 
 import java.util.List;
 
-public class UpdateIDTCommandCell extends AbstractCommand {
+public class ReplaceGreaterTCommandCell extends AbstractCommand {
     private TicketCollection collection;
     private Ticket ticket;
-    public UpdateIDTCommandCell() {
+    private String key;
+    private boolean change = false;
+    public ReplaceGreaterTCommandCell() {
+
     }
 
     public void setCollection(TicketCollection collection) {
@@ -21,21 +24,22 @@ public class UpdateIDTCommandCell extends AbstractCommand {
 
     @Override
     public void activate() {
-        if (ticket != null) {
-            System.out.println(ticket.toReadString());
+        if (collection.getCollection().get(key).compareTo(ticket) > 0 && change) {
+            collection.getCollection().put(key, ticket);
         }
+        setAnswer(List.of("Collection was successfully updated."));
     }
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
-        if (!otherMechs.checkIdExists(collection, Integer.parseInt(signature.get(0).split(" ")[1]))) {
-            setAnswer(List.of("Element with this id is not exists."));
+        key = signature.get(0).split(" ")[1];
+        if (!otherMechs.checkKeyExists(collection, key)) {
+            setAnswer(List.of("Element with this key is not exists."));
             return this;
         }
-
+        change = true;
         ticket = new Ticket();
-        ticket.setId(Integer.parseInt(signature.get(0).split(" ")[1]));
-        collection.getCollection().put(String.valueOf(ticket.getId()), ticket);
+        ticket.setId(otherMechs.getId(collection));
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
         ticket.setComment(signature.get(3)); // t comment
@@ -55,7 +59,6 @@ public class UpdateIDTCommandCell extends AbstractCommand {
             venue.setAddress(address);
             ticket.setVenue(venue);
         }
-        setAnswer(List.of("Element successfully updated."));
         return this;
     }
 }

@@ -1,0 +1,25 @@
+{
+  "creationDate": "2023-05-27",
+  "collection": {
+    "1": {
+      "id": 1,
+      "name": "123",
+      "coordinates": {
+        "x": 123,
+        "y": 123
+      },
+      "price": 123.0,
+      "comment": "123",
+      "type": "VIP",
+      "venue": {
+        "id": 2,
+        "name": "123",
+        "capacity": 123,
+        "type": "BAR",
+        "address": {
+          "street": "123"
+        }
+      }
+    }
+  }
+}
