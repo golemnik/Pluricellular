@@ -37,6 +37,8 @@ public class CoreCell extends AbstractExtendedICellCore implements Cell {
         getQueenConnections().forEach(queenCell -> getBroodMother().addFactoryList(queenCell.extractFactories(queenCell.getLayer()), queenCell));
         addTerminal(AbstractTerminal.getCellTerminals(CellLayer.getLayer()).stream().sorted(new TerminalComparator()).toList().get(0));
 
+        getQueenConnections().forEach(Cell::activate);
+
         terminal.setAll(this, getBroodMother(), getQueenConnections());
         terminal.activate();
     }

@@ -18,8 +18,13 @@ public class ClearTCommandCell extends AbstractCommand {
 
     @Override
     public void activate() {
-        collection.getCollection().clear();
-        setAnswer(List.of("Collection is empty now."));
+        if (collection != null) {
+            collection.getCollection().clear();
+            setAnswer(List.of("Collection is empty now."));
+            return;
+        }
+        setAnswer(List.of("Collection is not exist."));
+
     }
 
     @Override

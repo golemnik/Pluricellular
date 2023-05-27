@@ -55,20 +55,23 @@ public class ConnectedClient {
         }
     }
 
-    public void iterate () {
+    public boolean iterate () {
         try {
+            System.out.println("here!");
             DataContainer dataContainer = (DataContainer) ois.readObject();
             CellPrinter.setMessage(dataContainer.data.toString());
-            AbstractCommand command = terminal.getBroodMother().createCell(dataContainer.data.get(0), dataContainer.data);
+            AbstractCommand command = terminal.getBroodMother().createCell(dataContainer.data.get(0).split(" ")[0], dataContainer.data);
             command.activate();
             List<String> answer = command.getAnswer();
             if (answer == null) {
                 answer = new ArrayList<>(List.of("Message received"));
             }
             Transmitter.reply(oos, answer);
+            return true;
         }
         catch (Exception e) {
             CellPrinter.setMessage(e.getMessage());
+            return false;
         }
     }
 

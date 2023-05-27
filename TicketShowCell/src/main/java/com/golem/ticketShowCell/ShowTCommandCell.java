@@ -18,6 +18,10 @@ public class ShowTCommandCell extends AbstractCommand {
 
     @Override
     public void activate() {
+        if (collection == null) {
+            setAnswer(List.of("Collection is not exist."));
+            return;
+        }
         if (collection.getCollection().size() == 0) {
             setAnswer(List.of("Collection is empty. Nothing to show."));
             return;

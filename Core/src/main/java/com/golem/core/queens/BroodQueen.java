@@ -9,7 +9,6 @@ public final class BroodQueen extends AbstractQueenCell {
 
     @Override
     public void activate() {
-        updateLayer();
     }
     @Override
     public List<AbstractCellFactory> extractFactories(ModuleLayer layer) {

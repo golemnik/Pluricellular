@@ -14,7 +14,7 @@ public class ClearTCellFactory extends AbstractTCellFactory {
                 "clear",
                 "clears all elements from the collection and leave it empty.",
                 SignatureStatus.CONNECTED,
-                new ArrayList<>(List.of("show")),
+                new ArrayList<>(List.of("clear")),
                 new ArrayList<>(List.of("")),
                 new ArrayList<>(List.of("unsupported arguments"))));
     }

@@ -1,8 +1,10 @@
 package com.golem.clientCell.recipient;
 
+import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
 import com.golem.core.schemas.signature.Signature;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
+import com.golem.core.schemas.signature.SignatureStatus;
 import com.golem.netCell.containers.DataContainer;
 import com.golem.netCell.containers.SignatureContainer;
 import com.golem.netCell.innerMechanics.AbstractNetConnection;
@@ -12,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
+import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,8 @@ public class Recipient extends AbstractNetConnection {
     private Scanner scanner = new Scanner(System.in);
     @Override
     public void cycle(AbstractTerminal terminal) {
+        List<String> signatureList;
+        AbstractCommand command;
         preloadCommands(terminal);
         try {
             preloadConnection();
@@ -31,7 +36,15 @@ public class Recipient extends AbstractNetConnection {
                 CellPrinter.setMessage(s.command() + " - " + s.status() + " - " + s.description());
             }
             do {
-                oos.writeObject(new DataContainer(recipientMech.signatureToSendCycle(scanner)));
+                signatureList = recipientMech.signatureToSendCycle(scanner);
+                if (!(terminal.getBroodMother().getFactoryCommands()
+                        .get(signatureList.get(0).split(" ")[0])
+                        .getSignature().status() == SignatureStatus.PROVIDED)) {
+                    command = terminal.getBroodMother().createCell(signatureList.get(0).split(" ")[0], signatureList);
+                    command.activate();
+                    continue;
+                }
+                oos.writeObject(new DataContainer(signatureList));
                 oos.flush();
 
                 DataContainer dataContainer = safeConvert(ois.readObject());

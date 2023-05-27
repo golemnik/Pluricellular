@@ -15,6 +15,7 @@ import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Transmitter extends AbstractNetConnection {
     private ServerSocketChannel serverSocketChannel;
@@ -36,6 +37,7 @@ public class Transmitter extends AbstractNetConnection {
     @Override
     public void cycle(AbstractTerminal terminal) {
         SocketChannel socket;
+        Optional<Boolean> sleep;
         System.out.println(terminal.getBroodMother().getFactoryCommands().keySet()); // todo delete
         if (!activateServer()) return;
         while (true) {
@@ -48,8 +50,12 @@ public class Transmitter extends AbstractNetConnection {
                         }
                     }
                     clients.keySet().stream().filter(x -> !x.isConnected()).forEach(clients::remove);
-                    clients.values().stream().filter(ConnectedClient::checkReadiness).forEach(ConnectedClient::iterate);
-                    Thread.sleep(1);
+                    sleep = clients.values().stream().filter(ConnectedClient::checkReadiness)
+                            .map(ConnectedClient::iterate)
+                            .reduce((x, y) -> x || y);
+                    if (sleep.isEmpty()) {
+                        Thread.sleep(10);
+                    }
                 }
             }
             catch (Exception e) {

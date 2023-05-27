@@ -17,6 +17,7 @@ public class RecipientSignatureMechanisms {
     public List<String> signatureToSendCycle (Scanner scanner) {
         List<String> inputSignature = new ArrayList<>();
         Signature signature;
+        boolean cycle = false;
         while (true) {
             CellPrinter.setMessage("Input command:...");
             String input = scanner.nextLine();
@@ -30,12 +31,13 @@ public class RecipientSignatureMechanisms {
             }
             for (int i = 0; i < signature.patternSignature().size(); i++) {
                 if (i != 0) {
+                    CellPrinter.setMessage(signature.commentSignature().get(i));
                     input = scanner.nextLine();
                 }
-//                CellPrinter.setMessage(signature.commentSignature().get(i));
                 if (!Pattern.matches(signature.patternSignature().get(i), input)) {
                     if (i == 0) {
                         CellPrinter.setMessage(signature.mistakeInputSignature().get(i));
+                        cycle = true;
                         break;
                     }
                     CellPrinter.setMessage(signature.mistakeInputSignature().get(i));
@@ -43,6 +45,10 @@ public class RecipientSignatureMechanisms {
                     continue;
                 }
                 inputSignature.add(input);
+            }
+            if (cycle) {
+                cycle = false;
+                continue;
             }
             return inputSignature;
         }
