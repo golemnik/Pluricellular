@@ -29,10 +29,10 @@ public abstract class AbstractQueenCell extends AbstractICellCore implements Que
         if (cellList.size() == 1) {
             return cellList.get(0);
         }
-        String print = "";
+        StringBuilder print = new StringBuilder();
         for (T cbm : cellList) {
             choose.put(cbm.getClass().getSimpleName(), cbm);
-            print += "- " + cbm.getClass().getSimpleName() + "\n";
+            print.append("- ").append(cbm.getClass().getSimpleName()).append("\n");
         }
         System.out.println(print);
         T result;
