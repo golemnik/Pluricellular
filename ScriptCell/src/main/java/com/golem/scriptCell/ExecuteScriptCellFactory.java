@@ -13,8 +13,8 @@ public class ExecuteScriptCellFactory extends AbstractCellFactory {
         super(new Signature(
                 "execute_script",
                 "open txt file and try to execute every single command from the list.",
-                SignatureStatus.SYSTEM,
-                new ArrayList<>(List.of("execute_script .*\\.txt")),
+                SignatureStatus.CONNECTED,
+                new ArrayList<>(List.of("execute_script .+\\.txt")),
                 new ArrayList<>(List.of("")),
                 new ArrayList<>(List.of("unsupported arguments"))));
     }

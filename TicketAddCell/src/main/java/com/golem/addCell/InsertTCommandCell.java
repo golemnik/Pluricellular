@@ -7,6 +7,7 @@ import com.golem.ticketCell.collection.ticket.Coordinates;
 import com.golem.ticketCell.collection.ticket.Ticket;
 import com.golem.ticketCell.collection.ticket.Venue;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class InsertTCommandCell extends AbstractCommand {
@@ -30,6 +31,7 @@ public class InsertTCommandCell extends AbstractCommand {
         ticket.setId(otherMechs.getId(collection));
         collection.getCollection().put(String.valueOf(ticket.getId()), ticket);
         ticket.setName(signature.get(1)); // t name
+        ticket.setCreationDate(LocalDate.now());
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
         ticket.setComment(signature.get(3)); // t comment
         ticket.setType(Ticket.TicketType.valueOf(signature.get(4))); // t type
@@ -37,8 +39,9 @@ public class InsertTCommandCell extends AbstractCommand {
         coord.setX(Long.parseLong(signature.get(5))); // t x
         coord.setY(Long.parseLong(signature.get(6))); // t y
         ticket.setCoordinates(coord);
+        Venue venue = new Venue();
+//        System.out.println(">>" + signature.get(7) + "<<");
         if (signature.get(7) != null) { // v name
-            Venue venue = new Venue();
             venue.setId(otherMechs.getId(collection));
             venue.setName(signature.get(7));
             venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
@@ -46,6 +49,10 @@ public class InsertTCommandCell extends AbstractCommand {
             Address address = new Address();
             address.setStreet(signature.get(10)); // add
             venue.setAddress(address);
+            ticket.setVenue(venue);
+        }
+        else {
+            venue = null;
             ticket.setVenue(venue);
         }
         setAnswer(List.of("Element successfully inserted."));
