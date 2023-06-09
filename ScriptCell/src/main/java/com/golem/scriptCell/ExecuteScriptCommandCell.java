@@ -4,7 +4,6 @@ import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicInterfaces.BroodMotherCell;
 import com.golem.core.schemas.basicInterfaces.Cell;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
-import com.golem.core.schemas.providedRealisations.CorruptedCommandCell;
 import com.golem.fileCell.fileReader.SimpleReader;
 
 import java.io.IOException;

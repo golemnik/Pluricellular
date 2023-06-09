@@ -9,12 +9,22 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    logCore
+}
+
 dependencies {
     implementation project(':Core')
     implementation project(':NetCell')
-
+    implementation group: 'org.apache.logging.log4j', name:'log4j-api', version: '2.20.0'
+    logCore group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.20.0'
 }
 
 jar {
     destinationDir = file("../exp/server/genome")
+    copy {
+        from { configurations.logCore }
+        into { file("../exp/server/genome") }
+    }
 }
+

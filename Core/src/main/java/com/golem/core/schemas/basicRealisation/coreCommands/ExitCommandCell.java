@@ -2,7 +2,6 @@ package com.golem.core.schemas.basicRealisation.coreCommands;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicInterfaces.deepSchemas.SystemCommand;
-import com.golem.core.schemas.basicInterfaces.Cell;
 
 import java.util.List;
 

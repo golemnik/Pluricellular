@@ -26,12 +26,13 @@ public class Recipient extends AbstractNetConnection {
     private ObjectInputStream ois;
     private Scanner scanner = new Scanner(System.in);
     @Override
-    public void cycle(AbstractTerminal terminal) {
+    public void cycle(AbstractTerminal terminal) throws IOException {
         List<String> signatureList;
         AbstractCommand command;
         preloadCommands(terminal);
         try {
             preloadConnection();
+
             for (Signature s : recipientMech.getSignatureMap().values()) {
                 CellPrinter.setMessage(s.command() + " - " + s.status() + " - " + s.description());
             }
@@ -52,6 +53,9 @@ public class Recipient extends AbstractNetConnection {
                     CellPrinter.setMessage(String.join("\n", dataContainer.data));
                 }
             } while (true);
+        }
+        catch (IOException ioe) {
+            throw ioe;
         }
         catch (Exception e) {
             CellPrinter.setMessage(e.getMessage());

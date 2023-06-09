@@ -16,17 +16,24 @@ import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.*;
-import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class Transmitter extends AbstractNetConnection {
+    private static final Logger logger = LogManager.getLogger(Transmitter.class);
     private ServerSocketChannel serverSocketChannel;
     private final Map<SocketChannel, ConnectedClient> clients = new HashMap<>();
+    private final String HOSTNAME = "localhost";
+    private final int PORT = 60888;
 
     private boolean activateServer () {
         try {
             serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.bind(new InetSocketAddress("localhost", 60888));
+            serverSocketChannel.bind(new InetSocketAddress(HOSTNAME, PORT));
             serverSocketChannel.configureBlocking(false);
+
+            logger.info("Activating server at {}:{}", HOSTNAME, PORT);
             return true;
         }
         catch (Exception e) {
@@ -41,8 +48,13 @@ public class Transmitter extends AbstractNetConnection {
         AbstractCommand command;
         SocketChannel socket;
         Optional<Boolean> sleep;
-        System.out.println(terminal.getBroodMother().getFactoryCommands().keySet()); // todo delete
+//
+//        todo распихать во все места логгер!
+//
         if (!activateServer()) return;
+        Runtime.getRuntime().addShutdownHook(new Thread(()->{
+            logger.info("Deactivating server.");
+        }));
         while (true) {
             try {
                 while (true) {
@@ -50,6 +62,7 @@ public class Transmitter extends AbstractNetConnection {
                     if (!(socket == null)) {
                         if (socket.isConnected()) {
                         clients.put(socket, new ConnectedClient(socket, terminal));
+
                         }
                     }
                     clients.keySet().stream().filter(x -> !x.isConnected()).forEach(clients::remove);
@@ -67,6 +80,7 @@ public class Transmitter extends AbstractNetConnection {
                 }
             }
             catch (Exception e) {
+                logger.error("Server cycle error found: ", e);
                 CellPrinter.setMessage(e.getMessage());
             }
         }
