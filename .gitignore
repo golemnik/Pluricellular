@@ -17,4 +17,4 @@
 *.bin
 *.MF
 *.txt
-*.class
+*/*/*.class
