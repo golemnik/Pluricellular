@@ -15,7 +15,7 @@ public class InsertTCellFactory extends AbstractTCellFactory {
                 "add ticket to the collection.",
                 SignatureStatus.CONNECTED,
                 new ArrayList<>(List.of(
-                        "(insert -?[1-9]\\d{0,8}|0|214748364[0-7])",
+                        "(insert( -?[1-9]\\d{0,8}|0|214748364[0-7])?)",
                         "^.+", //t name
                         "[-+]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][-+]?[0-9]+)?", //t price
                         "^.+", // t comm

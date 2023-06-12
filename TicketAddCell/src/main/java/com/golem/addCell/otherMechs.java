@@ -3,6 +3,7 @@ package com.golem.addCell;
 import com.golem.ticketCell.collection.TicketCollection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,4 +35,14 @@ public class otherMechs {
             i++;
         }
     }
+
+    public static boolean checkID (TicketCollection collection, int id) {
+        if (collection.getCollection().get(String.valueOf(id)) != null) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
 }

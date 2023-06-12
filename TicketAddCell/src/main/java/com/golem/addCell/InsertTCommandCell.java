@@ -1,6 +1,7 @@
 package com.golem.addCell;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
+import com.golem.core.schemas.providedRealisations.CellPrinter;
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Address;
 import com.golem.ticketCell.collection.ticket.Coordinates;
@@ -9,6 +10,8 @@ import com.golem.ticketCell.collection.ticket.Venue;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InsertTCommandCell extends AbstractCommand {
     private TicketCollection collection;
@@ -22,13 +25,19 @@ public class InsertTCommandCell extends AbstractCommand {
 
     @Override
     public void activate() {
-        System.out.println(ticket.toReadString());
+        CellPrinter.setMessage(getAnswer().toString());
     }
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
+
+        Integer id = collectionID(signature.get(0));
+        if (id == null) {
+            setAnswer(List.of("This id is already used. Insert failed."));
+            return this;
+        }
         ticket = new Ticket();
-        ticket.setId(otherMechs.getId(collection));
+        ticket.setId(id);
         collection.getCollection().put(String.valueOf(ticket.getId()), ticket);
         ticket.setName(signature.get(1)); // t name
         ticket.setCreationDate(LocalDate.now());
@@ -57,5 +66,20 @@ public class InsertTCommandCell extends AbstractCommand {
         }
         setAnswer(List.of("Element successfully inserted."));
         return this;
+    }
+
+
+    private Integer collectionID (String strID) {
+        Pattern pattern = Pattern.compile("(insert( -?[1-9]\\d{0,8}|0|214748364[0-7])?)");
+        Matcher m = pattern.matcher(strID);
+        if (m.matches() && m.group(2) == null) {
+            return otherMechs.getId(collection);
+        }
+        else {
+            if (otherMechs.checkID(collection, Integer.parseInt(m.group(2).trim()))) {
+                return Integer.parseInt(m.group(2).trim());
+            }
+            return null;
+        }
     }
 }
