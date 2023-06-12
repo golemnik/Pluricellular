@@ -16,3 +16,5 @@
 /gradle/wrapper/gradle-wrapper.properties
 *.bin
 *.MF
+*.txt
+*.class

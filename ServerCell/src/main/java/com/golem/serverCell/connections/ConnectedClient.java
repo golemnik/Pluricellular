@@ -37,6 +37,7 @@ public class ConnectedClient {
     public void prepareActions () {
         try {
             initConnection();
+            logger.info("New connected client: {}", channel);
             sendSignatures(SignatureMechanics.signatureList(
                     terminal.getBroodMother(),
                     SignatureStatus.CONNECTED,
@@ -62,7 +63,7 @@ public class ConnectedClient {
         try {
 //            System.out.println("here!");
             DataContainer dataContainer = (DataContainer) ois.readObject();
-            logger.info("Client {} get command: {}", channel, dataContainer.data.toString());
+            logger.info("Client {} sent command: {}", channel, dataContainer.data.toString());
             AbstractCommand command = terminal.getBroodMother().createCell(dataContainer.data.get(0).split(" ")[0], dataContainer.data);
             command.activate();
             List<String> answer = command.getAnswer();
@@ -83,7 +84,7 @@ public class ConnectedClient {
             return bis.available() > 0;
         }
         catch (Exception e) {
-            CellPrinter.setMessage(e.getMessage());
+            logger.error("Caught: ", e);
             return false;
         }
     }

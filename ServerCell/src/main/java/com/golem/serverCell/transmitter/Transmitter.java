@@ -38,7 +38,7 @@ public class Transmitter extends AbstractNetConnection {
             return true;
         }
         catch (Exception e) {
-            CellPrinter.setMessage(e.getMessage());
+            logger.error("Server activation failed:", e);
             return false;
         }
     }
@@ -109,6 +109,7 @@ public class Transmitter extends AbstractNetConnection {
     }
 
     public static void reply (ObjectOutputStream oos, List<String> message) throws IOException {
+        logger.info("Command replay: {}", message);
         oos.writeObject(new DataContainer(message));
         oos.flush();
     }
