@@ -17,4 +17,5 @@ include 'TicketReplaceGrater'
 include 'TicketSave'
 include 'ScriptCell'
 include 'FileSystemCell'
+include 'TicketLoadCell'
 

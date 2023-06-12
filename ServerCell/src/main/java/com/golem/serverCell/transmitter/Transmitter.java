@@ -1,6 +1,7 @@
 package com.golem.serverCell.transmitter;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
+import com.golem.core.schemas.basicAbstractions.AbstractSystemCellFactory;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
 import com.golem.core.schemas.signature.Signature;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
@@ -52,9 +53,16 @@ public class Transmitter extends AbstractNetConnection {
 //        todo распихать во все места логгер!
 //
         if (!activateServer()) return;
-        Runtime.getRuntime().addShutdownHook(new Thread(()->{
+        Runtime.getRuntime().addShutdownHook(new Thread(()-> {
             logger.info("Deactivating server.");
         }));
+        terminal.getBroodMother().getFactoryCommands().values().stream()
+                .filter(x -> x.runAtStart())
+                .forEach(x -> {
+                    AbstractCommand com = x.create(List.of());
+                    com.activate();
+                    logger.info(com.getAnswer());
+                });
         while (true) {
             try {
                 while (true) {

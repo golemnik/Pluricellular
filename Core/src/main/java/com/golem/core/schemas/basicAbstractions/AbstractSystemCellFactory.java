@@ -31,6 +31,13 @@ public abstract class AbstractSystemCellFactory extends AbstractICellCore implem
         return getSignature().command();
     }
 
+    public boolean runAtStart() {
+        return false;
+    }
+    public boolean runAtFinish() {
+        return false;
+    }
+
     public boolean signatureCompare(List<String> inputSignature) {
 //        System.out.println(inputSignature);
 //        System.out.println(getSignature().patternSignature());
