@@ -20,6 +20,7 @@ public abstract class AbstractTerminal extends AbstractExtendedICellCore impleme
         do {
             try {
                 terminalCycle();
+                state = State.DONE;
             }
             catch (IOException e) {
                 state = nextState(state, e);

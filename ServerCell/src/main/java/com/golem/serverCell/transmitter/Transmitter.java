@@ -63,14 +63,14 @@ public class Transmitter extends AbstractNetConnection {
                     com.activate();
                     logger.info(com.getAnswer());
                 });
-        while (true) {
+        boolean ex = false;
+        while (!ex) {
             try {
-                while (true) {
+                while (!ex) {
                     socket = serverSocketChannel.accept(); // timeout for waiting?
                     if (!(socket == null)) {
                         if (socket.isConnected()) {
                         clients.put(socket, new ConnectedClient(socket, terminal));
-
                         }
                     }
                     clients.keySet().stream().filter(x -> !x.isConnected()).forEach(clients::remove);
@@ -81,6 +81,7 @@ public class Transmitter extends AbstractNetConnection {
                         command = SignatureMechanics.consoleInputCycle(scanner, terminal.getBroodMother(), scanner.readLine());
                         command.activate();
                         command.getAnswer().forEach(CellPrinter::setMessage);
+                        ex = command.exitable();
                     }
                     if (sleep.isEmpty()) {
                         Thread.sleep(10);
@@ -92,6 +93,13 @@ public class Transmitter extends AbstractNetConnection {
                 CellPrinter.setMessage(e.getMessage());
             }
         }
+        terminal.getBroodMother().getFactoryCommands().values().stream()
+                .filter(x -> x.runAtFinish())
+                .forEach(x -> {
+                    AbstractCommand com = x.create(List.of());
+                    com.activate();
+                    logger.info(com.getAnswer());
+                });
     }
 
     private boolean checkSocket (DataContainer container, SocketChannel socketChannel) throws IOException {

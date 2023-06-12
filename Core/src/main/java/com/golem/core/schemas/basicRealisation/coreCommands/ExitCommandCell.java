@@ -8,7 +8,13 @@ import java.util.List;
 public class ExitCommandCell extends AbstractCommand implements SystemCommand {
     @Override
     public void activate() {
-        System.exit(0);
+        setAnswer(List.of("Exiting..."));
+//        System.exit(0);
+    }
+
+    @Override
+    public boolean exitable() {
+        return true;
     }
 
     @Override

@@ -12,5 +12,8 @@ public abstract class AbstractCommand implements Cell {
     public List<String> getAnswer() {
         return answer;
     }
+    public boolean exitable () {
+        return false;
+    }
     public abstract AbstractCommand useSignature (List<String> signature);
 }

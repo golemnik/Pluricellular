@@ -36,6 +36,7 @@ public class Recipient extends AbstractNetConnection {
             for (Signature s : recipientMech.getSignatureMap().values()) {
                 CellPrinter.setMessage(s.command() + " - " + s.status() + " - " + s.description());
             }
+            boolean ex = false;
             do {
                 signatureList = recipientMech.signatureToSendCycle(scanner);
 
@@ -43,6 +44,7 @@ public class Recipient extends AbstractNetConnection {
                         .status() == SignatureStatus.PROVIDED)) {
                     command = terminal.getBroodMother().createCell(signatureList.get(0).split(" ")[0], signatureList);
                     command.activate();
+                    ex = command.exitable();
                     continue;
                 }
                 oos.writeObject(new DataContainer(signatureList));
@@ -52,7 +54,7 @@ public class Recipient extends AbstractNetConnection {
                 if (dataContainer != null && dataContainer.data != null) {
                     CellPrinter.setMessage(String.join("\n", dataContainer.data));
                 }
-            } while (true);
+            } while (!ex);
         }
         catch (IOException ioe) {
             throw ioe;
