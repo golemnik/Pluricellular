@@ -24,9 +24,11 @@ public class ExecuteScriptCommandCell extends AbstractCommand implements Cell {
     }
     @Override
     public void activate() {
+        List <String> anwser = new ArrayList<>();
         try {
             List<String > dataList;
             AbstractCommand cellCommand;
+
             int counter = commandsQueue.size();
             if (!commandsQueue.isEmpty() && !skip && !globalFail) {
                 for (int i = 0; i < counter; i++) {
@@ -38,13 +40,15 @@ public class ExecuteScriptCommandCell extends AbstractCommand implements Cell {
                         if (dataList != null) {
                             cellCommand = broodMother.createCell(command, dataList);
                             cellCommand.activate();
+                            anwser.add(cellCommand.getAnswer().toString());
                             CellPrinter.setMessage(cellCommand.getAnswer().toString());
                         }
                     }
                     else {
                         globalFail = true;
                         clearLastScr();
-                        setAnswer(List.of("Err"));
+                        anwser.add("Script execution failed.");
+                        setAnswer(anwser);
                         return;
                     }
 //                    System.out.println("<<" + commandsQueue + " - "+ commandsQueue.size());
@@ -55,7 +59,9 @@ public class ExecuteScriptCommandCell extends AbstractCommand implements Cell {
         catch (Exception e) {
             CellPrinter.setMessage(e.getMessage() + " " + e.getCause());
         }
-        setAnswer(List.of("Success"));
+        anwser.add("Success");
+        setAnswer(anwser);
+
     }
 
     @Override

@@ -116,12 +116,12 @@ public class SignatureMechanics {
         List<Signature> signatureList = new ArrayList<>();
         Signature signature;
         for (AbstractSystemCellFactory asf : broodMother.getFactoryCommands().values()) {
-            System.out.println(asf.getSignature().command());
+//            System.out.println(asf.getSignature().command());
             if (asf.getSignature().status() == status) {
                 signature = asf.getSignature().copy();
                 signature.updateStatus(changedStatus);
                 signatureList.add(signature);
-                System.out.println("\tsend");
+//                System.out.println("\tsend");
             }
         }
         return signatureList;

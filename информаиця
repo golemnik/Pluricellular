@@ -3,3 +3,5 @@
 от сервера и проводить валидацию по этим выражениям.
 при получении команды на сервере, провести валидацию по шаблону (повторно), создать объект команды, выполнить.
 
+java '-Dlog4j2.level=trace' --module-path Core-1.1.jar -m ColonyCore/com.golem.core.Main
+java --module-path Core-1.1.jar -m ColonyCore/com.golem.core.Main

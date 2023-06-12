@@ -16,8 +16,12 @@ import com.golem.netCell.containers.ContainerType;
 import com.golem.netCell.containers.DataContainer;
 import com.golem.netCell.containers.SignatureContainer;
 import com.golem.serverCell.transmitter.Transmitter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ConnectedClient {
+
+    private static final Logger logger = LogManager.getLogger(ConnectedClient.class);
     private final SocketChannel channel;
     private final AbstractTerminal terminal;
     private BufferedInputStream bis;
@@ -38,7 +42,7 @@ public class ConnectedClient {
                     SignatureStatus.CONNECTED,
                     SignatureStatus.PROVIDED), oos);
         } catch (Exception e) {
-            CellPrinter.setMessage(e.getMessage());
+            logger.error("Client initialisation failed due preparing actions:", e);
         }
     }
 
@@ -50,16 +54,15 @@ public class ConnectedClient {
             oos = new ObjectOutputStream(bos);
         }
         catch (Exception e) {
-            CellPrinter.setMessage("Client initialisation failed due streams creating:");
-            CellPrinter.setMessage(e.getMessage());
+            logger.error("Client initialisation failed due streams creating:", e);
         }
     }
 
     public boolean iterate () {
         try {
-            System.out.println("here!");
+//            System.out.println("here!");
             DataContainer dataContainer = (DataContainer) ois.readObject();
-            CellPrinter.setMessage(dataContainer.data.toString());
+            logger.info("Client {} get command: {}", channel, dataContainer.data.toString());
             AbstractCommand command = terminal.getBroodMother().createCell(dataContainer.data.get(0).split(" ")[0], dataContainer.data);
             command.activate();
             List<String> answer = command.getAnswer();
@@ -70,7 +73,7 @@ public class ConnectedClient {
             return true;
         }
         catch (Exception e) {
-            CellPrinter.setMessage(e.getMessage());
+            logger.error("Iterating failed due:",e);
             return false;
         }
     }
@@ -88,9 +91,10 @@ public class ConnectedClient {
     public void sendSignatures (List<Signature> signatureList, ObjectOutputStream oos) throws IOException {
         SignatureContainer container = new SignatureContainer(ContainerType.SIGNATURES);
         container.setSignatures(signatureList);
-        container.getSignatures().forEach(x -> System.out.println(x.command()));
+        container.getSignatures().forEach(x -> logger.info("Requested command: {}", x.command()));
         oos.writeObject(container);
         oos.flush();
     }
 
 }
+
