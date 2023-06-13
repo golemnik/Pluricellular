@@ -16,7 +16,7 @@ public class InsertTCellFactory extends AbstractTCellFactory {
                 "add ticket to the collection.",
                 SignatureStatus.CONNECTED,
                 new ArrayList<>(List.of(
-                        "^" + "(insert( " + SignatureRegex.ID +")?)" + "$",
+                        "^" + "insert( " + SignatureRegex.ID +")?" + "$",
                         "^" + SignatureRegex._string + "$", //t name
                         "^" + SignatureRegex.PRICE + "$", //t price
                         "^" + SignatureRegex._string + "$", // t comm

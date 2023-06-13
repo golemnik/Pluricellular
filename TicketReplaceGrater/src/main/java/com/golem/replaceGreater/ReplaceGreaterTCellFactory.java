@@ -4,6 +4,7 @@ import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.signature.Signature;
 import com.golem.core.schemas.signature.SignatureStatus;
 import com.golem.ticketCell.schemas.AbstractTCellFactory;
+import com.golem.ticketCell.schemas.SignatureRegex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +15,9 @@ public class ReplaceGreaterTCellFactory extends AbstractTCellFactory {
                 "replace_if_greater",
                 "remove all tickets greater then object was inputted during this command    .",
                 SignatureStatus.CONNECTED,
-                new ArrayList<>(List.of(
-                        "(replace_if_greater .*"
-                        )),
-                new ArrayList<>(List.of(
-                        ""
-                )),
-                new ArrayList<>(List.of(
-                        "unsupported arguments"
-                        ))));
+                new ArrayList<>(List.of("^" + "replace_if_greater " + SignatureRegex.ID + "$")),
+                new ArrayList<>(List.of("")),
+                new ArrayList<>(List.of("unsupported arguments"))));
     }
 
     @Override

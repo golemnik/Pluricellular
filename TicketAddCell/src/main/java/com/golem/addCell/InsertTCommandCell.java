@@ -7,6 +7,7 @@ import com.golem.ticketCell.collection.ticket.Address;
 import com.golem.ticketCell.collection.ticket.Coordinates;
 import com.golem.ticketCell.collection.ticket.Ticket;
 import com.golem.ticketCell.collection.ticket.Venue;
+import com.golem.ticketCell.schemas.SignatureRegex;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -70,7 +71,7 @@ public class InsertTCommandCell extends AbstractCommand {
 
 
     private Integer collectionID (String strID) {
-        Pattern pattern = Pattern.compile("(insert( -?[1-9]\\d{0,8}|0|214748364[0-7])?)");
+        Pattern pattern = Pattern.compile("^" + "insert( " + SignatureRegex.ID +")?" + "$");
         Matcher m = pattern.matcher(strID);
         if (m.matches() && m.group(2) == null) {
             return otherMechs.getId(collection);

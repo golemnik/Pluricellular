@@ -16,17 +16,17 @@ public class RemoveGreaterTCellFactory extends AbstractTCellFactory {
                 "remove all tickets greater then object was inputted during this command.",
                 SignatureStatus.CONNECTED,
                 new ArrayList<>(List.of(
-                        "(remove_greater( -?" + SignatureRegex.COORD_X +"|0))",
-                        SignatureRegex._string, //t name
-                        "[-+]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][-+]?[0-9]+)?", //t price
-                        SignatureRegex._string, // t comm
-                        "(VIP)|(USUAL)|(BUDGETARY)|(CHEAP)", // t type
-                        SignatureRegex.COORD_X, // t x
-                        "(-" + SignatureRegex.COORD_X + ")|0|990|9[1-8]\\d{1}|[1-8]\\d{0-2}", //t y
-                        SignatureRegex._string, // v name
-                        SignatureRegex.COORD_X, // v cap
-                        "(BAR)|(LOFT)|(OPEN_AREA)|(THEATRE)|(MALL)", //v type
-                        SignatureRegex._string // v addr
+                        "^" + "remove_greater " + SignatureRegex.ID + "$",
+                        "^" + SignatureRegex._string + "$", //t name
+                        "^" + SignatureRegex.PRICE + "$", //t price
+                        "^" + SignatureRegex._string + "$", // t comm
+                        "^" + SignatureRegex.TTYPE + "$", // t type
+                        "^" + SignatureRegex.COORD_X, // t x
+                        "^" + SignatureRegex.COORD_Y + "$", //t y
+                        "^" + SignatureRegex._string + "$", // v name
+                        "^" + SignatureRegex.CAP + "$", // v cap
+                        "^" + SignatureRegex.VTYPE + "$", //v type
+                        "^" + SignatureRegex._string + "$" // v addr
                 )),
                 new ArrayList<>(List.of(
                         "",

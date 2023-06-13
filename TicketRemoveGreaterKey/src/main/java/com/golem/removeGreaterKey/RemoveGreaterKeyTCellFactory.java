@@ -15,15 +15,9 @@ public class RemoveGreaterKeyTCellFactory extends AbstractTCellFactory {
                 "remove_greater_key",
                 "remove all tickets which key is greater than key was inputted during this command.",
                 SignatureStatus.CONNECTED,
-                new ArrayList<>(List.of(
-                        "(remove_greater_key (-" + SignatureRegex.ID + "))"
-                        )),
-                new ArrayList<>(List.of(
-                        ""
-                        )),
-                new ArrayList<>(List.of(
-                        "unsupported arguments"
-                        ))));
+                new ArrayList<>(List.of("^" + "remove_greater_key " + SignatureRegex.ID + "$")),
+                new ArrayList<>(List.of("")),
+                new ArrayList<>(List.of("unsupported arguments"))));
     }
 
     @Override
