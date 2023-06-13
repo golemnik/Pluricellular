@@ -21,7 +21,7 @@ public class InsertTCellFactory extends AbstractTCellFactory {
                         "^" + SignatureRegex.PRICE + "$", //t price
                         "^" + SignatureRegex._string + "$", // t comm
                         "^" + SignatureRegex.TTYPE + "$", // t type
-                        "^" + SignatureRegex.COORD_X, // t x
+                        "^" + SignatureRegex.COORD_X + "$", // t x
                         "^" + SignatureRegex.COORD_Y + "$", //t y
                         "^" + SignatureRegex._string + "$", // v name
                         "^" + SignatureRegex.CAP + "$", // v cap

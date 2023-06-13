@@ -68,7 +68,6 @@ public class SignatureRegex {
     public final static String CAP =
             "(" +
             "922337203685477580[0-7]|" +
-            "922337203685477580[0-8]|" +
             "9223372036854775[0-7]\\d{2}|" +
             "922337203685477[0-4]\\d{3}|" +
             "92233720368547[0-6]\\d{4}|" +
@@ -85,7 +84,7 @@ public class SignatureRegex {
             "92[0-1]\\d{16}|" +
             "9[0-1]\\d{17}|" +
             "[1-8]\\d{18}|" +
-            "[1-9]\\d{0,17}|" +
+            "[1-9]\\d{0,17}" +
             ")";
     public final static String _string =
             "(" +
@@ -93,7 +92,7 @@ public class SignatureRegex {
             ")";
     public final static String PRICE =
             "(" +
-            "[-+]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][-+]?[0-9]+)?" +
+            "([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][-+]?[0-9]+)?" +
             ")";
 
     public final static String TTYPE =
