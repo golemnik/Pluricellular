@@ -91,9 +91,12 @@ public class SignatureRegex {
             "^.+" +
             ")";
     public final static String PRICE =
+            "+?" +
             "(" +
-            "([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][-+]?[0-9]+)?" +
-            ")";
+            "[1-9][0-9]*\\.?[0-9]*|" +
+            "[0-9]*\\.[0-9]*[1-9][0-9]*" +
+            ")" +
+            "([eE][-+]?[1-9][0-9]*)?";
     public final static String TTYPE =
             "(" +
             "VIP|" +
