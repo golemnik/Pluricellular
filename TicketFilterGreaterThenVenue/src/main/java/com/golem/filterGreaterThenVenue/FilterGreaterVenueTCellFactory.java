@@ -18,7 +18,7 @@ public class FilterGreaterVenueTCellFactory extends AbstractTCellFactory {
                 new ArrayList<>(List.of(
                         "(filter_greater_than_venue",
                         SignatureRegex._string, // v name
-                        SignatureRegex._long, // v cap
+                        SignatureRegex.COORD_X, // v cap
                         "(BAR)|(LOFT)|(OPEN_AREA)|(THEATRE)|(MALL)", //v type
                         SignatureRegex._string // v addr
                 )),

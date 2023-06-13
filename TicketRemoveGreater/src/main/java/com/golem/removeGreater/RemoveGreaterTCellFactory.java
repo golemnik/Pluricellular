@@ -16,15 +16,15 @@ public class RemoveGreaterTCellFactory extends AbstractTCellFactory {
                 "remove all tickets greater then object was inputted during this command.",
                 SignatureStatus.CONNECTED,
                 new ArrayList<>(List.of(
-                        "(remove_greater( -?" + SignatureRegex._long +"|0))",
+                        "(remove_greater( -?" + SignatureRegex.COORD_X +"|0))",
                         SignatureRegex._string, //t name
                         "[-+]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][-+]?[0-9]+)?", //t price
                         SignatureRegex._string, // t comm
                         "(VIP)|(USUAL)|(BUDGETARY)|(CHEAP)", // t type
-                        SignatureRegex._long, // t x
-                        "(-" + SignatureRegex._long + ")|0|990|9[1-8]\\d{1}|[1-8]\\d{0-2}", //t y
+                        SignatureRegex.COORD_X, // t x
+                        "(-" + SignatureRegex.COORD_X + ")|0|990|9[1-8]\\d{1}|[1-8]\\d{0-2}", //t y
                         SignatureRegex._string, // v name
-                        SignatureRegex._long, // v cap
+                        SignatureRegex.COORD_X, // v cap
                         "(BAR)|(LOFT)|(OPEN_AREA)|(THEATRE)|(MALL)", //v type
                         SignatureRegex._string // v addr
                 )),

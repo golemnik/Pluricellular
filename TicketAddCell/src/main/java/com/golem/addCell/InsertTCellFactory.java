@@ -16,17 +16,17 @@ public class InsertTCellFactory extends AbstractTCellFactory {
                 "add ticket to the collection.",
                 SignatureStatus.CONNECTED,
                 new ArrayList<>(List.of(
-                        "(insert( -?" + SignatureRegex._long +"|0))",
-                        SignatureRegex._string, //t name
-                        "[-+]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][-+]?[0-9]+)?", //t price
-                        SignatureRegex._string, // t comm
-                        "(VIP)|(USUAL)|(BUDGETARY)|(CHEAP)", // t type
-                        SignatureRegex._long, // t x
-                        "(-" + SignatureRegex._long + ")|0|990|9[1-8]\\d{1}|[1-8]\\d{0-2}", //t y
-                        SignatureRegex._string, // v name
-                        SignatureRegex._long, // v cap
-                        "(BAR)|(LOFT)|(OPEN_AREA)|(THEATRE)|(MALL)", //v type
-                        SignatureRegex._string // v addr
+                        "^" + "(insert( " + SignatureRegex.ID +")?)" + "$",
+                        "^" + SignatureRegex._string + "$", //t name
+                        "^" + SignatureRegex.PRICE + "$", //t price
+                        "^" + SignatureRegex._string + "$", // t comm
+                        "^" + SignatureRegex.TTYPE + "$", // t type
+                        "^" + SignatureRegex.COORD_X, // t x
+                        "^" + SignatureRegex.COORD_Y + "$", //t y
+                        "^" + SignatureRegex._string + "$", // v name
+                        "^" + SignatureRegex.CAP + "$", // v cap
+                        "^" + SignatureRegex.VTYPE + "$", //v type
+                        "^" + SignatureRegex._string + "$" // v addr
                         )),
                 new ArrayList<>(List.of(
                         "",
