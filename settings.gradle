@@ -22,4 +22,5 @@ include 'TicketInfo'
 include 'TicketRemoveGreaterKey'
 include 'TicketCountLessPrice'
 include 'TicketCountLessPrice'
+include 'TicketFilterGreaterThenVenue'
 
