@@ -18,4 +18,8 @@ include 'TicketSave'
 include 'ScriptCell'
 include 'FileSystemCell'
 include 'TicketLoadCell'
+include 'TicketInfo'
+include 'TicketRemoveGreaterKey'
+include 'TicketCountLessPrice'
+include 'TicketCountLessPrice'
 

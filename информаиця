@@ -9,14 +9,10 @@ java --module-path Core-1.1.jar -m ColonyCore/com.golem.core.Main
 
 
 +help
-
-\todo info
-
++info
 +show
 +insert
-
-\todo update
-
++update
 +remove_key
 +clear
 +save
@@ -24,8 +20,7 @@ java --module-path Core-1.1.jar -m ColonyCore/com.golem.core.Main
 +exit
 +remove_greater
 +replace_if_greater
-
-\todo remove_greater_key
-\todo count_less_than_venue
++remove_greater_key
++count_less_than_price
 \todo filter_greater_then_venue
 \todo print_field_descending
