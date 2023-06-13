@@ -3,6 +3,7 @@ package com.golem.ticketInfo;
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.ticketCell.collection.TicketCollection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InfoTCommandCell extends AbstractCommand {
@@ -18,8 +19,10 @@ public class InfoTCommandCell extends AbstractCommand {
     @Override
     public void activate() {
         if (collection != null) {
-            collection.getCollection().clear();
-            setAnswer(List.of(collection.toReadString()));
+            setAnswer(List.of("Collection info status:",
+                    String.valueOf(collection.getCollection().size()),
+                    collection.getCreationDate().toString()
+            ));
             return;
         }
         setAnswer(List.of("Collection is not exist."));

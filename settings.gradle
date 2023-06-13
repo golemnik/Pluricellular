@@ -23,4 +23,5 @@ include 'TicketRemoveGreaterKey'
 include 'TicketCountLessPrice'
 include 'TicketCountLessPrice'
 include 'TicketFilterGreaterThenVenue'
+include 'TicketPrintFieldDescending'
 

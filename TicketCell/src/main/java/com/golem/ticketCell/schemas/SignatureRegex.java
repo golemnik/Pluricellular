@@ -94,7 +94,6 @@ public class SignatureRegex {
             "(" +
             "([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][-+]?[0-9]+)?" +
             ")";
-
     public final static String TTYPE =
             "(" +
             "VIP|" +

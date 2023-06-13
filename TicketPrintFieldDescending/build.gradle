@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group 'com.golem.printFieldDescending'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':Core')
+    implementation project(':TicketCell')
+}
+
+jar {
+    destinationDir = file("../exp/server/genome")
+}
