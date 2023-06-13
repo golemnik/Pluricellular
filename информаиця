@@ -5,3 +5,27 @@
 
 java '-Dlog4j2.level=trace' --module-path Core-1.1.jar -m ColonyCore/com.golem.core.Main
 java --module-path Core-1.1.jar -m ColonyCore/com.golem.core.Main
+
+
+
++help
+
+\todo info
+
++show
++insert
+
+\todo update
+
++remove_key
++clear
++save
++execute_script
++exit
++remove_greater
++replace_if_greater
+
+\todo remove_greater_key
+\todo count_less_than_venue
+\todo filter_greater_then_venue
+\todo print_field_descending

@@ -57,7 +57,7 @@ public class Transmitter extends AbstractNetConnection {
             logger.info("Deactivating server.");
         }));
         terminal.getBroodMother().getFactoryCommands().values().stream()
-                .filter(x -> x.runAtStart())
+                .filter(AbstractSystemCellFactory::runAtStart)
                 .forEach(x -> {
                     AbstractCommand com = x.create(List.of());
                     com.activate();
@@ -94,7 +94,7 @@ public class Transmitter extends AbstractNetConnection {
             }
         }
         terminal.getBroodMother().getFactoryCommands().values().stream()
-                .filter(x -> x.runAtFinish())
+                .filter(AbstractSystemCellFactory::runAtFinish)
                 .forEach(x -> {
                     AbstractCommand com = x.create(List.of());
                     com.activate();

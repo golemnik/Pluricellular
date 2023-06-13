@@ -4,6 +4,7 @@ import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.signature.Signature;
 import com.golem.core.schemas.signature.SignatureStatus;
 import com.golem.ticketCell.schemas.AbstractTCellFactory;
+import com.golem.ticketCell.schemas.SignatureRegex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +16,17 @@ public class InsertTCellFactory extends AbstractTCellFactory {
                 "add ticket to the collection.",
                 SignatureStatus.CONNECTED,
                 new ArrayList<>(List.of(
-                        "(insert( -?[1-9]\\d{0,8}|0|214748364[0-7])?)",
-                        "^.+", //t name
+                        "(insert( -?" + SignatureRegex._long +"|0))",
+                        SignatureRegex._string, //t name
                         "[-+]?([0-9]*\\.?[0-9]+|[0-9]+\\.?[0-9]*)([eE][-+]?[0-9]+)?", //t price
-                        "^.+", // t comm
+                        SignatureRegex._string, // t comm
                         "(VIP)|(USUAL)|(BUDGETARY)|(CHEAP)", // t type
-                        "^(-?[1-9]\\d{0,18}|0|9(\\d{0,17})|-[1-8]\\d{0,18}|-9(\\d{0,17}))", // t x
-                        "((-[1-9]\\\\d{0,18}|0|9(\\\\d{0,17})|-[1-8]\\\\d{0,18}|-9(\\\\d{0,17}))|[1-8][1-9][1-9]|900)", //t y
-                        "^.+", // v name
-                        "^([1-9]\\d{0,18}|0)", // v cap
+                        SignatureRegex._long, // t x
+                        "(-" + SignatureRegex._long + ")|0|990|9[1-8]\\d{1}|[1-8]\\d{0-2}", //t y
+                        SignatureRegex._string, // v name
+                        SignatureRegex._long, // v cap
                         "(BAR)|(LOFT)|(OPEN_AREA)|(THEATRE)|(MALL)", //v type
-                        "^.+" // v addr
+                        SignatureRegex._string // v addr
                         )),
                 new ArrayList<>(List.of(
                         "",

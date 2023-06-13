@@ -9,7 +9,6 @@ public class ExitCommandCell extends AbstractCommand implements SystemCommand {
     @Override
     public void activate() {
         setAnswer(List.of("Exiting..."));
-//        System.exit(0);
     }
 
     @Override
