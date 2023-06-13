@@ -3,7 +3,7 @@ import com.golem.removeGreaterKey.RemoveGreaterKeyTCellFactory;
 import com.golem.removeGreaterKey.RemoveGreaterKeyTCommandCell;
 import com.golem.ticketCell.schemas.AbstractTCellFactory;
 
-module Pluricellular.TicketRemoveGreater.main {
+module Pluricellular.TicketRemoveGreaterKey.main {
     requires ColonyCore;
     requires Pluricellular.TicketCell.main;
 

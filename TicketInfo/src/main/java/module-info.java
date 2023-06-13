@@ -3,7 +3,7 @@ import com.golem.ticketCell.schemas.AbstractTCellFactory;
 import com.golem.ticketInfo.InfoTCellFactory;
 import com.golem.ticketInfo.InfoTCommandCell;
 
-module Pluricellular.TicketClearCell.main {
+module Pluricellular.TicketInfo.main {
     requires ColonyCore;
     requires Pluricellular.TicketCell.main;
 
