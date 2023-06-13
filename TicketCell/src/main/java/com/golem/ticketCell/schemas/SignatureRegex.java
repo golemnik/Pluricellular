@@ -63,7 +63,7 @@ public class SignatureRegex {
             "990|" +
             "9[0-8]\\d{1}|" +
             "[1-8]\\d{2}|" +
-            "[1-9}\\d{0,1}" +
+            "[1-9]\\d{0,1}" +
             ")";
     public final static String CAP =
             "(" +
