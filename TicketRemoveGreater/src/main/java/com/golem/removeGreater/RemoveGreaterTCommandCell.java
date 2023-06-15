@@ -30,7 +30,6 @@ public class RemoveGreaterTCommandCell extends AbstractCommand {
     public AbstractCommand useSignature(List<String> signature) {
         ticket = new Ticket();
         ticket.setId(otherMechs.getId(collection));
-        collection.getCollection().put(String.valueOf(ticket.getId()), ticket);
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
         ticket.setComment(signature.get(3)); // t comment

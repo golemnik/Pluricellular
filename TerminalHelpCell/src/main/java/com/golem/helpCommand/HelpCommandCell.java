@@ -10,7 +10,7 @@ import java.util.List;
 
 public class HelpCommandCell extends AbstractCommand implements Cell {
     private BroodMotherCell broodMother;
-
+    private List<String> otherCommands;
     public HelpCommandCell (){}
 
     public void addBroodMother (BroodMotherCell broodMother) {

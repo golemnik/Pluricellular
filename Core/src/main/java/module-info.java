@@ -33,7 +33,7 @@ module ColonyCore {
             CoreCell, ExitCommandCell, ReloadGenomeCommandCell;
     provides AbstractQueenCell with BroodQueen, SystemQueen;
     provides SystemCommand with ExitCommandCell, ReloadGenomeCommandCell;
-    provides AbstractCellFactory with BasicCellFactory;
+    provides AbstractCellFactory with BasicCellFactory, FakeFactory;
     provides AbstractSystemCellFactory with ExitCellFactory, ReloadGenomeCellFactory;
 
     provides AbstractBroodMother with BasicBroodMotherCell;

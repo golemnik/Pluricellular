@@ -2,6 +2,7 @@ package com.golem.clientCell.recipient;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
+import com.golem.core.schemas.basicAbstractions.FakeFactory;
 import com.golem.core.schemas.signature.Signature;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
 import com.golem.core.schemas.signature.SignatureStatus;
@@ -31,7 +32,7 @@ public class Recipient extends AbstractNetConnection {
         AbstractCommand command;
         preloadCommands(terminal);
         try {
-            preloadConnection();
+            preloadConnection(terminal);
 
             for (Signature s : recipientMech.getSignatureMap().values()) {
                 CellPrinter.setMessage(s.command() + " - " + s.status() + " - " + s.description());
@@ -44,6 +45,7 @@ public class Recipient extends AbstractNetConnection {
                         .status() == SignatureStatus.PROVIDED)) {
                     command = terminal.getBroodMother().createCell(signatureList.get(0).split(" ")[0], signatureList);
                     command.activate();
+                    command.getAnswer().forEach(CellPrinter::setMessage);
                     ex = command.exitable();
                     continue;
                 }
@@ -68,12 +70,15 @@ public class Recipient extends AbstractNetConnection {
         terminal.getBroodMother().getFactoryCommands().values()
                 .forEach(x -> recipientMech.getSignatureMap().put(x.creationCommand(), x.getSignature()));
     }
-    public void preloadConnection() throws IOException, ClassNotFoundException {
+    public void preloadConnection(AbstractTerminal terminal) throws IOException, ClassNotFoundException {
         socketChannel = SocketChannel.open();
         socketChannel.connect(new InetSocketAddress("localhost", port));
         oos = new ObjectOutputStream(socketChannel.socket().getOutputStream());
         ois = new ObjectInputStream(socketChannel.socket().getInputStream());
         SignatureContainer container = safeConvert(ois.readObject());
         recipientMech.updateSignatureMap(container.getSignatures());
+        container.getSignatures()
+                .forEach(x -> terminal.getBroodMother()
+                        .addFactory(new FakeFactory(x.command(), x.description(), x.status()), terminal.getQueenConnections().get(0)));
     }
 }
