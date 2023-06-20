@@ -17,7 +17,6 @@ import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Recipient extends AbstractNetConnection {
     private final RecipientSignatureMechanisms recipientMech = new RecipientSignatureMechanisms();
@@ -33,7 +32,6 @@ public class Recipient extends AbstractNetConnection {
         preloadCommands(terminal);
         try {
             preloadConnection(terminal);
-
             for (Signature s : recipientMech.getSignatureMap().values()) {
                 CellPrinter.setMessage(s.command() + " - " + s.status() + " - " + s.description());
             }
@@ -51,11 +49,11 @@ public class Recipient extends AbstractNetConnection {
                 }
                 oos.writeObject(new DataContainer(signatureList));
                 oos.flush();
-
                 DataContainer dataContainer = safeConvert(ois.readObject());
                 if (dataContainer != null && dataContainer.data != null) {
                     CellPrinter.setMessage(String.join("\n", dataContainer.data));
                 }
+
             } while (!ex);
         }
         catch (IOException ioe) {
@@ -81,4 +79,33 @@ public class Recipient extends AbstractNetConnection {
                 .forEach(x -> terminal.getBroodMother()
                         .addFactory(new FakeFactory(x.command(), x.description(), x.status()), terminal.getQueenConnections().get(0)));
     }
+    public void authorization () {
+        CellPrinter.setMessage("Input login:");
+        String login = scanner.nextLine();
+        CellPrinter.setMessage("Input password:");
+        String password = scanner.nextLine();
+        try {
+            oos.writeObject(User.userContainter(login, password));
+            oos.flush();
+        }
+        catch (Exception e) {
+            CellPrinter.setMessage(CellPrinter.Colorist.RED(e.getMessage()));
+        }
+    }
+    public void registration () {
+        CellPrinter.setMessage("Registration:");
+        CellPrinter.setMessage("Input login:");
+        String login = scanner.nextLine();
+        CellPrinter.setMessage("Input password:");
+        String password = scanner.nextLine();
+        try {
+            oos.writeObject(User.userContainter(login, password));
+            oos.flush();
+
+        }
+        catch (Exception e) {
+            CellPrinter.setMessage(CellPrinter.Colorist.RED(e.getMessage()));
+        }
+    }
+
 }

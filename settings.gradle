@@ -24,4 +24,6 @@ include 'TicketCountLessPrice'
 include 'TicketCountLessPrice'
 include 'TicketFilterGreaterThenVenue'
 include 'TicketPrintFieldDescending'
+include 'UserModule'
+include 'LoginUser'
 
