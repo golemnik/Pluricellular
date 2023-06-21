@@ -11,6 +11,8 @@ repositories {
 
 dependencies {
     implementation project(':Core')
+    implementation project(':UserModule')
+
 }
 
 jar {

@@ -1,16 +1,15 @@
-import com.golem.clientLoad.LoadClientCellFactory;
-import com.golem.clientLoad.LoadClientCommandCell;
-import com.golem.core.schemas.basicAbstractions.AbstractSystemCellFactory;
-import com.golem.core.schemas.basicInterfaces.Cell;
+import com.golem.userModule.abstractions.UserQueen;
+import com.golem.core.schemas.basicAbstractions.AbstractQueenCell;
 
-module Pluricellular.ClientsLoad.main {
+module Pluricellular.UserModule.main {
     requires ColonyCore;
-    requires com.google.gson;
+    requires Pluricellular.ClientCell.main;
 
-    uses Cell;
-    uses AbstractSystemCellFactory;
+    exports com.golem.userModule.abstractions;
+    exports com.golem.userModule;
 
-    provides Cell with LoadClientCommandCell;
-    provides AbstractSystemCellFactory with LoadClientCellFactory;
+    uses AbstractQueenCell;
+
+    provides AbstractQueenCell with UserQueen;
 
 }

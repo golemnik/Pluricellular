@@ -1,17 +1,20 @@
-package com.golem.clientCell.recipient;
+package com.golem.clientCell.recipient.user;
 
 import com.golem.core.schemas.providedRealisations.CellPrinter;
-import com.golem.netCell.containers.DataContainer;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 public class User {
-    public static DataContainer userContainter(String login , String password) {
-        return new DataContainer(List.of(login, encrypt(password)));
+    private final String login;
+    private final String password;
+
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
     }
+
     public static String encrypt (String password) {
         try {
             StringBuilder encryptedPassword;

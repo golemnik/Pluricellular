@@ -1,5 +1,6 @@
 package com.golem.clientCell.recipient;
 
+import com.golem.clientCell.recipient.user.User;
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
 import com.golem.core.schemas.basicAbstractions.FakeFactory;
@@ -20,6 +21,7 @@ import java.util.Scanner;
 
 public class Recipient extends AbstractNetConnection {
     private final RecipientSignatureMechanisms recipientMech = new RecipientSignatureMechanisms();
+    private User user;
     private SocketChannel socketChannel;
     private int port = 60888;
     private ObjectOutputStream oos;
@@ -84,28 +86,7 @@ public class Recipient extends AbstractNetConnection {
         String login = scanner.nextLine();
         CellPrinter.setMessage("Input password:");
         String password = scanner.nextLine();
-        try {
-            oos.writeObject(User.userContainter(login, password));
-            oos.flush();
-        }
-        catch (Exception e) {
-            CellPrinter.setMessage(CellPrinter.Colorist.RED(e.getMessage()));
-        }
-    }
-    public void registration () {
-        CellPrinter.setMessage("Registration:");
-        CellPrinter.setMessage("Input login:");
-        String login = scanner.nextLine();
-        CellPrinter.setMessage("Input password:");
-        String password = scanner.nextLine();
-        try {
-            oos.writeObject(User.userContainter(login, password));
-            oos.flush();
-
-        }
-        catch (Exception e) {
-            CellPrinter.setMessage(CellPrinter.Colorist.RED(e.getMessage()));
-        }
+        user = new User(login, password);
     }
 
 }

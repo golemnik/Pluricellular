@@ -33,7 +33,6 @@ public class Transmitter extends AbstractNetConnection {
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.bind(new InetSocketAddress(HOSTNAME, PORT));
             serverSocketChannel.configureBlocking(false);
-
             logger.info("Activating server at {}:{}", HOSTNAME, PORT);
             return true;
         }

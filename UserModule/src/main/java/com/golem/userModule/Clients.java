@@ -1,4 +1,4 @@
-package com.golem.clientLoad;
+package com.golem.userModule;
 
 import java.util.ArrayList;
 import java.util.List;

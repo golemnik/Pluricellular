@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     implementation project(':Core')
+    implementation project(':ClientCell')
     implementation 'com.google.code.gson:gson:2.10.1'
 }
 
