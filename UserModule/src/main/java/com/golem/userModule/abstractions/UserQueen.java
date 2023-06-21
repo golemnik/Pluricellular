@@ -12,7 +12,7 @@ public class UserQueen extends AbstractQueenCell {
 
     @Override
     public List<AbstractUCellFactory> extractFactories(ModuleLayer layer) {
-        UserStorage storage = new ;
+        UserStorage storage = null ;
         List<AbstractUCellFactory> list = AbstractUCellFactory.getTicketCellFactories(layer);
         list.forEach(x -> x.setStorage(storage));
         return list;

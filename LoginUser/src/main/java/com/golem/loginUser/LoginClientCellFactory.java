@@ -22,7 +22,7 @@ public class LoginClientCellFactory extends AbstractUCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         LoginClientCommandCell cell = new LoginClientCommandCell();
-        cell.setClients(getClients());
+//        cell.setClients(getClients());
         return cell.useSignature(signature);
     }
 }

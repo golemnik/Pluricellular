@@ -9,6 +9,7 @@ import com.golem.core.schemas.providedRealisations.CellPrinter;
 import com.golem.core.schemas.signature.SignatureStatus;
 import com.golem.netCell.containers.DataContainer;
 import com.golem.netCell.containers.SignatureContainer;
+import com.golem.netCell.containers.UserContainer;
 import com.golem.netCell.innerMechanics.AbstractNetConnection;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class Recipient extends AbstractNetConnection {
         List<String> signatureList;
         AbstractCommand command;
         preloadCommands(terminal);
+        authorization ();
         try {
             preloadConnection(terminal);
             for (Signature s : recipientMech.getSignatureMap().values()) {
@@ -49,13 +51,12 @@ public class Recipient extends AbstractNetConnection {
                     ex = command.exitable();
                     continue;
                 }
-                oos.writeObject(new DataContainer(signatureList));
+                oos.writeObject(new UserContainer(user.getLogin(), User.encrypt(user.getPassword()), new DataContainer(signatureList)));
                 oos.flush();
                 DataContainer dataContainer = safeConvert(ois.readObject());
                 if (dataContainer != null && dataContainer.data != null) {
                     CellPrinter.setMessage(String.join("\n", dataContainer.data));
                 }
-
             } while (!ex);
         }
         catch (IOException ioe) {

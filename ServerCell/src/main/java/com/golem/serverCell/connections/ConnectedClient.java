@@ -15,6 +15,7 @@ import java.util.List;
 import com.golem.netCell.containers.ContainerType;
 import com.golem.netCell.containers.DataContainer;
 import com.golem.netCell.containers.SignatureContainer;
+import com.golem.netCell.containers.UserContainer;
 import com.golem.serverCell.transmitter.Transmitter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,9 +29,11 @@ public class ConnectedClient {
     private BufferedOutputStream bos;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
-    public ConnectedClient (SocketChannel channel, AbstractTerminal terminal) {
+    private Clients clients;
+    public ConnectedClient (SocketChannel channel, AbstractTerminal terminal, Clients clients) {
         this.channel = channel;
         this.terminal = terminal;
+        this.clients = clients;
         prepareActions();
     }
 
@@ -62,7 +65,13 @@ public class ConnectedClient {
     public boolean iterate () {
         try {
 //            System.out.println("here!");
-            DataContainer dataContainer = (DataContainer) ois.readObject();
+            UserContainer userContainer = (UserContainer) ois.readObject();
+            if (!clients.checkClient(userContainer.login, userContainer.password)) {
+                logger.info("This client is not registered.");
+                return false;
+            }
+            DataContainer dataContainer;
+            dataContainer = userContainer.dataContainer;
             logger.info("Client {} sent command: {}", channel, dataContainer.data.toString());
             AbstractCommand command = terminal.getBroodMother().createCell(dataContainer.data.get(0).split(" ")[0], dataContainer.data);
             command.activate();
@@ -74,7 +83,7 @@ public class ConnectedClient {
             return true;
         }
         catch (Exception e) {
-            logger.error("Iterating failed due:",e);
+            logger.error("Iterating failed due:", e);
             return false;
         }
     }

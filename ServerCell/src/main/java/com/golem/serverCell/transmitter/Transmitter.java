@@ -10,6 +10,7 @@ import com.golem.netCell.containers.ContainerType;
 import com.golem.netCell.containers.DataContainer;
 import com.golem.netCell.containers.SignatureContainer;
 import com.golem.netCell.innerMechanics.*;
+import com.golem.serverCell.connections.Clients;
 import com.golem.serverCell.connections.ConnectedClient;
 
 import java.io.*;
@@ -27,7 +28,7 @@ public class Transmitter extends AbstractNetConnection {
     private final Map<SocketChannel, ConnectedClient> clients = new HashMap<>();
     private final String HOSTNAME = "localhost";
     private final int PORT = 60888;
-
+    private Clients registeredClients = new Clients();
     private boolean activateServer () {
         try {
             serverSocketChannel = ServerSocketChannel.open();
@@ -69,7 +70,7 @@ public class Transmitter extends AbstractNetConnection {
                     socket = serverSocketChannel.accept(); // timeout for waiting?
                     if (!(socket == null)) {
                         if (socket.isConnected()) {
-                        clients.put(socket, new ConnectedClient(socket, terminal));
+                        clients.put(socket, new ConnectedClient(socket, terminal, registeredClients));
                         }
                     }
                     clients.keySet().stream().filter(x -> !x.isConnected()).forEach(clients::remove);
