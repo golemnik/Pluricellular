@@ -6,7 +6,7 @@ import com.golem.core.schemas.basicInterfaces.deepSchemas.SystemCommand;
 import java.util.List;
 
 public class CorruptedCommandCell extends AbstractCommand implements SystemCommand {
-    private final String corruptionReason;
+    private String corruptionReason;
 
     public String getCorruptionReason() {
         return corruptionReason;
@@ -29,6 +29,9 @@ public class CorruptedCommandCell extends AbstractCommand implements SystemComma
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
+        if (signature.size() == 2) {
+            corruptionReason = signature.get(1);
+        }
         return this;
     }
 }

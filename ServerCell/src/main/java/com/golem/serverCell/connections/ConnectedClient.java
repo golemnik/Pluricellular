@@ -65,13 +65,18 @@ public class ConnectedClient {
     public boolean iterate () {
         try {
 //            System.out.println("here!");
+            DataContainer dataContainer;
             UserContainer userContainer = (UserContainer) ois.readObject();
             if (!clients.checkClient(userContainer.login, userContainer.password)) {
                 logger.info("This client is not registered.");
-                return false;
+                dataContainer = unfoundClient();
             }
-            DataContainer dataContainer;
-            dataContainer = userContainer.dataContainer;
+            else {
+                dataContainer = userContainer.dataContainer;
+            }
+
+
+
             logger.info("Client {} sent command: {}", channel, dataContainer.data.toString());
             AbstractCommand command = terminal.getBroodMother().createCell(dataContainer.data.get(0).split(" ")[0], dataContainer.data);
             command.activate();
@@ -104,6 +109,10 @@ public class ConnectedClient {
         container.getSignatures().forEach(x -> logger.info("Requested command: {}", x.command()));
         oos.writeObject(container);
         oos.flush();
+    }
+
+    private DataContainer unfoundClient () {
+        return new DataContainer(new ArrayList<>(List.of("corrupted", "Client was not found")));
     }
 
 }

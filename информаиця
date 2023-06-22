@@ -8,19 +8,16 @@ java --module-path Core-1.1.jar -m ColonyCore/com.golem.core.Main
 
 
 
-+help
-+info
-+show
-+insert
-+update
-+remove_key
-+clear
-+save
-+execute_script
-+exit
-+remove_greater
-+replace_if_greater
-+remove_greater_key
-+count_less_than_price
-\todo filter_greater_then_venue
-\todo print_field_descending
+серверная команда для добавления пользователя
+привязать пользователей к коллекции (к элементам коллекции)
+возврат его элементов к своему пользователю
+
+сохранять зарегистрированных пользователей в файл
+
+пароль на клиенте и на сервере в виде хэша
+
+
+БД
+МНОГОПОТОЧНОСТЬ
+
+
