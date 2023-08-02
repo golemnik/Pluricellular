@@ -1,7 +1,9 @@
 package com.golem.clientCell.recipient;
 
 import com.golem.clientCell.recipient.user.User;
+import com.golem.clientCell.recipient.userfactories.UserQueen;
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
+import com.golem.core.schemas.basicAbstractions.AbstractSystemCellFactory;
 import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
 import com.golem.core.schemas.basicAbstractions.FakeFactory;
 import com.golem.core.schemas.signature.Signature;
@@ -22,7 +24,7 @@ import java.util.Scanner;
 
 public class Recipient extends AbstractNetConnection {
     private final RecipientSignatureMechanisms recipientMech = new RecipientSignatureMechanisms();
-    private User user;
+    private User user = UserQueen.getUser();
     private SocketChannel socketChannel;
     private int port = 60888;
     private ObjectOutputStream oos;
@@ -32,10 +34,22 @@ public class Recipient extends AbstractNetConnection {
     public void cycle(AbstractTerminal terminal) throws IOException {
         List<String> signatureList;
         AbstractCommand command;
+
         preloadCommands(terminal);
-        authorization ();
+
+        terminal.getBroodMother().getFactoryCommands().values().stream()
+                .filter(AbstractSystemCellFactory::runAtStart)
+                .forEach(x -> {
+                    AbstractCommand com = x.create(List.of());
+                    com.activate();
+                    System.out.println("hop");
+                    CellPrinter.setMessage(com.getAnswer().toString());
+                });
+
         try {
             preloadConnection(terminal);
+
+
             for (Signature s : recipientMech.getSignatureMap().values()) {
                 CellPrinter.setMessage(s.command() + " - " + s.status() + " - " + s.description());
             }
@@ -80,14 +94,7 @@ public class Recipient extends AbstractNetConnection {
         recipientMech.updateSignatureMap(container.getSignatures());
         container.getSignatures()
                 .forEach(x -> terminal.getBroodMother()
-                        .addFactory(new FakeFactory(x.command(), x.description(), x.status()), terminal.getQueenConnections().get(0)));
+                        .addFactory(new FakeFactory(x.command(), x.description(), x.status()),
+                                terminal.getQueenConnections().get(0)));
     }
-    public void authorization () {
-        CellPrinter.setMessage("Input login:");
-        String login = scanner.nextLine();
-        CellPrinter.setMessage("Input password:");
-        String password = scanner.nextLine();
-        user = new User(login, password);
-    }
-
 }

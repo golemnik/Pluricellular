@@ -16,6 +16,8 @@ import com.golem.netCell.containers.ContainerType;
 import com.golem.netCell.containers.DataContainer;
 import com.golem.netCell.containers.SignatureContainer;
 import com.golem.netCell.containers.UserContainer;
+import com.golem.netCell.innerMechanics.Crypt;
+import com.golem.serverCell.clients.Clients;
 import com.golem.serverCell.transmitter.Transmitter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -64,7 +66,6 @@ public class ConnectedClient {
 
     public boolean iterate () {
         try {
-//            System.out.println("here!");
             DataContainer dataContainer;
             UserContainer userContainer = (UserContainer) ois.readObject();
             if (!clients.checkClient(userContainer.login, userContainer.password)) {

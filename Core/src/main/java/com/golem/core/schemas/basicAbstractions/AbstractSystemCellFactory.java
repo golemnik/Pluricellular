@@ -39,8 +39,6 @@ public abstract class AbstractSystemCellFactory extends AbstractICellCore implem
     }
 
     public boolean signatureCompare(List<String> inputSignature) {
-//        System.out.println(inputSignature);
-//        System.out.println(getSignature().patternSignature());
         if (inputSignature.size() != getSignature().patternSignature().size()) return false;
         for (int i = 0; i < inputSignature.size(); i++) {
             if (!Pattern.matches(getSignature().patternSignature().get(i), inputSignature.get(i))) {

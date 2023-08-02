@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class NetTerminal extends AbstractTerminal {
     private Scanner scanner = new Scanner(System.in);
+    private NetConnection netConnection;
     @Override
     public int priority() {
         return 10;
@@ -23,9 +24,11 @@ public class NetTerminal extends AbstractTerminal {
     @Override
     public void terminalCycle() throws IOException {
         try {
-            NetConnection.getConnector(CellLayer.getLayer()).get(0).cycle(this);
+            netConnection = NetConnection.getConnector(CellLayer.getLayer()).get(0);
+            netConnection.cycle(this);
         }
         catch (NullPointerException np) {
+            np.printStackTrace();
             CellPrinter.setMessage("Net terminal must be provided with at least one net connector.");
             System.exit(0);
         }
@@ -35,5 +38,9 @@ public class NetTerminal extends AbstractTerminal {
         catch (Exception e) {
             CellPrinter.setMessage(e.getMessage());
         }
+    }
+
+    public NetConnection getNetConnection() {
+        return netConnection;
     }
 }

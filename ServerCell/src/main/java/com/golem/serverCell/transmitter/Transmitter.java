@@ -10,7 +10,7 @@ import com.golem.netCell.containers.ContainerType;
 import com.golem.netCell.containers.DataContainer;
 import com.golem.netCell.containers.SignatureContainer;
 import com.golem.netCell.innerMechanics.*;
-import com.golem.serverCell.connections.Clients;
+import com.golem.serverCell.clients.Clients;
 import com.golem.serverCell.connections.ConnectedClient;
 
 import java.io.*;
@@ -28,7 +28,7 @@ public class Transmitter extends AbstractNetConnection {
     private final Map<SocketChannel, ConnectedClient> clients = new HashMap<>();
     private final String HOSTNAME = "localhost";
     private final int PORT = 60888;
-    private Clients registeredClients = new Clients();
+    private Clients registeredClients = Clients.getInstance();
     private boolean activateServer () {
         try {
             serverSocketChannel = ServerSocketChannel.open();
@@ -49,9 +49,9 @@ public class Transmitter extends AbstractNetConnection {
         AbstractCommand command;
         SocketChannel socket;
         Optional<Boolean> sleep;
-//
-//        todo распихать во все места логгер!
-//
+
+
+
         if (!activateServer()) return;
         Runtime.getRuntime().addShutdownHook(new Thread(()-> {
             logger.info("Deactivating server.");

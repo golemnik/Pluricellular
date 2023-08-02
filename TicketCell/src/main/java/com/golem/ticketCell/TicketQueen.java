@@ -9,6 +9,7 @@ import java.util.List;
 public class TicketQueen extends AbstractQueenCell {
     @Override
     public void activate() {
+
     }
 
     @Override

@@ -1,4 +1,3 @@
-import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicAbstractions.AbstractCellFactory;
 import com.golem.core.schemas.basicInterfaces.Cell;
 import com.golem.helpCommand.HelpCellFactory;
