@@ -79,7 +79,8 @@ public class ConnectedClient {
 
 
             logger.info("Client {} sent command: {}", channel, dataContainer.data.toString());
-            AbstractCommand command = terminal.getBroodMother().createCell(dataContainer.data.get(0).split(" ")[0], dataContainer.data);
+            AbstractCommand command = terminal.getBroodMother()
+                    .createCell(dataContainer.data.get(0).split(" ")[0], dataContainer.data);
             command.activate();
             List<String> answer = command.getAnswer();
             if (answer == null) {

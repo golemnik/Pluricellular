@@ -27,4 +27,5 @@ include 'TicketPrintFieldDescending'
 include 'ServerUserReg'
 include 'CoreKnowwer'
 include 'UserLogin'
+include 'Logger'
 

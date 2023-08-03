@@ -42,7 +42,6 @@ public class Recipient extends AbstractNetConnection {
                 .forEach(x -> {
                     AbstractCommand com = x.create(List.of());
                     com.activate();
-                    System.out.println("hop");
                     CellPrinter.setMessage(com.getAnswer().toString());
                 });
 

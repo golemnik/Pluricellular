@@ -20,7 +20,7 @@ public class RegCommandCell extends AbstractCommand implements Cell {
 
     @Override
     public void activate() {
-        if (!clients.checkClient(login, password)) {
+        if (!clients.existClient(login)) {
             clients.addUser(login, password);
             setAnswer(List.of("User " +
                     CellPrinter.Colorist.GREEN(login) +
@@ -36,7 +36,7 @@ public class RegCommandCell extends AbstractCommand implements Cell {
     public AbstractCommand useSignature(List<String> signature) {
         login = signature.get(0).split(" ")[1];
         password = signature.get(0).split(" ")[2];
-        CellPrinter.setMessage("Command: " + login + " " + password + " " + Crypt.encrypt(password));
+//        CellPrinter.setMessage("Command: " + login + " " + password + " " + Crypt.encrypt(password));
         password = Crypt.encrypt(password);
         return this;
     }

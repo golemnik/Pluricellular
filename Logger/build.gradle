@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+}
+
+group 'com.golem.logger'
+version '1.0'
+
+configurations {
+    logCore
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation group: 'org.apache.logging.log4j', name:'log4j-api', version: '2.20.0'
+    logCore group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.20.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    destinationDir = file("../exp/server/genome")
+    copy {
+        from { configurations.logCore }
+        into { file("../exp/server/genome") }
+    }
+    copy {
+        from { configurations.logCore }
+        into { file("../exp/client/genome") }
+    }
+    doLast {
+        copy {
+            from '../exp/server/genome/NetCell-1.1.jar'
+            into '../exp/client/genome/'
+        }
+    }
+}
