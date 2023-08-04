@@ -28,4 +28,6 @@ include 'ServerUserReg'
 include 'CoreKnowwer'
 include 'UserLogin'
 include 'Logger'
+include 'UserSave'
+include 'UserLoad'
 

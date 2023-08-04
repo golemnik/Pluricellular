@@ -1,8 +1,12 @@
 package com.golem.serverCell.clients;
 
 public class RegClient {
-    private String password;
+    private final String password;
     private boolean status = false;
+
+    public RegClient () {
+        this.password = "...";
+    }
 
     public RegClient(String password) {
         this.password = password;

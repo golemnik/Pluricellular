@@ -54,7 +54,7 @@ public class Transmitter extends AbstractNetConnection {
 
         if (!activateServer()) return;
         Runtime.getRuntime().addShutdownHook(new Thread(()-> {
-            logger.info("Deactivating server.");
+            logger. info("Deactivating server.");
         }));
         terminal.getBroodMother().getFactoryCommands().values().stream()
                 .filter(AbstractSystemCellFactory::runAtStart)

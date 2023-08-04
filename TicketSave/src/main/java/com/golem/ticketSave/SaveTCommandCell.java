@@ -22,7 +22,7 @@ public class SaveTCommandCell extends AbstractCommand {
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
-        setAnswer(List.of("save?.."));
+        setAnswer(List.of("saving ticket collection.."));
         return this;
     }
 
