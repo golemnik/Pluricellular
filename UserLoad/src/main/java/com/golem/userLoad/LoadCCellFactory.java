@@ -28,7 +28,7 @@ public class LoadCCellFactory extends AbstractCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         LoadCCommandCell cell = new LoadCCommandCell();
-        cell.setCollection(Clients.getInstance());
+        cell.setClients(Clients.getInstance());
         return cell.useSignature(signature);
     }
 }

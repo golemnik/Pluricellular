@@ -33,7 +33,7 @@ public class JsonParser {
         } catch (Exception e) {
             System.out.println("Client data information was corrupted:\n" +
                     "  - Reason <<" + e.getMessage() + ">>");
-            return new Clients();
+            return Clients.getInstance();
         }
     }
     class LocalDateAdapter extends TypeAdapter<LocalDate> {

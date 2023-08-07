@@ -1,6 +1,7 @@
 package com.golem.userSave;
 
 import com.golem.serverCell.clients.Clients;
+import com.golem.serverCell.clients.RegClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -12,6 +13,7 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Map;
 
 public class JsonParser {
     private final String file;
@@ -22,7 +24,7 @@ public class JsonParser {
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateAdapter());
         this.gson = gsonBuilder.setPrettyPrinting().create();
     }
-    public void parseSave (Clients clients) {
+    public void parseSave (Map<String, RegClient> clients) {
         try (BufferedOutputStream bof = new BufferedOutputStream(new FileOutputStream(file))) {
             bof.write((gson.toJson(clients)).getBytes());
         } catch (IOException e) {
