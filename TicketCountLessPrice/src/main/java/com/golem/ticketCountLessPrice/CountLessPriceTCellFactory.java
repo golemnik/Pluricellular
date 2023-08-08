@@ -22,7 +22,7 @@ public class CountLessPriceTCellFactory extends AbstractTCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         CountLessPriceTCell cell = new CountLessPriceTCell();
-        cell.setCollection(getCollection());
+        cell.setManager(getManager());
         return cell.useSignature(signature);
     }
 }

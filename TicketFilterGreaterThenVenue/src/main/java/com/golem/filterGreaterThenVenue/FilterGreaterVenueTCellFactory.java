@@ -48,7 +48,7 @@ public class FilterGreaterVenueTCellFactory extends AbstractTCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         FilterGreaterVenueTCommandCell cell = new FilterGreaterVenueTCommandCell();
-        cell.setCollection(getCollection());
+        cell.setManager(getManager());
         return cell.useSignature(signature);
     }
 }

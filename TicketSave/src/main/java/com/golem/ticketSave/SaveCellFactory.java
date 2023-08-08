@@ -27,7 +27,7 @@ public class SaveCellFactory extends AbstractTCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         SaveTCommandCell cell = new SaveTCommandCell();
-        cell.setCollection(getCollection());
+        cell.setCollection(getManager());
         return cell.useSignature(signature);
     }
 }

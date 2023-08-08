@@ -1,7 +1,6 @@
 package com.golem.ticketShowCell;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
-import com.golem.core.schemas.basicInterfaces.Cell;
 import com.golem.core.schemas.signature.Signature;
 import com.golem.core.schemas.signature.SignatureStatus;
 import com.golem.ticketCell.schemas.AbstractTCellFactory;
@@ -23,7 +22,7 @@ public class ShowTCellFactory extends AbstractTCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         ShowTCommandCell cell = new ShowTCommandCell();
-        cell.setCollection(getCollection());
+        cell.setCollection(getManager());
         return cell;
     }
 }

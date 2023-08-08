@@ -22,7 +22,7 @@ public class DescendPrintTCellFactory extends AbstractTCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         DescendPrintTCommandCell cell = new DescendPrintTCommandCell();
-        cell.setCollection(getCollection());
+        cell.setCollection(getManager());
         return cell;
     }
 }

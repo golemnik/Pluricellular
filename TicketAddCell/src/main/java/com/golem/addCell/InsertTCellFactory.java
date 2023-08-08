@@ -72,7 +72,7 @@ public class InsertTCellFactory extends AbstractTCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         InsertTCommandCell cell = new InsertTCommandCell();
-        cell.setCollection(getCollection());
+        cell.setManager(getManager());
         return cell.useSignature(signature);
     }
 }

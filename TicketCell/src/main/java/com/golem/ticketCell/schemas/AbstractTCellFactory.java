@@ -2,24 +2,24 @@ package com.golem.ticketCell.schemas;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCellFactory;
 import com.golem.core.schemas.signature.Signature;
-import com.golem.ticketCell.collection.TicketCollection;
+import com.golem.ticketCell.access.AbstractAccess;
 
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
 public abstract class AbstractTCellFactory extends AbstractCellFactory {
-    private TicketCollection collection;
+    private AbstractAccess collection;
 
     protected AbstractTCellFactory(Signature signature) {
         super(signature);
     }
 
-    public void addCollection(TicketCollection collection) {
+    public void addManager(AbstractAccess collection) {
         this.collection = collection;
     }
 
-    public TicketCollection getCollection() {
+    public AbstractAccess getManager() {
         return collection;
     }
 

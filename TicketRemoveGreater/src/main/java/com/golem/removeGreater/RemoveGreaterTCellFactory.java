@@ -72,7 +72,7 @@ public class RemoveGreaterTCellFactory extends AbstractTCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         RemoveGreaterTCommandCell cell = new RemoveGreaterTCommandCell();
-        cell.setCollection(getCollection());
+        cell.setCollection(getManager());
         return cell.useSignature(signature);
     }
 }

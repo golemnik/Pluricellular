@@ -2,6 +2,8 @@ package com.golem.addCell;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
+import com.golem.ticketCell.access.AbstractAccess;
+import com.golem.ticketCell.access.AbstractTicketCommand;
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Address;
 import com.golem.ticketCell.collection.ticket.Coordinates;
@@ -14,16 +16,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InsertTCommandCell extends AbstractCommand {
-    private TicketCollection collection;
+public class InsertTCommandCell extends AbstractTicketCommand {
     private Ticket ticket;
     public InsertTCommandCell() {
     }
-
-    public void setCollection(TicketCollection collection) {
-        this.collection = collection;
-    }
-
     @Override
     public void activate() {
         CellPrinter.setMessage(getAnswer().toString());
@@ -39,7 +35,7 @@ public class InsertTCommandCell extends AbstractCommand {
         }
         ticket = new Ticket();
         ticket.setId(id);
-        collection.getCollection().put(String.valueOf(ticket.getId()), ticket);
+        manager.add(String.valueOf(ticket.getId()), ticket);
         ticket.setName(signature.get(1)); // t name
         ticket.setCreationDate(LocalDate.now());
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
@@ -52,7 +48,7 @@ public class InsertTCommandCell extends AbstractCommand {
         Venue venue = new Venue();
 //        System.out.println(">>" + signature.get(7) + "<<");
         if (signature.get(7) != null) { // v name
-            venue.setId(otherMechs.getId(collection));
+            venue.setId(manager.newID());
             venue.setName(signature.get(7));
             venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
             venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type
@@ -74,10 +70,10 @@ public class InsertTCommandCell extends AbstractCommand {
         Pattern pattern = Pattern.compile("^" + "insert( " + SignatureRegex.ID +")?" + "$");
         Matcher m = pattern.matcher(strID);
         if (m.matches() && m.group(2) == null) {
-            return otherMechs.getId(collection);
+            return manager.newID();
         }
         else {
-            if (otherMechs.checkID(collection, Integer.parseInt(m.group(2).trim()))) {
+            if (manager.checkID(Integer.parseInt(m.group(2).trim()))) {
                 return Integer.parseInt(m.group(2).trim());
             }
             return null;

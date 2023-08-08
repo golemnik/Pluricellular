@@ -1,27 +1,22 @@
 package com.golem.ticketCountLessPrice;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
-import com.golem.core.schemas.basicInterfaces.BroodMotherCell;
 import com.golem.core.schemas.basicInterfaces.Cell;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
-import com.golem.ticketCell.collection.TicketCollection;
+import com.golem.ticketCell.access.AbstractAccess;
+import com.golem.ticketCell.access.AbstractTicketCommand;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CountLessPriceTCell extends AbstractCommand implements Cell {
-    private TicketCollection collection;
+public class CountLessPriceTCell extends AbstractTicketCommand implements Cell {
     private Double ticketPrice;
     public CountLessPriceTCell(){}
 
-    public void setCollection(TicketCollection collection) {
-        this.collection = collection;
-    }
     @Override
     public void activate() {
         int counter = 0;
-        for (String s : collection.getCollection().keySet()) {
-            counter += collection.getCollection().get(s).getPrice() < ticketPrice ? 1 : 0;
+        for (String s : manager.getTicketCollection().getCollection().keySet()) {
+            counter += manager.getTicketCollection().getCollection().get(s).getPrice() < ticketPrice ? 1 : 0;
         }
         setAnswer(List.of("Amount elements which price less than <<" +
                 CellPrinter.Colorist.PURPLE(ticketPrice.toString()) + ">>:\n"+

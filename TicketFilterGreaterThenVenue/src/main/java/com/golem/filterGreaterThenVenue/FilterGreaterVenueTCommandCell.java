@@ -1,6 +1,7 @@
 package com.golem.filterGreaterThenVenue;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
+import com.golem.ticketCell.access.AbstractTicketCommand;
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Address;
 import com.golem.ticketCell.collection.ticket.Coordinates;
@@ -10,22 +11,17 @@ import com.golem.ticketCell.collection.ticket.Venue;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterGreaterVenueTCommandCell extends AbstractCommand {
-    private TicketCollection collection;
+public class FilterGreaterVenueTCommandCell extends AbstractTicketCommand {
     private Venue venue;
     public FilterGreaterVenueTCommandCell() {
 
-    }
-
-    public void setCollection(TicketCollection collection) {
-        this.collection = collection;
     }
 
     @Override
     public void activate() {
         List<String> list = new ArrayList<>();
         list.add("Elements list:\n");
-        for (Ticket t : collection.getCollection().values()) {
+        for (Ticket t : manager.getTicketCollection().getCollection().values()) {
             if (venue == null) {
                 continue;
             }
@@ -39,7 +35,7 @@ public class FilterGreaterVenueTCommandCell extends AbstractCommand {
     @Override
     public AbstractCommand useSignature(List<String> signature) {
         venue = new Venue();
-        venue.setId(otherMechs.getId(collection));
+        venue.setId(manager.newID());
         venue.setName(signature.get(7));
         venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
         venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type

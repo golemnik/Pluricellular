@@ -23,7 +23,7 @@ public class RemoveGreaterKeyTCellFactory extends AbstractTCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         RemoveGreaterKeyTCommandCell cell = new RemoveGreaterKeyTCommandCell();
-        cell.setCollection(getCollection());
+        cell.setCollection(getManager());
         return cell.useSignature(signature);
     }
 }
