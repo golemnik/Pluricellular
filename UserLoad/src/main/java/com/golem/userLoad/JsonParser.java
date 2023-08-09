@@ -28,7 +28,7 @@ public class JsonParser {
             while (bif.available() > 0) {
                 temp += (char) bif.read();
             }
-            System.out.println(">>>" + temp);
+//            System.out.println(">>>" + temp);
             return gson.fromJson(temp, Clients.class);
         } catch (Exception e) {
             System.out.println("Client data information was corrupted:\n" +

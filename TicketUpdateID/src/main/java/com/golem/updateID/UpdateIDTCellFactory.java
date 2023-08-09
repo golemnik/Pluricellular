@@ -72,7 +72,7 @@ public class UpdateIDTCellFactory extends AbstractTCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         UpdateIDTCommandCell cell = new UpdateIDTCommandCell();
-        cell.setCollection(getManager());
+        cell.setManager(getManager());
         return cell.useSignature(signature);
     }
 }

@@ -2,6 +2,7 @@ package com.golem.ticketLoad;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
+import com.golem.ticketCell.access.AbstractTicketCommand;
 import com.golem.ticketCell.collection.TicketCollection;
 
 import java.util.List;
@@ -9,16 +10,12 @@ import java.util.List;
 /**
  * Записывает коллекцию в файл.
  */
-public class LoadTCommandCell extends AbstractCommand {
-    private TicketCollection collection;
+public class LoadTCommandCell extends AbstractTicketCommand {
     private final String file = "save.json";
 
     public LoadTCommandCell() {
     }
 
-    public void setCollection(TicketCollection collection) {
-        this.collection = collection;
-    }
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
@@ -40,7 +37,7 @@ public class LoadTCommandCell extends AbstractCommand {
             jp = new JsonParser("save.json");
             t_collection = jp.parseLoad();
         }
-        this.collection.setCreationDate(t_collection.getCreationDate());
-        this.collection.setCollection(t_collection.getCollection());
+        manager.getTicketCollection().setCreationDate(t_collection.getCreationDate());
+        manager.getTicketCollection().setCollection(t_collection.getCollection());
     }
 }

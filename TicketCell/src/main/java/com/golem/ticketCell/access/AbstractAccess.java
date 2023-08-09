@@ -79,6 +79,16 @@ public abstract class AbstractAccess implements CollectionAccess{
         }
     }
 
+    public boolean checkKey(String key) {
+        List<String> ids = new ArrayList<>(collection.getCollection().keySet());
+        for (String in : ids) {
+            if (in.equals(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void clear() {
         collection.getCollection().clear();
@@ -88,6 +98,12 @@ public abstract class AbstractAccess implements CollectionAccess{
     public TicketCollection getTicketCollection() {
         return collection;
     }
+
+    @Override
+    public LinkedHashMap<String, Ticket> getTicketMap() {
+        return collection.getCollection();
+    }
+
     static class AccessComparator implements Comparator<AbstractAccess> {
         @Override
         public int compare(AbstractAccess o1, AbstractAccess o2) {
@@ -102,6 +118,6 @@ public abstract class AbstractAccess implements CollectionAccess{
                 .map(ServiceLoader.Provider::get)
                 .sorted(new AccessComparator())
                 .collect(Collectors.toList())
-                .subList(0, 0);
+                .subList(0, 1);
     }
 }

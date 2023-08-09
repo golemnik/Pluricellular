@@ -22,7 +22,7 @@ public class ShowTCellFactory extends AbstractTCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         ShowTCommandCell cell = new ShowTCommandCell();
-        cell.setCollection(getManager());
+        cell.setManager(getManager());
         return cell;
     }
 }

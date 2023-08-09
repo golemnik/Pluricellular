@@ -23,7 +23,7 @@ public class ReplaceGreaterTCellFactory extends AbstractTCellFactory {
     @Override
     public AbstractCommand create(List<String> signature) {
         ReplaceGreaterTCommandCell cell = new ReplaceGreaterTCommandCell();
-        cell.setCollection(getManager());
+        cell.setManager(getManager());
         return cell.useSignature(signature);
     }
 }

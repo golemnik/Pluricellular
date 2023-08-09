@@ -1,6 +1,7 @@
 package com.golem.updateID;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
+import com.golem.ticketCell.access.AbstractTicketCommand;
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Address;
 import com.golem.ticketCell.collection.ticket.Coordinates;
@@ -9,14 +10,9 @@ import com.golem.ticketCell.collection.ticket.Venue;
 
 import java.util.List;
 
-public class UpdateIDTCommandCell extends AbstractCommand {
-    private TicketCollection collection;
+public class UpdateIDTCommandCell extends AbstractTicketCommand {
     private Ticket ticket;
     public UpdateIDTCommandCell() {
-    }
-
-    public void setCollection(TicketCollection collection) {
-        this.collection = collection;
     }
 
     @Override
@@ -28,14 +24,14 @@ public class UpdateIDTCommandCell extends AbstractCommand {
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
-        if (!otherMechs.checkIdExists(collection, Integer.parseInt(signature.get(0).split(" ")[1]))) {
+        if (!manager.checkID(Integer.parseInt(signature.get(0).split(" ")[1]))) {
             setAnswer(List.of("Element with this id is not exists."));
             return this;
         }
 
         ticket = new Ticket();
         ticket.setId(Integer.parseInt(signature.get(0).split(" ")[1]));
-        collection.getCollection().put(String.valueOf(ticket.getId()), ticket);
+        manager.getTicketMap().put(String.valueOf(ticket.getId()), ticket);
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
         ticket.setComment(signature.get(3)); // t comment
@@ -46,7 +42,7 @@ public class UpdateIDTCommandCell extends AbstractCommand {
         ticket.setCoordinates(coord);
         if (signature.get(7) != null) { // v name
             Venue venue = new Venue();
-            venue.setId(otherMechs.getId(collection));
+            venue.setId(manager.newID());
             venue.setName(signature.get(7));
             venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
             venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type

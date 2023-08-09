@@ -1,33 +1,29 @@
 package com.golem.ticketShowCell;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
+import com.golem.ticketCell.access.AbstractTicketCommand;
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Ticket;
 
 import java.util.List;
 
-public class ShowTCommandCell extends AbstractCommand {
-    private TicketCollection collection;
+public class ShowTCommandCell extends AbstractTicketCommand {
     public ShowTCommandCell () {
 
     }
 
-    public void setCollection(TicketCollection collection) {
-        this.collection = collection;
-    }
-
     @Override
     public void activate() {
-        if (collection == null) {
+        if (manager.getTicketCollection() == null) {
             setAnswer(List.of("Collection is not exist."));
             return;
         }
-        if (collection.getCollection().size() == 0) {
+        if (manager.getTicketMap().size() == 0) {
             setAnswer(List.of("Collection is empty. Nothing to show."));
             return;
         }
         String answer = "";
-        for (Ticket t : collection.getCollection().values()) {
+        for (Ticket t : manager.getTicketMap().values()) {
             answer += "- - - -";
             answer += t.toReadString();
         }

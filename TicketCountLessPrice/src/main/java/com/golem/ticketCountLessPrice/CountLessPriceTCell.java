@@ -15,8 +15,8 @@ public class CountLessPriceTCell extends AbstractTicketCommand implements Cell {
     @Override
     public void activate() {
         int counter = 0;
-        for (String s : manager.getTicketCollection().getCollection().keySet()) {
-            counter += manager.getTicketCollection().getCollection().get(s).getPrice() < ticketPrice ? 1 : 0;
+        for (String s : manager.getTicketMap().keySet()) {
+            counter += manager.getTicketMap().get(s).getPrice() < ticketPrice ? 1 : 0;
         }
         setAnswer(List.of("Amount elements which price less than <<" +
                 CellPrinter.Colorist.PURPLE(ticketPrice.toString()) + ">>:\n"+
