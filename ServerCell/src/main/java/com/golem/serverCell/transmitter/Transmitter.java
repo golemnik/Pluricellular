@@ -33,6 +33,7 @@ public class Transmitter extends AbstractNetConnection {
     private Clients registeredClients = Clients.getInstance();
     private ExecutorService executor;
     private final int POOL_SIZE = 100;
+    boolean ex = false;
     private boolean activateServer () {
         try {
             executor = Executors.newFixedThreadPool(POOL_SIZE);
@@ -66,36 +67,19 @@ public class Transmitter extends AbstractNetConnection {
                     com.activate();
                     logger.info(com.getAnswer());
                 });
-        boolean ex = false;
+        executor.execute(new ConsoleThread(scanner, terminal));
         while (!ex) {
             try {
                 while (!ex) {
-                    socket = serverSocketChannel.accept();
-                    if (!(socket == null)) {
-                        if (socket.isConnected()) {
-                        clients.put(socket, new ConnectedClient(socket, terminal, registeredClients));
-                        }
-                    }
-                    clients.keySet().stream().filter(x -> !x.isConnected()).forEach(clients::remove);
-                    sleep = clients.values().stream()
-                            .anyMatch(ConnectedClient::checkReadiness);
                     try {
-                        executor.execute(() -> clients.values().stream()
-                                .filter(ConnectedClient::checkReadiness)
-                                .map(ConnectedClient::iterate)
-                                .close());
+                        socket = serverSocketChannel.accept();
+                        if (!(socket == null)) {
+                            if (socket.isConnected()) {
+                                executor.execute(new ClientsThread(socket, terminal, registeredClients));
+                            }
+                        }
                     } catch (Exception exec) {
                         executor.shutdown();
-                    }
-
-                    if (scanner.ready()) {
-                        command = SignatureMechanics.consoleInputCycle(scanner, terminal.getBroodMother(), scanner.readLine());
-                        command.activate();
-                        command.getAnswer().forEach(CellPrinter::setMessage);
-                        ex = command.exitable();
-                    }
-                    if (sleep) {
-                        Thread.sleep(10);
                     }
                 }
             }
@@ -133,4 +117,58 @@ public class Transmitter extends AbstractNetConnection {
         oos.flush();
     }
 
+    class ClientsThread implements Runnable {
+        private final SocketChannel socket;
+        private final ConnectedClient client;
+        public ClientsThread (SocketChannel socket, AbstractTerminal terminal, Clients clients) {
+            this.socket = socket;
+            client = new ConnectedClient(socket, terminal, clients);
+        }
+        @Override
+        public void run() {
+            try {
+                while (socket.isConnected()) {
+                    if (client.checkReadiness()) {
+                        client.iterate();
+                    }
+                    else {
+                        Thread.sleep(10);
+                    }
+                }
+            }
+            catch (Exception e) {
+                logger.error("", e);
+            }
+            finally {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    logger.error("", e);
+                }
+            }
+        }
+    }
+
+    class ConsoleThread implements Runnable {
+        private final BufferedReader scanner;
+        private final AbstractTerminal terminal;
+        public ConsoleThread (BufferedReader scanner, AbstractTerminal terminal) {
+            this.scanner = scanner;
+            this.terminal = terminal;
+        }
+
+        @Override
+        public void run() {
+            try {
+                if (scanner.ready()) {
+                    AbstractCommand command = SignatureMechanics.consoleInputCycle(scanner, terminal.getBroodMother(), scanner.readLine());
+                    command.activate();
+                    command.getAnswer().forEach(CellPrinter::setMessage);
+                    ex = command.exitable();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
