@@ -52,9 +52,7 @@ public class Transmitter extends AbstractNetConnection {
     @Override
     public void cycle(AbstractTerminal terminal) {
         BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
-        AbstractCommand command;
         SocketChannel socket;
-        boolean sleep;
 
         if (!activateServer()) return;
         Runtime.getRuntime().addShutdownHook(new Thread(()-> {
@@ -122,10 +120,11 @@ public class Transmitter extends AbstractNetConnection {
         private final ConnectedClient client;
         public ClientsThread (SocketChannel socket, AbstractTerminal terminal, Clients clients) {
             this.socket = socket;
-            client = new ConnectedClient(socket, terminal, clients);
+            client = new ConnectedClient(executor, socket, terminal, clients);
         }
         @Override
         public void run() {
+            logger.info("New ClientsThread:");
             try {
                 while (socket.isConnected()) {
                     if (client.checkReadiness()) {
@@ -159,15 +158,20 @@ public class Transmitter extends AbstractNetConnection {
 
         @Override
         public void run() {
+            logger.info("Opened new ConsoleThread");
             try {
-                if (scanner.ready()) {
-                    AbstractCommand command = SignatureMechanics.consoleInputCycle(scanner, terminal.getBroodMother(), scanner.readLine());
-                    command.activate();
-                    command.getAnswer().forEach(CellPrinter::setMessage);
-                    ex = command.exitable();
+                while (!ex) {
+                    if (scanner.ready()) {
+                        AbstractCommand command = SignatureMechanics
+                                .consoleInputCycle(scanner, terminal.getBroodMother(), scanner.readLine());
+                        command.activate();
+                        command.getAnswer().forEach(CellPrinter::setMessage);
+                        ex = command.exitable();
+                    }
                 }
+
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                logger.error("", e);
             }
         }
     }

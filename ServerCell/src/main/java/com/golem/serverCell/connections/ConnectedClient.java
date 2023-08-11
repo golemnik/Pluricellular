@@ -11,6 +11,7 @@ import java.io.*;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import com.golem.netCell.containers.ContainerType;
 import com.golem.netCell.containers.DataContainer;
@@ -23,7 +24,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ConnectedClient {
-
+    private ExecutorService executor;
     private static final Logger logger = LogManager.getLogger(ConnectedClient.class);
     private final SocketChannel channel;
     private final AbstractTerminal terminal;
@@ -32,7 +33,8 @@ public class ConnectedClient {
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private Clients clients;
-    public ConnectedClient (SocketChannel channel, AbstractTerminal terminal, Clients clients) {
+    public ConnectedClient (ExecutorService executor, SocketChannel channel, AbstractTerminal terminal, Clients clients) {
+        this.executor = executor;
         this.channel = channel;
         this.terminal = terminal;
         this.clients = clients;
@@ -84,7 +86,7 @@ public class ConnectedClient {
             if (answer == null) {
                 answer = new ArrayList<>(List.of("Message received"));
             }
-            Transmitter.reply(oos, answer);
+            executor.execute(new ReplayThread(oos, answer));
             return true;
         }
         catch (Exception e) {
@@ -113,6 +115,25 @@ public class ConnectedClient {
 
     private DataContainer unfoundClient () {
         return new DataContainer(new ArrayList<>(List.of("corrupted", "Client was not found")));
+    }
+
+    class ReplayThread implements Runnable {
+        private final List<String> answer;
+        private final ObjectOutputStream oos;
+
+        ReplayThread (ObjectOutputStream oos, List<String> answer) {
+            this.oos = oos;
+            this.answer = answer;
+        }
+        @Override
+        public void run() {
+            logger.info("New ReplayThread:");
+            try {
+                Transmitter.reply(oos, answer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 }
