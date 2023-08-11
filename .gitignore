@@ -18,3 +18,4 @@
 *.MF
 *.txt
 *.class
+*/*/*.class

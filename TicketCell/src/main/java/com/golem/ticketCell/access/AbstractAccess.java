@@ -4,9 +4,16 @@ import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Ticket;
 
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 public abstract class AbstractAccess implements CollectionAccess{
+    public final ReadWriteLock rwl = new ReentrantReadWriteLock();
+    public final Lock r = rwl.readLock();
+    public final Lock w = rwl.writeLock();
+
     public final int priority;
     private final TicketCollection collection = new TicketCollection();
 
@@ -20,33 +27,59 @@ public abstract class AbstractAccess implements CollectionAccess{
 
     @Override
     public Ticket get(String key) {
-        return collection.getCollection().get(key);
+        r.lock();
+        try {
+            return collection.getCollection().get(key);
+        }
+        finally {
+            r.unlock();
+        }
     }
 
     @Override
     public void add(String key, Ticket ticket) {
-        collection.getCollection().put(key, ticket);
+        w.lock();
+        try {
+            collection.getCollection().put(key, ticket);
+        }
+        finally {
+            w.unlock();
+        }
+
     }
 
     @Override
     public void delete(String key) {
-        collection.getCollection().remove(key);
+        w.lock();
+        try {
+            collection.getCollection().remove(key);
+        }
+        finally {
+            w.unlock();
+        }
     }
 
     @Override
     public void delete(Ticket ticket) {
-        collection.getCollection()
-                .values()
-                .remove(ticket);
+        w.lock();
+        try {
+            collection.getCollection()
+                    .values()
+                    .remove(ticket);
+        }
+        finally {
+            w.unlock();
+        }
     }
 
     @Override
     public boolean checkID(int ID) {
-        if (collection.getCollection().get(String.valueOf(ID)) != null) {
-            return false;
+        w.lock();
+        try {
+            return collection.getCollection().get(String.valueOf(ID)) == null;
         }
-        else {
-            return true;
+        finally {
+            w.unlock();
         }
     }
 
@@ -91,17 +124,35 @@ public abstract class AbstractAccess implements CollectionAccess{
 
     @Override
     public void clear() {
-        collection.getCollection().clear();
+        w.lock();
+        try {
+            collection.getCollection().clear();
+        }
+        finally {
+            w.unlock();
+        }
     }
 
     @Override
     public TicketCollection getTicketCollection() {
-        return collection;
+        w.lock();
+        try {
+            return collection;
+        }
+        finally {
+            w.unlock();
+        }
     }
 
     @Override
     public LinkedHashMap<String, Ticket> getTicketMap() {
-        return collection.getCollection();
+        w.lock();
+        try {
+            return collection.getCollection();
+        }
+        finally {
+            w.unlock();
+        }
     }
 
     static class AccessComparator implements Comparator<AbstractAccess> {

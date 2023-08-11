@@ -14,7 +14,6 @@ import java.util.List;
 public class FilterGreaterVenueTCommandCell extends AbstractTicketCommand {
     private Venue venue;
     public FilterGreaterVenueTCommandCell() {
-
     }
 
     @Override

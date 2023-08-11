@@ -18,6 +18,8 @@ import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -29,8 +31,11 @@ public class Transmitter extends AbstractNetConnection {
     private final String HOSTNAME = "localhost";
     private final int PORT = 60888;
     private Clients registeredClients = Clients.getInstance();
+    private ExecutorService executor;
+    private final int POOL_SIZE = 100;
     private boolean activateServer () {
         try {
+            executor = Executors.newFixedThreadPool(POOL_SIZE);
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.bind(new InetSocketAddress(HOSTNAME, PORT));
             serverSocketChannel.configureBlocking(false);
@@ -48,9 +53,7 @@ public class Transmitter extends AbstractNetConnection {
         BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
         AbstractCommand command;
         SocketChannel socket;
-        Optional<Boolean> sleep;
-
-
+        boolean sleep;
 
         if (!activateServer()) return;
         Runtime.getRuntime().addShutdownHook(new Thread(()-> {
@@ -67,23 +70,31 @@ public class Transmitter extends AbstractNetConnection {
         while (!ex) {
             try {
                 while (!ex) {
-                    socket = serverSocketChannel.accept(); // timeout for waiting?
+                    socket = serverSocketChannel.accept();
                     if (!(socket == null)) {
                         if (socket.isConnected()) {
                         clients.put(socket, new ConnectedClient(socket, terminal, registeredClients));
                         }
                     }
                     clients.keySet().stream().filter(x -> !x.isConnected()).forEach(clients::remove);
-                    sleep = clients.values().stream().filter(ConnectedClient::checkReadiness)
-                            .map(ConnectedClient::iterate)
-                            .reduce((x, y) -> x || y);
+                    sleep = clients.values().stream()
+                            .anyMatch(ConnectedClient::checkReadiness);
+                    try {
+                        executor.execute(() -> clients.values().stream()
+                                .filter(ConnectedClient::checkReadiness)
+                                .map(ConnectedClient::iterate)
+                                .close());
+                    } catch (Exception exec) {
+                        executor.shutdown();
+                    }
+
                     if (scanner.ready()) {
                         command = SignatureMechanics.consoleInputCycle(scanner, terminal.getBroodMother(), scanner.readLine());
                         command.activate();
                         command.getAnswer().forEach(CellPrinter::setMessage);
                         ex = command.exitable();
                     }
-                    if (sleep.isEmpty()) {
+                    if (sleep) {
                         Thread.sleep(10);
                     }
                 }
