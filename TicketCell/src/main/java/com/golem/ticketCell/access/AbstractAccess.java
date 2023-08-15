@@ -9,10 +9,10 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
-public abstract class AbstractAccess implements CollectionAccess{
-    public final ReadWriteLock rwl = new ReentrantReadWriteLock();
-    public final Lock r = rwl.readLock();
-    public final Lock w = rwl.writeLock();
+public abstract class AbstractAccess implements CollectionAccess {
+    protected final ReadWriteLock rwl = new ReentrantReadWriteLock();
+    protected final Lock r = rwl.readLock();
+    protected final Lock w = rwl.writeLock();
 
     public final int priority;
     private final TicketCollection collection = new TicketCollection();
@@ -82,6 +82,7 @@ public abstract class AbstractAccess implements CollectionAccess{
             w.unlock();
         }
     }
+
 
     @Override
     public int newID() {
