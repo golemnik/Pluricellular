@@ -7,7 +7,6 @@ import com.golem.ticketCell.collection.ticket.Ticket;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Properties;
 
@@ -51,6 +50,10 @@ public class DatabaseManager extends AbstractAccess {
         }
     }
 
+    private boolean initDataload () {
+        return true;
+    }
+
     @Override
     public Ticket get(String key) {
         return null;
@@ -81,13 +84,14 @@ public class DatabaseManager extends AbstractAccess {
         return false;
     }
 
-    private static int ID = 0;
+    private static int lastID = 0;
     @Override
     public int newID() {
         return generateID();
     }
 
     protected int generateID () {
+
         return ID++;
     }
     @Override
