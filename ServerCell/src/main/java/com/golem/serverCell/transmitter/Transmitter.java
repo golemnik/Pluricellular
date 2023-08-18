@@ -6,6 +6,8 @@ import com.golem.core.schemas.basicAbstractions.AbstractTerminal;
 import com.golem.core.schemas.signature.Signature;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
 import com.golem.core.schemas.signature.SignatureMechanics;
+import com.golem.informer.Informer;
+import com.golem.informer.Level;
 import com.golem.netCell.containers.ContainerType;
 import com.golem.netCell.containers.DataContainer;
 import com.golem.netCell.containers.SignatureContainer;
@@ -124,7 +126,7 @@ public class Transmitter extends AbstractNetConnection {
         }
         @Override
         public void run() {
-            logger.info("New ClientsThread:");
+            Informer.log(Level.INFO, "New ClientsThread:");
             try {
                 while (socket.isConnected()) {
                     if (client.checkReadiness()) {
@@ -158,7 +160,7 @@ public class Transmitter extends AbstractNetConnection {
 
         @Override
         public void run() {
-            logger.info("Opened new ConsoleThread");
+            Informer.log(Level.INFO, "Opened new ConsoleThread");
             try {
                 while (!ex) {
                     if (scanner.ready()) {

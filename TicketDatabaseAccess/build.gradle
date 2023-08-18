@@ -9,15 +9,26 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    psql
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     implementation project(':Core')
     implementation project(':TicketCell')
+    implementation project(':Informer')
+
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
+    psql group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
 
 }
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    destinationDir = file("../exp/server/genome")
 }

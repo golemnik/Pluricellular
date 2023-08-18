@@ -12,6 +12,7 @@ module Pluricellular.ServerCell.main {
     requires ColonyCore;
     requires Pluricellular.NetCell.main;
     requires org.apache.logging.log4j;
+    requires Pluricellular.Informer.main;
 
     exports com.golem.serverCell.serverCommands;
     exports com.golem.serverCell.clients;

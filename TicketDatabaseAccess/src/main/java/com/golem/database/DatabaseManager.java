@@ -7,32 +7,42 @@ import com.golem.ticketCell.collection.ticket.Ticket;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Properties;
 
 public class DatabaseManager extends AbstractAccess {
     private Connection connection;
     private Properties properties;
+    private Statement statement;
 
     private final String url = "jdbc:postgresql://pg/studs";
-    private final String test_url = "jdbc:postgresql://pg/studs";
     private final String user = "368324";
     private final String password = "secret";
+
+    private final String test_url = "jdbc:postgresql://localhost:5432/postgres";
+    private final String test_user = "postgres";
+    private final String test_password = "pgAdmin";
 
     {
         init();
     }
 
     public DatabaseManager () {
-
+        super(10);
     }
 
     private boolean init () {
+        properties = new Properties();
         properties.setProperty("ssl", "false");
-        properties.setProperty("user", user);
-        properties.setProperty("password", password);
+        properties.setProperty("user", test_user);
+        properties.setProperty("password", test_password);
 
         try {
             connection = DriverManager.getConnection(test_url, properties);
+            statement = connection.createStatement();
+
+            System.out.println("Connected");
             return true;
         }
         catch (Exception e) {
@@ -71,11 +81,15 @@ public class DatabaseManager extends AbstractAccess {
         return false;
     }
 
+    private static int ID = 0;
     @Override
     public int newID() {
-        return 0;
+        return generateID();
     }
 
+    protected int generateID () {
+        return ID++;
+    }
     @Override
     public void clear() {
 
