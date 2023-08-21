@@ -92,7 +92,6 @@ public class DatabaseManager extends AbstractAccess {
 
     protected int generateID () {
 
-        return ID++;
     }
     @Override
     public void clear() {

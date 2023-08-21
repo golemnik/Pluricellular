@@ -13,45 +13,44 @@ create type VenueType as enum (
     'MALL'
 );
 
-create table if not exists Coordinates (
+create table if not exists coordinates (
     id serial primary key,
     _x decimal,
     _y decimal
 );
 
-create table if not exists Address (
+create table if not exists addresses (
     id serial primary key,
     _street varchar(200)
 );
 
-create table if not exists Client (
+create table if not exists clients (
     id serial primary key,
     _name varchar(50)
 );
 
-create table if not exists Venue (
+create table if not exists venues (
      id serial primary key,
-     _v_id serial,
      _name varchar(50),
      _capacity decimal,
      _type VenueType,
      _address_id integer,
-     foreign key (_address_id) references Address (id)
+     foreign key (_address_id) references addresses (id)
 );
 
-create table if not exists Ticket (
+create table if not exists tickets (
     id serial primary key,
-    _t_id serial,
     _name varchar(50),
-    _coordinates Coordinates,
+    _coordinate_id integer,
     _creationDate date,
     _price double precision,
     _comment varchar(200),
     _type TicketType,
     _venue_id integer,
-    foreign key (_venue_id) references Venue (id),
     _client_id integer,
-    foreign key (_client_id) references Client (id)
+    foreign key (_venue_id) references venues (id),
+    foreign key (_client_id) references clients (id),
+    foreign key (_coordinate_id) references coordinates (id)
 );
 
 

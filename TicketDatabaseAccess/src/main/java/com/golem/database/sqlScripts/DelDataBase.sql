@@ -5,10 +5,10 @@ cascade;
 
 drop table if exists
     Coordinates,
-    Address,
-    Client,
-    Venue,
-    Ticket
+    Addresses,
+    Clients,
+    Venues,
+    Tickets
 cascade;
 
 
