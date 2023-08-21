@@ -4,6 +4,10 @@ import com.golem.ticketCell.collection.ConsoleRead;
 
 public class Venue implements Comparable<Venue>, ConsoleRead {
     private Integer id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private String name; //Поле не может быть null, Строка не может быть пустой
+    private Long capacity; //Значение поля должно быть больше 0
+    private VenueType type; //Поле может быть null
+    private Address address; //Поле не может быть null
 
     public void setId(Integer id) {
         this.id = id;
@@ -13,8 +17,6 @@ public class Venue implements Comparable<Venue>, ConsoleRead {
         return id;
     }
 
-    private String name; //Поле не может быть null, Строка не может быть пустой
-
     public void setName(String name) {
         this.name = name;
     }
@@ -22,8 +24,6 @@ public class Venue implements Comparable<Venue>, ConsoleRead {
     public String getName() {
         return name;
     }
-
-    private Long capacity; //Значение поля должно быть больше 0
 
     public void setCapacity(Long capacity) {
         this.capacity = capacity;
@@ -33,8 +33,6 @@ public class Venue implements Comparable<Venue>, ConsoleRead {
         return capacity;
     }
 
-    private VenueType type; //Поле может быть null
-
     public void setType(VenueType type) {
         this.type = type;
     }
@@ -42,8 +40,6 @@ public class Venue implements Comparable<Venue>, ConsoleRead {
     public VenueType getType() {
         return type;
     }
-
-    private Address address; //Поле не может быть null
 
     public void setAddress(Address address) {
         this.address = address;
