@@ -1,8 +1,8 @@
 package com.golem.updateID;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
+import com.golem.core.schemas.providedRealisations.CellPrinter;
 import com.golem.ticketCell.access.AbstractTicketCommand;
-import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Address;
 import com.golem.ticketCell.collection.ticket.Coordinates;
 import com.golem.ticketCell.collection.ticket.Ticket;
@@ -18,7 +18,7 @@ public class UpdateIDTCommandCell extends AbstractTicketCommand {
     @Override
     public void activate() {
         if (ticket != null) {
-            System.out.println(ticket.toReadString());
+            CellPrinter.setMessage(ticket.toReadString());
         }
     }
 
@@ -42,7 +42,7 @@ public class UpdateIDTCommandCell extends AbstractTicketCommand {
         ticket.setCoordinates(coord);
         if (signature.get(7) != null) { // v name
             Venue venue = new Venue();
-            venue.setId(manager.newID());
+            venue.setId(Integer.parseInt(signature.get(0).split(" ")[1]));
             venue.setName(signature.get(7));
             venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
             venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type

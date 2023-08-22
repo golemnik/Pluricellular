@@ -2,9 +2,7 @@ package com.golem.addCell;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
-import com.golem.ticketCell.access.AbstractAccess;
 import com.golem.ticketCell.access.AbstractTicketCommand;
-import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Address;
 import com.golem.ticketCell.collection.ticket.Coordinates;
 import com.golem.ticketCell.collection.ticket.Ticket;
@@ -27,15 +25,11 @@ public class InsertTCommandCell extends AbstractTicketCommand {
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
-
-        Integer id = collectionID(signature.get(0));
-        if (id == null) {
+        if (collectionID(signature.get(0))) {
             setAnswer(List.of("This id is already used. Insert failed."));
             return this;
         }
         ticket = new Ticket();
-        ticket.setId(id);
-        manager.add(String.valueOf(ticket.getId()), ticket);
         ticket.setName(signature.get(1)); // t name
         ticket.setCreationDate(LocalDate.now());
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
@@ -46,9 +40,7 @@ public class InsertTCommandCell extends AbstractTicketCommand {
         coord.setY(Long.parseLong(signature.get(6))); // t y
         ticket.setCoordinates(coord);
         Venue venue = new Venue();
-//        System.out.println(">>" + signature.get(7) + "<<");
         if (signature.get(7) != null) { // v name
-            venue.setId(manager.newID());
             venue.setName(signature.get(7));
             venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
             venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type
@@ -61,22 +53,20 @@ public class InsertTCommandCell extends AbstractTicketCommand {
             venue = null;
             ticket.setVenue(venue);
         }
+        manager.add(String.valueOf(ticket.getId()), ticket);
         setAnswer(List.of("Element successfully inserted."));
         return this;
     }
 
 
-    private Integer collectionID (String strID) {
+    private boolean collectionID (String strID) {
         Pattern pattern = Pattern.compile("^" + "insert( " + SignatureRegex.ID +")?" + "$");
         Matcher m = pattern.matcher(strID);
         if (m.matches() && m.group(2) == null) {
-            return manager.newID();
+            return false;
         }
         else {
-            if (manager.checkID(Integer.parseInt(m.group(2).trim()))) {
-                return Integer.parseInt(m.group(2).trim());
-            }
-            return null;
+            return manager.checkID(Integer.parseInt(m.group(2).trim()));
         }
     }
 }

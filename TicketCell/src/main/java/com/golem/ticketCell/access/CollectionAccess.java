@@ -12,7 +12,6 @@ public interface CollectionAccess {
     void delete (Ticket ticket);
     boolean checkID (int ID);
     boolean checkKey (String key);
-    int newID ();
     void clear ();
     TicketCollection getTicketCollection();
     LinkedHashMap<String, Ticket> getTicketMap();

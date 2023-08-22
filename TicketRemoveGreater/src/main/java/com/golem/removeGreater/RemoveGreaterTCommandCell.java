@@ -26,7 +26,7 @@ public class RemoveGreaterTCommandCell extends AbstractTicketCommand {
     @Override
     public AbstractCommand useSignature(List<String> signature) {
         ticket = new Ticket();
-        ticket.setId(manager.newID());
+        ticket.setId(0);
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
         ticket.setComment(signature.get(3)); // t comment
@@ -37,7 +37,7 @@ public class RemoveGreaterTCommandCell extends AbstractTicketCommand {
         ticket.setCoordinates(coord);
         if (signature.get(7) != null) { // v name
             Venue venue = new Venue();
-            venue.setId(manager.newID());
+            venue.setId(0);
             venue.setName(signature.get(7));
             venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
             venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type

@@ -1,12 +1,15 @@
 package com.golem.database;
 
 import com.golem.core.schemas.providedRealisations.CellPrinter;
+import com.golem.informer.Informer;
+import com.golem.informer.Level;
 import com.golem.ticketCell.access.AbstractAccess;
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Ticket;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Properties;
 
@@ -84,15 +87,19 @@ public class DatabaseManager extends AbstractAccess {
         return false;
     }
 
-    private static int lastID = 0;
     @Override
-    public int newID() {
-        return generateID();
+    protected int newID() {
+        try {
+            return statement
+                    .executeQuery("select currval (id) from tickets;")
+                    .getInt(0);
+        }
+        catch (Exception e) {
+            Informer.log(Level.ERROR, e);
+        }
+        return 0;
     }
 
-    protected int generateID () {
-
-    }
     @Override
     public void clear() {
 

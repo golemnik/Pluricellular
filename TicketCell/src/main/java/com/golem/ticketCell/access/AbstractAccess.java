@@ -40,6 +40,8 @@ public abstract class AbstractAccess implements CollectionAccess {
     public void add(String key, Ticket ticket) {
         w.lock();
         try {
+            ticket.setId(newID());
+            ticket.getVenue().setId(newID());
             collection.getCollection().put(key, ticket);
         }
         finally {
@@ -83,33 +85,32 @@ public abstract class AbstractAccess implements CollectionAccess {
         }
     }
 
-
-    @Override
-    public int newID() {
+    private static int lastID = 1;
+    protected int newID() {
         List<Integer> ids = new ArrayList<>();
         boolean useId = true;
         collection.getCollection().values().forEach(x -> ids.add(x.getId()));
         collection.getCollection().values().forEach(x -> ids.add(x.getVenue().getId()));
         ids.removeIf(Objects::isNull);
-        int i = 1;
-        System.out.println(ids);
         if (ids.size() == 0) {
-            return i;
+            return lastID++;
         }
+        Collections.sort(ids);
+        lastID = ids.get(ids.size() - 1);
         while (true) {
             for (Integer in : ids) {
-                if (in == i) {
+                if (in == lastID) {
                     useId = false;
                     break;
                 }
             }
             if (useId) {
-                return i;
+                return lastID;
             }
             else {
                 useId = true;
             }
-            i++;
+            lastID++;
         }
     }
 

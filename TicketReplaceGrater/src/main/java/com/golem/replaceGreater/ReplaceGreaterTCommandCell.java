@@ -8,6 +8,7 @@ import com.golem.ticketCell.collection.ticket.Coordinates;
 import com.golem.ticketCell.collection.ticket.Ticket;
 import com.golem.ticketCell.collection.ticket.Venue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReplaceGreaterTCommandCell extends AbstractTicketCommand {
@@ -20,10 +21,13 @@ public class ReplaceGreaterTCommandCell extends AbstractTicketCommand {
 
     @Override
     public void activate() {
+        List<String> answer = new ArrayList<>();
         if (manager.getTicketMap().get(key).compareTo(ticket) > 0 && change) {
-            manager.getTicketMap().put(key, ticket);
+            manager.add(key, ticket);
+            answer.add("Element was replaced.");
         }
-        setAnswer(List.of("Collection was successfully updated."));
+        answer.add("Collection was successfully updated.");
+        setAnswer(answer);
     }
 
     @Override
@@ -35,7 +39,6 @@ public class ReplaceGreaterTCommandCell extends AbstractTicketCommand {
         }
         change = true;
         ticket = new Ticket();
-        ticket.setId(manager.newID());
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
         ticket.setComment(signature.get(3)); // t comment
@@ -46,7 +49,6 @@ public class ReplaceGreaterTCommandCell extends AbstractTicketCommand {
         ticket.setCoordinates(coord);
         if (signature.get(7) != null) { // v name
             Venue venue = new Venue();
-            venue.setId(manager.newID());
             venue.setName(signature.get(7));
             venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
             venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type

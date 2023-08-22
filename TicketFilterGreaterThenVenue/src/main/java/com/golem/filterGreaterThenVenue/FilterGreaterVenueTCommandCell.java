@@ -34,7 +34,7 @@ public class FilterGreaterVenueTCommandCell extends AbstractTicketCommand {
     @Override
     public AbstractCommand useSignature(List<String> signature) {
         venue = new Venue();
-        venue.setId(manager.newID());
+        venue.setId(0);
         venue.setName(signature.get(7));
         venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
         venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type
