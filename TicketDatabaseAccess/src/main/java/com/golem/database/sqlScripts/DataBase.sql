@@ -24,11 +24,6 @@ create table if not exists addresses (
     _street varchar(200)
 );
 
-create table if not exists clients (
-    id serial primary key,
-    _name varchar(50)
-);
-
 create table if not exists venues (
      id serial primary key,
      _name varchar(50),
@@ -47,9 +42,8 @@ create table if not exists tickets (
     _comment varchar(200),
     _type TicketType,
     _venue_id integer,
-    _client_id integer,
+    _owner varchar(50),
     foreign key (_venue_id) references venues (id),
-    foreign key (_client_id) references clients (id),
     foreign key (_coordinate_id) references coordinates (id)
 );
 

@@ -37,7 +37,7 @@ public class SignatureMechanics {
             }
             inputSignature.add(input);
         }
-        return broodMother.createCell(cell.split(" ")[0], inputSignature);
+        return broodMother.createCell(cell.split(" ")[0], inputSignature, null);
     }
 
     public static AbstractCommand consoleInputCycle (BufferedReader scanner, AbstractBroodMother broodMother, String cell) throws IOException {
@@ -63,7 +63,7 @@ public class SignatureMechanics {
             }
             inputSignature.add(input);
         }
-        return broodMother.createCell(cell.split(" ")[0], inputSignature);
+        return broodMother.createCell(cell.split(" ")[0], inputSignature, null);
     }
 
     public static AbstractCommand consoleInputIter (Scanner scanner, AbstractBroodMother broodMother, String cell) {
@@ -89,11 +89,11 @@ public class SignatureMechanics {
             }
             inputSignature.add(input);
         }
-        return broodMother.createCell(cell.split(" ")[0], inputSignature);
+        return broodMother.createCell(cell.split(" ")[0], inputSignature, null);
     }
 
     public static AbstractCommand createWithSignature (String cell, List<String> inputSignature, AbstractBroodMother broodMother) {
-        return broodMother.createCell(cell.split(" ")[0], inputSignature);
+        return broodMother.createCell(cell.split(" ")[0], inputSignature, null);
     }
 
     public static List<Signature> signatureList (AbstractBroodMother broodMother) {

@@ -38,7 +38,7 @@ public class ExecuteScriptCommandCell extends AbstractCommand implements Cell {
                         dataList = listExchange(commandsQueue, broodMother.getFactoryCommands().get(command).getSignature().patternSignature().size());
                         dataList = listCheck(dataList, broodMother.getFactoryCommands().get(command).getSignature().patternSignature());
                         if (dataList != null) {
-                            cellCommand = broodMother.createCell(command, dataList);
+                            cellCommand = broodMother.createCell(command, dataList, getLogin());
                             cellCommand.activate();
                             anwser.add(cellCommand.getAnswer().toString());
                             CellPrinter.setMessage(cellCommand.getAnswer().toString());

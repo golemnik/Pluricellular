@@ -5,6 +5,12 @@ import com.golem.core.schemas.basicInterfaces.Cell;
 import java.util.List;
 
 public abstract class AbstractCommand implements Cell {
+    private String login = null;
+
+    public String getLogin() {
+        return login;
+    }
+
     private List<String> answer;
     public void setAnswer(List<String> answer) {
         this.answer = answer;
@@ -16,4 +22,9 @@ public abstract class AbstractCommand implements Cell {
         return false;
     }
     public abstract AbstractCommand useSignature (List<String> signature);
+
+    public AbstractCommand setLogin (String login) {
+        this.login = login;
+        return this;
+    }
 }

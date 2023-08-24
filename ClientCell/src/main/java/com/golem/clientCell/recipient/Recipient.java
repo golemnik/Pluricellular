@@ -58,7 +58,7 @@ public class Recipient extends AbstractNetConnection {
 
                 if (!(recipientMech.getSignatureMap().get(signatureList.get(0).split(" ")[0])
                         .status() == SignatureStatus.PROVIDED)) {
-                    command = terminal.getBroodMother().createCell(signatureList.get(0).split(" ")[0], signatureList);
+                    command = terminal.getBroodMother().createCell(signatureList.get(0).split(" ")[0], signatureList, null);
                     command.activate();
                     command.getAnswer().forEach(CellPrinter::setMessage);
                     ex = command.exitable();

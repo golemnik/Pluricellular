@@ -16,7 +16,6 @@ import java.util.Properties;
 public class DatabaseManager extends AbstractAccess {
     private Connection connection;
     private Properties properties;
-    private Statement statement;
 
     private final String url = "jdbc:postgresql://pg/studs";
     private final String user = "368324";
@@ -42,8 +41,6 @@ public class DatabaseManager extends AbstractAccess {
 
         try {
             connection = DriverManager.getConnection(test_url, properties);
-            statement = connection.createStatement();
-
             System.out.println("Connected");
             return true;
         }
@@ -59,15 +56,16 @@ public class DatabaseManager extends AbstractAccess {
     }
 
     @Override
-    public void add(String key, Ticket ticket) {
+    public void add(String key, Ticket ticket, String login) {
         w.lock();
         try {
             ticket.setId(newID());
             ticket.getVenue().setId(newID());
-            statement.execute("");
+            insertTickets(ticket, selectClientsID());
             getCollection().getCollection().put(key, ticket);
-        }
-        finally {
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
             w.unlock();
         }
     }
@@ -113,21 +111,6 @@ public class DatabaseManager extends AbstractAccess {
     @Override
     public TicketCollection getTicketCollection() {
         return null;
-    }
-
-    protected boolean checkClients (String name) throws SQLException {
-        return statement
-                .executeQuery("select exists (select * from clients where _name = '" + name + "');")
-                .getBoolean(0);
-    }
-
-    protected void insertClients (String name) throws SQLException {
-        statement.executeUpdate("insert into clients (_name) values (" +
-                quotes(name) + ");");
-    }
-
-    protected int selectClientsID () throws SQLException {
-        return statement.executeQuery("select currval (id) from clients;").getInt(0);
     }
 
     protected void insertCoordinates (Coordinates coordinates) throws SQLException {

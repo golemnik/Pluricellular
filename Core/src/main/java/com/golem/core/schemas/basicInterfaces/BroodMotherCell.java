@@ -21,7 +21,7 @@ public interface BroodMotherCell extends Cell {
     <T extends AbstractSystemCellFactory> void reloadFactoryList(List<T> factoryList, List<AbstractQueenCell> queens);
 
     void clearAllFactoryList();
-    AbstractCommand createCell (String cell, List<String> signature);
+    AbstractCommand createCell (String cell, List<String> signature, String login);
 
     static List<BroodMotherCell> getCellBroodMothers(ModuleLayer layer) {
         return ServiceLoader
