@@ -146,6 +146,10 @@ public abstract class AbstractAccess implements CollectionAccess {
         }
     }
 
+    protected TicketCollection getCollection () {
+        return collection;
+    }
+
     @Override
     public LinkedHashMap<String, Ticket> getTicketMap() {
         w.lock();
