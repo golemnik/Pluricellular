@@ -93,8 +93,8 @@ public class DatabaseManager extends AbstractAccess {
     @Override
     protected int newID() {
         try {
-            return statement
-                    .executeQuery("select currval (id) from tickets;")
+            return connection.createStatement()
+                    .executeQuery("select currval (id) from tickets")
                     .getInt(0);
         }
         catch (Exception e) {
@@ -114,47 +114,80 @@ public class DatabaseManager extends AbstractAccess {
     }
 
     protected void insertCoordinates (Coordinates coordinates) throws SQLException {
-        String sql = "insert into coordinates (_x, _y) values (" +
-                sqlArg(coordinates.getX().toString()) +
-                quotes(coordinates.getY().toString()) + ");";
-        statement.executeUpdate(sql);
+        PreparedStatement statement = connection
+                .prepareStatement("insert into coordinates (_x, _y) values (?, ?)");
+        statement.setLong(1, coordinates.getX());
+        statement.setLong(2, coordinates.getY());
+        statement.execute();
     }
 
-    protected int selectCoordinatesID () throws SQLException {
-        return statement.executeQuery("select currval (id) from coordinates;").getInt(0);
+    protected int selectCoordinatesID (Coordinates coordinates, boolean last) throws SQLException {
+        if (last) {
+            return connection
+                    .createStatement()
+                    .executeQuery("select currval (id) from coordinates;")
+                    .getInt(1);
+        }
+        PreparedStatement statement = connection.prepareStatement("select id from coordinates where _x = ? and _y = ?");
+        statement.setLong(1, coordinates.getX());
+        statement.setLong(2, coordinates.getY());
+        return statement.executeQuery().getInt(1);
     }
 
     protected void insertAddresses (Address address) throws SQLException {
-        String sql = "insert into addresses (_street) values (" +
-                quotes(address.getStreet()) + "); ";
-        statement.executeUpdate(sql);
+        PreparedStatement statement = connection
+                .prepareStatement("insert into addresses (_street) values (?)");
+        statement.setString(1, address.getStreet());
+        statement.execute();
     }
 
-    protected int selectAddressesID () throws SQLException {
-        return statement.executeQuery("select currval (id) from addresses;").getInt(0);
+    protected int selectAddressesID (Address address, boolean last) throws SQLException {
+        if (last) {
+            return connection
+                    .createStatement()
+                    .executeQuery("select currval (id) from addresses;")
+                    .getInt(1);
+        }
+        PreparedStatement statement = connection.prepareStatement("select id from addresses where _street = ?");
+        statement.setString(1, address.getStreet());
+        return statement.executeQuery().getInt(1);
     }
 
     protected void insertVenues (Venue venue) throws SQLException {
         insertAddresses(venue.getAddress());
-        String sql = "insert into venues (_name, _capacity, _type, _address_id) values (" +
-                sqlArg(venue.getName()) +
-                sqlArg(venue.getCapacity().toString())+
-                sqlArg(venue.getType().toString()) +
-                quotes(String.valueOf(selectAddressesID())) + ");";
-        statement.executeUpdate(sql);
+        PreparedStatement statement = connection
+                .prepareStatement("insert into venues (_name, _capacity, _type, _address_id) values (?,?,?,?)");
+        statement.setString(1, venue.getName());
+        statement.setLong(2, venue.getCapacity());
+        statement.setObject(3, venue.getType());
+        statement.setInt(4, selectAddressesID(venue.getAddress(), true));
+        statement.execute();
     }
 
     protected int selectVenuesID () throws SQLException {
-        return statement.executeQuery("select currval (id) from venues;").getInt(0);
+        return connection.createStatement().executeQuery("select currval (id) from venues").getInt(1);
     }
 
     protected void insertTickets (Ticket ticket, int client_id) throws SQLException {
         insertCoordinates(ticket.getCoordinates());
         insertVenues(ticket.getVenue());
-        String sql1 = "insert into tickets (_name, _coordinate_id, _creationdate, _price, _comment, _type, _venue_id, _client_id) values (";
+
+        PreparedStatement statement = connection
+                .prepareStatement("insert into tickets (" +
+                        "_name, " +
+                        "_coordinate_id, " +
+                        "_creationdate, " +
+                        "_price, " +
+                        "_comment, " +
+                        "_type, " +
+                        "_venue_id, " +
+                        "_owner) values (")
+
+
+        String sql1 = "insert into tickets (_name, _coordinate_id, _creationdate, _price, _comment, _type, _venue_id, _owner) values (";
         String sql2 =
                 sqlArg(ticket.getName()) +
-                sqlArg(String.valueOf(selectCoordinatesID())) +
+                sqlArg(String.valueOf(selectCoordinatesID(ticket.getCoordinates(), true))) +
                 sqlArg(ticket.getCreationDate().toString()) +
                 sqlArg(ticket.getPrice().toString()) +
                 sqlArg(ticket.getComment()) +
