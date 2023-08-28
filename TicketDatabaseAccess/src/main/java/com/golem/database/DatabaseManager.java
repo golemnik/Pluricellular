@@ -175,7 +175,7 @@ public class DatabaseManager extends AbstractAccess {
     }
 
     protected int selectCoordinatesID () throws SQLException {
-        ResultSet set =  connection
+        ResultSet set = connection
                 .createStatement()
                 .executeQuery("select currval ('coordinates_id_seq')");
         set.next();

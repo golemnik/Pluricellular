@@ -35,7 +35,7 @@ create table if not exists venues (
 
 create table if not exists tickets (
     id serial primary key,
-    _key text,
+    _key text unique,
     _name text,
     _coordinate_id integer,
     _creationDate date,
@@ -48,5 +48,7 @@ create table if not exists tickets (
     foreign key (_coordinate_id) references coordinates (id)
 );
 
-
-
+create table if not exists collection_props (
+  id integer primary key CHECK ( id = 1 ) default 1,
+  _creation date
+);
