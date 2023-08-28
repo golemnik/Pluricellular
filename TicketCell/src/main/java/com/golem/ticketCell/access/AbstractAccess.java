@@ -37,7 +37,7 @@ public abstract class AbstractAccess implements CollectionAccess {
     }
 
     @Override
-    public void add(String key, Ticket ticket) {
+    public void add(String key, Ticket ticket, String login) {
         w.lock();
         try {
             ticket.setId(newID());
@@ -146,9 +146,15 @@ public abstract class AbstractAccess implements CollectionAccess {
         }
     }
 
+    @Override
+    public TicketCollection getTicketCollection(String login) {
+        return getTicketCollection();
+    }
+
     protected TicketCollection getCollection () {
         return collection;
     }
+
 
     @Override
     public LinkedHashMap<String, Ticket> getTicketMap() {
@@ -164,7 +170,7 @@ public abstract class AbstractAccess implements CollectionAccess {
     static class AccessComparator implements Comparator<AbstractAccess> {
         @Override
         public int compare(AbstractAccess o1, AbstractAccess o2) {
-            return o1.priority - o2.priority;
+            return o2.priority - o1.priority;
         }
     }
 

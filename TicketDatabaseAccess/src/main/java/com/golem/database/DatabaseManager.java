@@ -21,7 +21,7 @@ public class DatabaseManager extends AbstractAccess {
     private final String user = "368324";
     private final String password = "secret";
 
-    private final String test_url = "jdbc:postgresql://localhost:5432/postgres";
+    private final String test_url = "jdbc:postgresql://localhost:5432/test1";
     private final String test_user = "postgres";
     private final String test_password = "pgAdmin";
 
@@ -31,6 +31,8 @@ public class DatabaseManager extends AbstractAccess {
 
     public DatabaseManager () {
         super(10);
+        Informer.log(Level.INFO, "Database manager connected...");
+
     }
 
     private boolean init () {
@@ -38,7 +40,8 @@ public class DatabaseManager extends AbstractAccess {
         properties.setProperty("ssl", "false");
         properties.setProperty("user", test_user);
         properties.setProperty("password", test_password);
-
+        properties.setProperty("stringtype", "unspecified");
+//        properties.setProperty("options", "-c client_encoding=win866");
         try {
             connection = DriverManager.getConnection(test_url, properties);
             System.out.println("Connected");
@@ -59,12 +62,13 @@ public class DatabaseManager extends AbstractAccess {
     public void add(String key, Ticket ticket, String login) {
         w.lock();
         try {
+            Informer.log(Level.INFO, "DB inserting ticket");
             ticket.setId(newID());
             ticket.getVenue().setId(newID());
-            insertTickets(ticket, selectClientsID());
+            insertTickets(key, ticket, login);
             getCollection().getCollection().put(key, ticket);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Informer.log(Level.ERROR, e);
         } finally {
             w.unlock();
         }
@@ -93,87 +97,132 @@ public class DatabaseManager extends AbstractAccess {
     @Override
     protected int newID() {
         try {
-            return connection.createStatement()
-                    .executeQuery("select currval (id) from tickets")
-                    .getInt(0);
+            ResultSet set = connection.createStatement()
+                    .executeQuery("select currval (id) from public.tickets");
+            if (set.next()) {
+                return set.getInt(1);
+            }
         }
         catch (Exception e) {
             Informer.log(Level.ERROR, e);
         }
-        return 0;
+        return 1;
     }
 
     @Override
     public void clear() {
+        w.lock();
+        try {
+            connection.createStatement().execute("delete from public.tickets");
+            connection.createStatement().execute("delete from public.venues");
+            connection.createStatement().execute("delete from public.coordinates");
+            connection.createStatement().execute("delete from public.addresses");
+        }
+        catch (Exception e) {
+            Informer.log(Level.ERROR, e);
+        }
+        finally {
+            w.unlock();
+        }
+    }
 
+    public void clear (String owner) {
+        w.lock();
+        try {
+            connection.createStatement().execute("delete from public.tickets");
+            connection.createStatement().execute("delete from public.venues");
+            connection.createStatement().execute("delete from public.coordinates");
+            connection.createStatement().execute("delete from public.addresses");
+        }
+        catch (Exception e) {
+            Informer.log(Level.ERROR, e);
+        }
+        finally {
+            w.unlock();
+        }
     }
 
     @Override
-    public TicketCollection getTicketCollection() {
-        return null;
+    public TicketCollection getTicketCollection(String login) {
+        w.lock();
+        try {
+            TicketCollection collection = new TicketCollection();
+            PreparedStatement statement = connection
+                    .prepareStatement("select * from public.tickets where _owner = '" + login + "'");
+            ResultSet rs = statement.executeQuery();
+            do {
+                Informer.log(Level.INFO, "cycled...");
+            }
+            while (rs.next());
+
+
+            return null;
+        } catch (SQLException e) {
+            Informer.log(Level.ERROR, e);
+            return null;
+        } finally {
+            w.unlock();
+        }
+
     }
 
     protected void insertCoordinates (Coordinates coordinates) throws SQLException {
         PreparedStatement statement = connection
-                .prepareStatement("insert into coordinates (_x, _y) values (?, ?)");
+                .prepareStatement("insert into public.coordinates (_x, _y) values (?, ?)");
         statement.setLong(1, coordinates.getX());
         statement.setLong(2, coordinates.getY());
         statement.execute();
     }
 
-    protected int selectCoordinatesID (Coordinates coordinates, boolean last) throws SQLException {
-        if (last) {
-            return connection
-                    .createStatement()
-                    .executeQuery("select currval (id) from coordinates;")
-                    .getInt(1);
-        }
-        PreparedStatement statement = connection.prepareStatement("select id from coordinates where _x = ? and _y = ?");
-        statement.setLong(1, coordinates.getX());
-        statement.setLong(2, coordinates.getY());
-        return statement.executeQuery().getInt(1);
+    protected int selectCoordinatesID () throws SQLException {
+        ResultSet set =  connection
+                .createStatement()
+                .executeQuery("select currval ('coordinates_id_seq')");
+        set.next();
+        return set.getInt(1);
     }
 
     protected void insertAddresses (Address address) throws SQLException {
         PreparedStatement statement = connection
-                .prepareStatement("insert into addresses (_street) values (?)");
+                .prepareStatement("insert into public.addresses (_street) values (?)");
         statement.setString(1, address.getStreet());
         statement.execute();
     }
 
-    protected int selectAddressesID (Address address, boolean last) throws SQLException {
-        if (last) {
-            return connection
-                    .createStatement()
-                    .executeQuery("select currval (id) from addresses;")
-                    .getInt(1);
-        }
-        PreparedStatement statement = connection.prepareStatement("select id from addresses where _street = ?");
-        statement.setString(1, address.getStreet());
-        return statement.executeQuery().getInt(1);
+    protected int selectAddressesID () throws SQLException {
+        ResultSet set = connection
+                .createStatement()
+                .executeQuery("select currval ('addresses_id_seq')");
+        set.next();
+        return set.getInt(1);
     }
 
     protected void insertVenues (Venue venue) throws SQLException {
         insertAddresses(venue.getAddress());
         PreparedStatement statement = connection
-                .prepareStatement("insert into venues (_name, _capacity, _type, _address_id) values (?,?,?,?)");
+                .prepareStatement("insert into public.venues (_name, _capacity, _type, _address_id) values (?,?,?,?)");
         statement.setString(1, venue.getName());
         statement.setLong(2, venue.getCapacity());
-        statement.setObject(3, venue.getType());
-        statement.setInt(4, selectAddressesID(venue.getAddress(), true));
+        statement.setString(3, venue.getType().toString());
+        statement.setInt(4, selectAddressesID());
         statement.execute();
     }
 
     protected int selectVenuesID () throws SQLException {
-        return connection.createStatement().executeQuery("select currval (id) from venues").getInt(1);
+        ResultSet set = connection
+                .createStatement()
+                .executeQuery("select currval ('venues_id_seq')");
+        set.next();
+        return set.getInt(1);
     }
 
-    protected void insertTickets (Ticket ticket, int client_id) throws SQLException {
+    protected void insertTickets (String key, Ticket ticket, String owner) throws SQLException {
         insertCoordinates(ticket.getCoordinates());
         insertVenues(ticket.getVenue());
 
         PreparedStatement statement = connection
-                .prepareStatement("insert into tickets (" +
+                .prepareStatement("insert into public.tickets (" +
+                        "_key, " +
                         "_name, " +
                         "_coordinate_id, " +
                         "_creationdate, " +
@@ -181,25 +230,19 @@ public class DatabaseManager extends AbstractAccess {
                         "_comment, " +
                         "_type, " +
                         "_venue_id, " +
-                        "_owner) values (")
-
-
-        String sql1 = "insert into tickets (_name, _coordinate_id, _creationdate, _price, _comment, _type, _venue_id, _owner) values (";
-        String sql2 =
-                sqlArg(ticket.getName()) +
-                sqlArg(String.valueOf(selectCoordinatesID(ticket.getCoordinates(), true))) +
-                sqlArg(ticket.getCreationDate().toString()) +
-                sqlArg(ticket.getPrice().toString()) +
-                sqlArg(ticket.getComment()) +
-                sqlArg(ticket.getType().toString()) +
-                sqlArg(String.valueOf(selectCoordinatesID())) +
-                ");";
-        statement.executeUpdate(sql1+sql2);
+                        "_owner" +
+                        ") values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        statement.setString(1, key);
+        statement.setString(2, ticket.getName());
+        statement.setInt(3, selectCoordinatesID());
+        statement.setObject(4, ticket.getCreationDate());
+        statement.setDouble(5, ticket.getPrice());
+        statement.setString(6, ticket.getComment());
+        statement.setObject(7, ticket.getType().toString());
+        statement.setInt(8, selectVenuesID());
+        statement.setString(9, owner);
+        statement.execute();
     }
-
-    protected String quotes(String str) {return "'" + str + "'";}
-    protected String comma (String str) {return  str + ", ";}
-    protected String sqlArg(String str) {return comma(quotes(str));}
 }
 
 

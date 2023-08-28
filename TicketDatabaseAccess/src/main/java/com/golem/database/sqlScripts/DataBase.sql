@@ -21,12 +21,12 @@ create table if not exists coordinates (
 
 create table if not exists addresses (
     id serial primary key,
-    _street varchar(200)
+    _street text
 );
 
 create table if not exists venues (
      id serial primary key,
-     _name varchar(50),
+     _name text,
      _capacity decimal,
      _type VenueType,
      _address_id integer,
@@ -35,14 +35,15 @@ create table if not exists venues (
 
 create table if not exists tickets (
     id serial primary key,
-    _name varchar(50),
+    _key text,
+    _name text,
     _coordinate_id integer,
     _creationDate date,
     _price double precision,
-    _comment varchar(200),
+    _comment text,
     _type TicketType,
     _venue_id integer,
-    _owner varchar(50),
+    _owner text,
     foreign key (_venue_id) references venues (id),
     foreign key (_coordinate_id) references coordinates (id)
 );

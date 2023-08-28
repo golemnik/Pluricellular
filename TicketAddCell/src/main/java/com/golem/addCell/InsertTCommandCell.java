@@ -53,7 +53,7 @@ public class InsertTCommandCell extends AbstractTicketCommand {
             venue = null;
             ticket.setVenue(venue);
         }
-        manager.add(String.valueOf(ticket.getId()), ticket);
+        manager.add(String.valueOf(ticket.getId()), ticket, getLogin());
         setAnswer(List.of("Element successfully inserted."));
         return this;
     }
