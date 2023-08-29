@@ -52,3 +52,5 @@ create table if not exists collection_props (
   id integer primary key CHECK ( id = 1 ) default 1,
   _creation date
 );
+
+insert into collection_props (_creation) values (current_date);

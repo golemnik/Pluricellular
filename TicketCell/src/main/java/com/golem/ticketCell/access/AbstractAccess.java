@@ -15,7 +15,7 @@ public abstract class AbstractAccess implements CollectionAccess {
     protected final Lock w = rwl.writeLock();
 
     public final int priority;
-    private final TicketCollection collection = new TicketCollection();
+    private final TicketCollection collection = TicketCollection.getInstance();
 
     public AbstractAccess () {
         this.priority = 1;
@@ -133,6 +133,11 @@ public abstract class AbstractAccess implements CollectionAccess {
         finally {
             w.unlock();
         }
+    }
+
+    @Override
+    public void clear(String owner) {
+        clear();
     }
 
     @Override

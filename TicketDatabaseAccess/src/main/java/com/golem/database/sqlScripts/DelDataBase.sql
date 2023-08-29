@@ -8,7 +8,8 @@ drop table if exists
     Addresses,
     Clients,
     Venues,
-    Tickets
+    Tickets,
+    collection_props
 cascade;
 
 

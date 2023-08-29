@@ -13,6 +13,7 @@ public interface CollectionAccess {
     boolean checkID (int ID);
     boolean checkKey (String key);
     void clear ();
+    void clear (String owner);
     TicketCollection getTicketCollection();
     TicketCollection getTicketCollection(String login);
     LinkedHashMap<String, Ticket> getTicketMap();

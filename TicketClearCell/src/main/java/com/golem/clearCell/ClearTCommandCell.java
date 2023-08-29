@@ -15,7 +15,7 @@ public class ClearTCommandCell extends AbstractTicketCommand {
     @Override
     public void activate() {
         if (manager != null) {
-            manager.clear();
+            manager.clear(getLogin());
             setAnswer(List.of("Collection is empty now."));
             return;
         }

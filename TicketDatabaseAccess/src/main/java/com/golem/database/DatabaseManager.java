@@ -11,6 +11,8 @@ import com.golem.ticketCell.collection.ticket.Ticket;
 import com.golem.ticketCell.collection.ticket.Venue;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Properties;
 
 public class DatabaseManager extends AbstractAccess {
@@ -32,7 +34,7 @@ public class DatabaseManager extends AbstractAccess {
     public DatabaseManager () {
         super(10);
         Informer.log(Level.INFO, "Database manager connected...");
-
+        initDataload();
     }
 
     private boolean init () {
@@ -41,7 +43,6 @@ public class DatabaseManager extends AbstractAccess {
         properties.setProperty("user", test_user);
         properties.setProperty("password", test_password);
         properties.setProperty("stringtype", "unspecified");
-//        properties.setProperty("options", "-c client_encoding=win866");
         try {
             connection = DriverManager.getConnection(test_url, properties);
             System.out.println("Connected");
@@ -54,7 +55,36 @@ public class DatabaseManager extends AbstractAccess {
     }
 
     private boolean initDataload () {
+        w.lock();
+        TicketCollection collection = TicketCollection.getInstance();
+        Ticket ticket = new Ticket();
 
+        try {
+            ResultSet set = connection
+                    .createStatement()
+                    .executeQuery("select _creation from collection_props where id = 1");
+            set.next();
+            collection.setCreationDate(set.getDate(1).toLocalDate());
+            set = connection.createStatement().executeQuery("select * from tickets");
+            while (set.next()) {
+                ticket.setId(set.getInt(1));
+                ticket.setName(set.getString(3));
+                ticket.setCoordinates(selectCoordinates(set.getInt(4)));
+                ticket.setCreationDate(set.getDate(5).toLocalDate());
+                ticket.setPrice(set.getDouble(6));
+                ticket.setComment(set.getString(7));
+                ticket.setType(set.getObject(8, Ticket.TicketType.class));
+                ticket.setVenue(selectVenue(set.getInt(9)));
+                collection.getCollection().put(set.getString(2), ticket);
+            }
+            Informer.log(Level.INFO, "Collection restored from database");
+        }
+        catch (Exception e) {
+            Informer.log(Level.ERROR, e);
+        }
+        finally {
+            w.unlock();
+        }
         return true;
     }
 
@@ -62,7 +92,6 @@ public class DatabaseManager extends AbstractAccess {
     public void add(String key, Ticket ticket, String login) {
         w.lock();
         try {
-            Informer.log(Level.INFO, "DB inserting ticket");
             ticket.setId(newID());
             ticket.getVenue().setId(newID());
             insertTickets(key, ticket, login);
@@ -76,12 +105,50 @@ public class DatabaseManager extends AbstractAccess {
 
     @Override
     public void delete(String key) {
-
+        w.lock();
+        try {
+            ResultSet set = connection
+                    .createStatement()
+                    .executeQuery("select _coordinate_id, _venue_id from tickets where _key = " + key);
+            set.next();
+            int c_id = set.getInt(1);
+            int v_id = set.getInt(2);
+            connection
+                    .createStatement()
+                    .executeUpdate("delete from tickets where _key = " + key +";" +
+                            "delete from coordinates where id = " + c_id +";" +
+                            "delete from venues where id = " + v_id +";");
+        }
+        catch (Exception e) {
+            Informer.log(Level.ERROR, e);
+        }
+        finally {
+            w.unlock();
+        }
     }
 
     @Override
     public void delete(Ticket ticket) {
-
+        w.lock();
+        try {
+            ResultSet set = connection
+                    .createStatement()
+                    .executeQuery("select _coordinate_id, _venue_id from tickets where id = " + ticket.getId());
+            set.next();
+            int c_id = set.getInt(1);
+            int v_id = set.getInt(2);
+            connection
+                    .createStatement()
+                    .executeUpdate("delete from tickets where id = " + ticket.getId() +";" +
+                            "delete from coordinates where id = " + c_id +";" +
+                            "delete from venues where id = " + v_id +";");
+        }
+        catch (Exception e) {
+            Informer.log(Level.ERROR, e);
+        }
+        finally {
+            w.unlock();
+        }
     }
 
     @Override
@@ -129,10 +196,10 @@ public class DatabaseManager extends AbstractAccess {
     public void clear (String owner) {
         w.lock();
         try {
-            connection.createStatement().execute("delete from public.tickets");
-            connection.createStatement().execute("delete from public.venues");
-            connection.createStatement().execute("delete from public.coordinates");
-            connection.createStatement().execute("delete from public.addresses");
+            connection.createStatement().execute("delete from tickets");
+            connection.createStatement().execute("delete from venues");
+            connection.createStatement().execute("delete from coordinates");
+            connection.createStatement().execute("delete from addresses");
         }
         catch (Exception e) {
             Informer.log(Level.ERROR, e);
@@ -148,7 +215,7 @@ public class DatabaseManager extends AbstractAccess {
         try {
             TicketCollection collection = new TicketCollection();
             PreparedStatement statement = connection
-                    .prepareStatement("select * from public.tickets where _owner = '" + login + "'");
+                    .prepareStatement("select * from tickets where _owner = '" + login + "'");
             ResultSet rs = statement.executeQuery();
             do {
                 Informer.log(Level.INFO, "cycled...");
@@ -168,7 +235,7 @@ public class DatabaseManager extends AbstractAccess {
 
     protected void insertCoordinates (Coordinates coordinates) throws SQLException {
         PreparedStatement statement = connection
-                .prepareStatement("insert into public.coordinates (_x, _y) values (?, ?)");
+                .prepareStatement("insert into coordinates (_x, _y) values (?, ?)");
         statement.setLong(1, coordinates.getX());
         statement.setLong(2, coordinates.getY());
         statement.execute();
@@ -182,9 +249,20 @@ public class DatabaseManager extends AbstractAccess {
         return set.getInt(1);
     }
 
+    protected Coordinates selectCoordinates (int id) throws SQLException {
+        Coordinates coordinates = new Coordinates();
+        ResultSet set = connection
+                .createStatement()
+                .executeQuery("select * from coordinates where id = " + id);
+        set.next();
+        coordinates.setX(set.getLong(2));
+        coordinates.setY(set.getLong(3));
+        return coordinates;
+    }
+
     protected void insertAddresses (Address address) throws SQLException {
         PreparedStatement statement = connection
-                .prepareStatement("insert into public.addresses (_street) values (?)");
+                .prepareStatement("insert into addresses (_street) values (?)");
         statement.setString(1, address.getStreet());
         statement.execute();
     }
@@ -197,10 +275,20 @@ public class DatabaseManager extends AbstractAccess {
         return set.getInt(1);
     }
 
+    protected Address selectAddress (int id) throws SQLException {
+        Address address = new Address();
+        ResultSet set = connection
+                .createStatement()
+                .executeQuery("select * from addresses where id = " + id);
+        set.next();
+        address.setStreet(set.getString(2));
+        return address;
+    }
+
     protected void insertVenues (Venue venue) throws SQLException {
         insertAddresses(venue.getAddress());
         PreparedStatement statement = connection
-                .prepareStatement("insert into public.venues (_name, _capacity, _type, _address_id) values (?,?,?,?)");
+                .prepareStatement("insert into venues (_name, _capacity, _type, _address_id) values (?,?,?,?)");
         statement.setString(1, venue.getName());
         statement.setLong(2, venue.getCapacity());
         statement.setString(3, venue.getType().toString());
@@ -216,12 +304,26 @@ public class DatabaseManager extends AbstractAccess {
         return set.getInt(1);
     }
 
+    protected Venue selectVenue (int id) throws SQLException {
+        Venue venue = new Venue();
+        ResultSet set = connection
+                .createStatement()
+                .executeQuery("select * from venues where id = " + id);
+        set.next();
+        venue.setId(id);
+        venue.setName(set.getString(2));
+        venue.setCapacity(set.getLong(3));
+        venue.setType(set.getObject(4, Venue.VenueType.class));
+        venue.setAddress(selectAddress(set.getInt(5)));
+        return venue;
+    }
+
     protected void insertTickets (String key, Ticket ticket, String owner) throws SQLException {
         insertCoordinates(ticket.getCoordinates());
         insertVenues(ticket.getVenue());
 
         PreparedStatement statement = connection
-                .prepareStatement("insert into public.tickets (" +
+                .prepareStatement("insert into tickets (" +
                         "_key, " +
                         "_name, " +
                         "_coordinate_id, " +
@@ -244,8 +346,3 @@ public class DatabaseManager extends AbstractAccess {
         statement.execute();
     }
 }
-
-
-// jdbc:postgresql://localhost:5432/cellar
-// tester
-// 12345

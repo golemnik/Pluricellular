@@ -6,6 +6,20 @@ import java.time.LocalDate;
 import java.util.LinkedHashMap;
 
 public class TicketCollection implements ConsoleRead{
+    private static TicketCollection instance;
+
+    public static TicketCollection getInstance() {
+        if (instance != null) {
+            return instance;
+        }
+        instance = new TicketCollection();
+        return instance;
+    }
+    public static TicketCollection getInstance(TicketCollection new_collection) {
+        instance = new_collection;
+        return instance;
+    }
+
     private LocalDate creationDate;
     private LinkedHashMap<String, Ticket> collection = new LinkedHashMap<>();
 
