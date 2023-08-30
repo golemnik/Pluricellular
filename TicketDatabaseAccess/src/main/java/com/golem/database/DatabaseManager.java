@@ -11,6 +11,8 @@ import com.golem.ticketCell.collection.ticket.Ticket;
 import com.golem.ticketCell.collection.ticket.Venue;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -167,9 +169,15 @@ public class DatabaseManager extends AbstractAccess {
     }
 
     @Override
-    public boolean checkKey(String key, String owner) { //todo finish
+    public boolean checkKey(String key, String owner) {
         r.lock();
         try {
+            List<String> ids = new ArrayList<>(getCollection().getCollection().keySet());
+            for (String in : ids) {
+                if (in.equals(key) && getCollection().getCollection().get(in).getOwner().equals(owner)) {
+                    return true;
+                }
+            }
             return false;
         }
         finally {
