@@ -218,7 +218,7 @@ public class DatabaseManager extends AbstractAccess {
         }
     }
 
-    public void clear (String owner) { //todo correct clear with owner
+    public void clear (String owner) {
         w.lock();
         try {
             getCollection().getCollection().keySet()
