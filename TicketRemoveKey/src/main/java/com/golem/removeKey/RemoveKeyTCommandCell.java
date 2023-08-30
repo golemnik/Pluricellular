@@ -14,7 +14,7 @@ public class RemoveKeyTCommandCell extends AbstractTicketCommand {
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
-        if (manager.checkKey(signature.get(0).split(" ")[1])) {
+        if (manager.checkKey(signature.get(0).split(" ")[1], getLogin())) {
             manager.getTicketMap().remove(signature.get(0).split(" ")[1]);
             setAnswer(List.of("Element successfully removed."));
             return this;

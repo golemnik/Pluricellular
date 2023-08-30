@@ -153,10 +153,13 @@ public class DatabaseManager extends AbstractAccess {
     }
 
     @Override
-    public boolean checkID(int ID) { //todo finish
+    public boolean checkID(int ID, String owner) {
         r.lock();
         try {
-            return false;
+            return getTicketCollection(owner).getCollection()
+                    .values()
+                    .stream()
+                    .anyMatch(x -> x.getId()==ID);
         }
         finally {
             r.unlock();
@@ -164,7 +167,7 @@ public class DatabaseManager extends AbstractAccess {
     }
 
     @Override
-    public boolean checkKey(String key) { //todo finish
+    public boolean checkKey(String key, String owner) { //todo finish
         r.lock();
         try {
             return false;

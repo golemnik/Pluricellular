@@ -10,8 +10,8 @@ public interface CollectionAccess {
     void add (String key, Ticket ticket, String login);
     void delete (String key);
     void delete (Ticket ticket);
-    boolean checkID (int ID);
-    boolean checkKey (String key);
+    boolean checkID (int ID, String owner);
+    boolean checkKey (String key, String owner);
     void clear ();
     void clear (String owner);
     TicketCollection getTicketCollection();

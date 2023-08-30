@@ -75,10 +75,13 @@ public abstract class AbstractAccess implements CollectionAccess {
     }
 
     @Override
-    public boolean checkID(int ID) {
+    public boolean checkID(int ID, String owner) {
         w.lock();
         try {
-            return collection.getCollection().get(String.valueOf(ID)) == null;
+            return collection.getCollection()
+                    .values()
+                    .stream()
+                    .anyMatch(x -> x.getId()==ID);
         }
         finally {
             w.unlock();
@@ -114,7 +117,7 @@ public abstract class AbstractAccess implements CollectionAccess {
         }
     }
 
-    public boolean checkKey(String key) {
+    public boolean checkKey(String key, String owner) {
         List<String> ids = new ArrayList<>(collection.getCollection().keySet());
         for (String in : ids) {
             if (in.equals(key)) {

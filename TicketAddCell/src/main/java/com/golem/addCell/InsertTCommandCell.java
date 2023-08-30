@@ -67,7 +67,7 @@ public class InsertTCommandCell extends AbstractTicketCommand {
             return false;
         }
         else {
-            return manager.checkID(Integer.parseInt(m.group(2).trim()));
+            return manager.checkID(Integer.parseInt(m.group(2).trim()), getLogin());
         }
     }
 }

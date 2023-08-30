@@ -24,7 +24,7 @@ public class UpdateIDTCommandCell extends AbstractTicketCommand {
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
-        if (!manager.checkID(Integer.parseInt(signature.get(0).split(" ")[1]))) {
+        if (!manager.checkID(Integer.parseInt(signature.get(0).split(" ")[1]), getLogin())) {
             setAnswer(List.of("Element with this id is not exists."));
             return this;
         }

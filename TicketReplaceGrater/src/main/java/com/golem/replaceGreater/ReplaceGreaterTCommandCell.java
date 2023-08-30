@@ -33,7 +33,7 @@ public class ReplaceGreaterTCommandCell extends AbstractTicketCommand {
     @Override
     public AbstractCommand useSignature(List<String> signature) {
         key = signature.get(0).split(" ")[1];
-        if (manager.checkKey(key)) {
+        if (manager.checkKey(key, getLogin())) {
             setAnswer(List.of("Element with this key is not exists."));
             return this;
         }
