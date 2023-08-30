@@ -208,6 +208,7 @@ public class DatabaseManager extends AbstractAccess {
             connection.createStatement().execute("delete from public.venues");
             connection.createStatement().execute("delete from public.coordinates");
             connection.createStatement().execute("delete from public.addresses");
+            getCollection().getCollection().clear();
         }
         catch (Exception e) {
             Informer.log(Level.ERROR, e);
@@ -220,10 +221,31 @@ public class DatabaseManager extends AbstractAccess {
     public void clear (String owner) { //todo correct clear with owner
         w.lock();
         try {
-            connection.createStatement().execute("delete from tickets");
-            connection.createStatement().execute("delete from venues");
-            connection.createStatement().execute("delete from coordinates");
-            connection.createStatement().execute("delete from addresses");
+            getCollection().getCollection().keySet()
+                    .stream()
+                    .filter(x -> getCollection().getCollection().get(x).getOwner().equals(owner))
+                    .forEach(x -> getCollection().getCollection().remove(x));
+
+            ResultSet set = connection.createStatement().executeQuery("select * from tickets where _owner = " + owner);
+            while (set.next()) {
+                connection.createStatement()
+                        .executeUpdate("delete from coordinates where id = " + set.getInt(4));
+                ResultSet vSet = connection.createStatement()
+                        .executeQuery("select _address_id from venues where id = " + set.getString(9));
+                vSet.next();
+                connection.createStatement()
+                        .executeUpdate("delete from addresses where id = " + vSet.getInt(1));
+                connection.createStatement()
+                        .executeUpdate("delete from venues where id = " + set.getInt(9));
+                connection.createStatement()
+                        .executeUpdate("delete from tickets where id = " + set.getInt(1));
+            }
+
+
+            connection.createStatement().executeUpdate("delete from tickets where _owner = " + owner);
+            connection.createStatement().executeUpdate("delete from venues");
+            connection.createStatement().executeUpdate("delete from coordinates");
+            connection.createStatement().executeUpdate("delete from addresses");
         }
         catch (Exception e) {
             Informer.log(Level.ERROR, e);
