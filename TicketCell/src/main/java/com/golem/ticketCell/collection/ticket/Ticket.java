@@ -190,6 +190,16 @@ public class Ticket implements Comparable <Ticket>, ConsoleRead {
         return venue;
     }
 
+    private String owner = null;
+
+    public void setOwner (String owner) {
+        this.owner = owner;
+    }
+
+    public String getOwner () {
+        return owner;
+    }
+
     /**
      *  initialization for not null objects venue and coordinates
      */
@@ -261,6 +271,7 @@ public class Ticket implements Comparable <Ticket>, ConsoleRead {
             v += venue.toReadString();
         }
         return "Ticket >>\n" +
+                "   Owner: " + owner + "\n"+
                 "   id: " + id + "\n"+
                 "   name: " + name + "\n"+
                 "   creationDate: " + creationDate + "\n"+

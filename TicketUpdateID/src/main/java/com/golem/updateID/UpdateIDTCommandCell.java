@@ -30,6 +30,7 @@ public class UpdateIDTCommandCell extends AbstractTicketCommand {
         }
 
         ticket = new Ticket();
+        ticket.setOwner(getLogin());
         ticket.setId(Integer.parseInt(signature.get(0).split(" ")[1]));
         manager.getTicketMap().put(String.valueOf(ticket.getId()), ticket);
         ticket.setName(signature.get(1)); // t name

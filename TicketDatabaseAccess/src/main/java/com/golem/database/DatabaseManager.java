@@ -11,9 +11,9 @@ import com.golem.ticketCell.collection.ticket.Ticket;
 import com.golem.ticketCell.collection.ticket.Venue;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.Collections;
+import java.util.Objects;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class DatabaseManager extends AbstractAccess {
     private Connection connection;
@@ -75,6 +75,7 @@ public class DatabaseManager extends AbstractAccess {
                 ticket.setComment(set.getString(7));
                 ticket.setType(set.getObject(8, Ticket.TicketType.class));
                 ticket.setVenue(selectVenue(set.getInt(9)));
+                ticket.setOwner(set.getString(10));
                 collection.getCollection().put(set.getString(2), ticket);
             }
             Informer.log(Level.INFO, "Collection restored from database");
@@ -152,13 +153,25 @@ public class DatabaseManager extends AbstractAccess {
     }
 
     @Override
-    public boolean checkID(int ID) {
-        return false;
+    public boolean checkID(int ID) { //todo finish
+        r.lock();
+        try {
+            return false;
+        }
+        finally {
+            r.unlock();
+        }
     }
 
     @Override
-    public boolean checkKey(String key) {
-        return false;
+    public boolean checkKey(String key) { //todo finish
+        r.lock();
+        try {
+            return false;
+        }
+        finally {
+            r.unlock();
+        }
     }
 
     @Override
@@ -193,7 +206,7 @@ public class DatabaseManager extends AbstractAccess {
         }
     }
 
-    public void clear (String owner) {
+    public void clear (String owner) { //todo correct clear with owner
         w.lock();
         try {
             connection.createStatement().execute("delete from tickets");
@@ -211,26 +224,20 @@ public class DatabaseManager extends AbstractAccess {
 
     @Override
     public TicketCollection getTicketCollection(String login) {
-        w.lock();
+        r.lock();
         try {
-            TicketCollection collection = new TicketCollection();
-            PreparedStatement statement = connection
-                    .prepareStatement("select * from tickets where _owner = '" + login + "'");
-            ResultSet rs = statement.executeQuery();
-            do {
-                Informer.log(Level.INFO, "cycled...");
-            }
-            while (rs.next());
-
-
-            return null;
-        } catch (SQLException e) {
+            TicketCollection t_collection = new TicketCollection();
+            t_collection.setCreationDate(this.getCollection().getCreationDate());
+            this.getCollection().getCollection().keySet().stream()
+                    .filter(x -> getCollection().getCollection().get(x).getOwner().equals(login))
+                    .forEach(x -> t_collection.getCollection().put(x, getCollection().getCollection().get(x)));
+            return t_collection;
+        } catch (Exception e) {
             Informer.log(Level.ERROR, e);
             return null;
         } finally {
-            w.unlock();
+            r.unlock();
         }
-
     }
 
     protected void insertCoordinates (Coordinates coordinates) throws SQLException {

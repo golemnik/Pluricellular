@@ -39,6 +39,7 @@ public class ReplaceGreaterTCommandCell extends AbstractTicketCommand {
         }
         change = true;
         ticket = new Ticket();
+        ticket.setOwner(getLogin());
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
         ticket.setComment(signature.get(3)); // t comment

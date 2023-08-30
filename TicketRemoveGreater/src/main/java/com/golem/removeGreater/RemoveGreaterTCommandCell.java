@@ -26,6 +26,7 @@ public class RemoveGreaterTCommandCell extends AbstractTicketCommand {
     @Override
     public AbstractCommand useSignature(List<String> signature) {
         ticket = new Ticket();
+        ticket.setOwner(getLogin());
         ticket.setId(0);
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
