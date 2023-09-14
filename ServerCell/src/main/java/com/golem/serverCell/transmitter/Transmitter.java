@@ -95,6 +95,7 @@ public class Transmitter extends AbstractNetConnection {
                     com.activate();
                     logger.info(com.getAnswer());
                 });
+        executor.shutdown();
     }
 
     private boolean checkSocket (DataContainer container, SocketChannel socketChannel) throws IOException {

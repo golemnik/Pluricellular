@@ -31,4 +31,6 @@ include 'Informer'
 include 'UserSave'
 include 'UserLoad'
 include 'TicketDatabaseAccess'
+include 'Informer'
+include 'Informer'
 
