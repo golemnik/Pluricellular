@@ -1,6 +1,7 @@
 package com.golem.database;
 
 import com.golem.core.schemas.providedRealisations.CellPrinter;
+import com.golem.database.sqlScripts.DataBase;
 import com.golem.informer.Informer;
 import com.golem.informer.Level;
 import com.golem.ticketCell.access.AbstractAccess;
@@ -13,9 +14,7 @@ import com.golem.ticketCell.collection.ticket.Venue;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 public class DatabaseManager extends AbstractAccess {
     private Connection connection;
@@ -60,7 +59,14 @@ public class DatabaseManager extends AbstractAccess {
         w.lock();
         TicketCollection collection = TicketCollection.getInstance();
         Ticket ticket = new Ticket();
-
+        try {
+            for (int i = 0; i < DataBase.cdb.length; i++) {
+                connection.createStatement().execute(DataBase.cdb[i]);
+            }
+        }
+        catch (Exception e) {
+//            Informer.log(Level.INFO, e);
+        }
         try {
             ResultSet set = connection
                     .createStatement()
