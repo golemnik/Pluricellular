@@ -88,15 +88,15 @@ public class Transmitter extends AbstractNetConnection {
                 CellPrinter.setMessage(e.getMessage());
             }
         }
-        terminal.getBroodMother().getFactoryCommands().values().stream()
-                .filter(AbstractSystemCellFactory::runAtFinish)
-                .forEach(x -> {
-                    AbstractCommand com = x.create(List.of());
-                    com.activate();
-                    logger.info(com.getAnswer());
-                });
         try {
             serverSocketChannel.close();
+            terminal.getBroodMother().getFactoryCommands().values().stream()
+                    .filter(AbstractSystemCellFactory::runAtFinish)
+                    .forEach(x -> {
+                        AbstractCommand com = x.create(List.of());
+                        com.activate();
+                        logger.info(com.getAnswer());
+                    });
             executor.shutdownNow();
         }
         catch (Exception e) {

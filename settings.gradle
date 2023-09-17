@@ -31,4 +31,5 @@ include 'UserLoad'
 include 'TicketDatabaseAccess'
 include 'Informer'
 include 'Informer'
+include 'UserResetPass'
 
