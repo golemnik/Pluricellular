@@ -16,18 +16,14 @@ import java.util.regex.Pattern;
 
 public class InsertTCommandCell extends AbstractTicketCommand {
     private Ticket ticket;
+    private List<String> signature;
     public InsertTCommandCell() {
     }
     @Override
     public void activate() {
-        CellPrinter.setMessage(getAnswer().toString());
-    }
-
-    @Override
-    public AbstractCommand useSignature(List<String> signature) {
         if (collectionID(signature.get(0))) {
             setAnswer(List.of("This id is already used. Insert failed."));
-            return this;
+            return;
         }
         ticket = new Ticket();
         ticket.setOwner(getLogin());
@@ -61,6 +57,12 @@ public class InsertTCommandCell extends AbstractTicketCommand {
         catch (Exception e) {
             setAnswer(List.of("Element wasn't inserted."));
         }
+        CellPrinter.setMessage(getAnswer().toString());
+    }
+
+    @Override
+    public AbstractCommand useSignature(List<String> signature) {
+        this.signature = signature;
         return this;
     }
 

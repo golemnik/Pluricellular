@@ -78,7 +78,8 @@ public class ConnectedClient {
                 dataContainer = userContainer.dataContainer;
             }
 
-            logger.info("Client {} sent command: {}", channel, dataContainer.data.toString());
+            logger.info("Client {} sent command: {}; container {}",
+                    channel, dataContainer.data.toString(), userContainer.login);
             AbstractCommand command = terminal.getBroodMother()
                     .createCell(dataContainer.data.get(0).split(" ")[0], dataContainer.data, userContainer.login);
             command.activate();
