@@ -104,8 +104,6 @@ public class DatabaseManager extends AbstractAccess {
     public void add(String key, Ticket ticket, String login) {
         w.lock();
         try {
-            ticket.setId(newID());
-            ticket.getVenue().setId(newID());
             insertTickets(key, ticket, login);
             getCollection().getCollection().put(key, ticket);
         } catch (SQLException e) {
@@ -204,21 +202,6 @@ public class DatabaseManager extends AbstractAccess {
         finally {
             r.unlock();
         }
-    }
-
-    @Override
-    protected int newID() {
-        try {
-            ResultSet set = connection.createStatement()
-                    .executeQuery("select currval (id) from public.tickets");
-            if (set.next()) {
-                return set.getInt(1);
-            }
-        }
-        catch (Exception e) {
-            Informer.log(Level.ERROR, e);
-        }
-        return 1;
     }
 
     @Override

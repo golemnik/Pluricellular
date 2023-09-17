@@ -36,43 +36,7 @@ public abstract class AbstractAccess implements CollectionAccess {
         }
     }
 
-    @Override
-    public void add(String key, Ticket ticket, String login) {
-        w.lock();
-        try {
-            ticket.setId(newID());
-            ticket.getVenue().setId(newID());
-            collection.getCollection().put(key, ticket);
-        }
-        finally {
-            w.unlock();
-        }
 
-    }
-
-    @Override
-    public void delete(String key) {
-        w.lock();
-        try {
-            collection.getCollection().remove(key);
-        }
-        finally {
-            w.unlock();
-        }
-    }
-
-    @Override
-    public void delete(Ticket ticket) {
-        w.lock();
-        try {
-            collection.getCollection()
-                    .values()
-                    .remove(ticket);
-        }
-        finally {
-            w.unlock();
-        }
-    }
 
     @Override
     public boolean checkID(int ID, String owner) {
@@ -85,35 +49,6 @@ public abstract class AbstractAccess implements CollectionAccess {
         }
         finally {
             w.unlock();
-        }
-    }
-
-    private static int lastID = 1;
-    protected int newID() {
-        List<Integer> ids = new ArrayList<>();
-        boolean useId = true;
-        collection.getCollection().values().forEach(x -> ids.add(x.getId()));
-        collection.getCollection().values().forEach(x -> ids.add(x.getVenue().getId()));
-        ids.removeIf(Objects::isNull);
-        if (ids.size() == 0) {
-            return lastID++;
-        }
-        Collections.sort(ids);
-        lastID = ids.get(ids.size() - 1);
-        while (true) {
-            for (Integer in : ids) {
-                if (in == lastID) {
-                    useId = false;
-                    break;
-                }
-            }
-            if (useId) {
-                return lastID;
-            }
-            else {
-                useId = true;
-            }
-            lastID++;
         }
     }
 
@@ -190,5 +125,20 @@ public abstract class AbstractAccess implements CollectionAccess {
                 .sorted(new AccessComparator())
                 .collect(Collectors.toList())
                 .subList(0, 1);
+    }
+
+    @Override
+    public void add(String key, Ticket ticket, String login) {
+        throw new IllegalStateException("Incorrect method usage");
+    }
+
+    @Override
+    public void delete(String key) {
+        throw new IllegalStateException("Incorrect method usage");
+    }
+
+    @Override
+    public void delete(Ticket ticket) {
+        throw new IllegalStateException("Incorrect method usage");
     }
 }
