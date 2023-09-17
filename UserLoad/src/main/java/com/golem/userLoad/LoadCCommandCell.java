@@ -3,7 +3,9 @@ package com.golem.userLoad;
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
 import com.golem.serverCell.clients.Clients;
+import com.golem.serverCell.clients.RegClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,12 +20,17 @@ public class LoadCCommandCell extends AbstractCommand {
 
     @Override
     public void activate() {
+        List<String> anwser = new ArrayList<>();
         JsonParser jp;
         try {
+            anwser.add("loading clients...");
             jp = new JsonParser("clients.json");
-            System.out.println(jp.parseLoad().getClients());
-            clients.setClients(jp.parseLoad().getClients());
-//            System.out.println(clients.getClients().getClass());
+            Clients loaded_clients = jp.parseLoad();
+            clients.setClients(loaded_clients.getClients());
+            for (String c : loaded_clients.getClients().keySet()) {
+                anwser.add(c + " | " + loaded_clients.getClients().get(c).getStatus());
+            }
+            setAnswer(anwser);
         }
         catch (Exception e) {
             CellPrinter.setMessage(e.getMessage() +
@@ -35,7 +42,6 @@ public class LoadCCommandCell extends AbstractCommand {
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
-        setAnswer(List.of("loading clients..."));
         return this;
     }
 }

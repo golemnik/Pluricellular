@@ -22,13 +22,13 @@ public class SaveCCommandCell extends AbstractCommand {
         try {
             jp = new JsonParser("clients.json");
             System.out.println(clients.getClients());
-            jp.parseSave(clients.getClients());
+            jp.parseSave(clients);
         }
         catch (Exception e) {
             CellPrinter.setMessage(e.getMessage() +
                     "\nDue error to save in file, registered clients will be saved in system file <<reserved_clients.json>>");
             jp = new JsonParser("reserved_clients.json");
-            jp.parseSave(clients.getClients());
+            jp.parseSave(clients);
         }
     }
     @Override

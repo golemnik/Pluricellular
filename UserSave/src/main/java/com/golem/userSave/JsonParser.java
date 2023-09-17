@@ -24,7 +24,7 @@ public class JsonParser {
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateAdapter());
         this.gson = gsonBuilder.setPrettyPrinting().create();
     }
-    public void parseSave (Map<String, RegClient> clients) {
+    public void parseSave (Clients clients) {
         try (BufferedOutputStream bof = new BufferedOutputStream(new FileOutputStream(file))) {
             bof.write((gson.toJson(clients)).getBytes());
         } catch (IOException e) {
