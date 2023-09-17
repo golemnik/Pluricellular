@@ -48,7 +48,7 @@ public class DatabaseManager extends AbstractAccess {
         try {
             connection = DriverManager.getConnection(test_url, properties);
             connection.setAutoCommit(false);
-            System.out.println("Connected");
+            Informer.log(Level.INFO, "Connected");
             return true;
         }
         catch (Exception e) {
@@ -90,6 +90,7 @@ public class DatabaseManager extends AbstractAccess {
                 ticket.setOwner(set.getString(10));
                 collection.getCollection().put(set.getString(2), ticket);
             }
+            connection.commit();
             Informer.log(Level.INFO, "Collection restored from database");
         }
         catch (Exception e) {
@@ -135,8 +136,15 @@ public class DatabaseManager extends AbstractAccess {
                     .createStatement()
                     .executeUpdate(
                             "delete from venues where id = " + v_id +";");
+            connection.commit();
         }
         catch (Exception e) {
+            try{
+                connection.rollback();
+            }
+            catch (SQLException e2) {
+                e.addSuppressed(e2);
+            }
             Informer.log(Level.ERROR, e);
         }
         finally {
@@ -159,8 +167,15 @@ public class DatabaseManager extends AbstractAccess {
                     .executeUpdate("delete from tickets where id = " + ticket.getId() +";" +
                             "delete from coordinates where id = " + c_id +";" +
                             "delete from venues where id = " + v_id +";");
+            connection.commit();
         }
         catch (Exception e) {
+            try{
+                connection.rollback();
+            }
+            catch (SQLException e2) {
+                e.addSuppressed(e2);
+            }
             Informer.log(Level.ERROR, e);
         }
         finally {
@@ -252,8 +267,15 @@ public class DatabaseManager extends AbstractAccess {
             connection.createStatement().executeUpdate("delete from venues");
             connection.createStatement().executeUpdate("delete from coordinates");
             connection.createStatement().executeUpdate("delete from addresses");
+            connection.commit();
         }
         catch (Exception e) {
+            try{
+                connection.rollback();
+            }
+            catch (SQLException e2) {
+                e.addSuppressed(e2);
+            }
             Informer.log(Level.ERROR, e);
         }
         finally {
@@ -365,30 +387,37 @@ public class DatabaseManager extends AbstractAccess {
     }
 
     protected void insertTickets (String key, Ticket ticket, String owner) throws SQLException {
-        insertCoordinates(ticket.getCoordinates());
-        insertVenues(ticket.getVenue());
+        try {
+            insertCoordinates(ticket.getCoordinates());
+            insertVenues(ticket.getVenue());
 
-        PreparedStatement statement = connection
-                .prepareStatement("insert into tickets (" +
-                        "_key, " +
-                        "_name, " +
-                        "_coordinate_id, " +
-                        "_creationdate, " +
-                        "_price, " +
-                        "_comment, " +
-                        "_type, " +
-                        "_venue_id, " +
-                        "_owner" +
-                        ") values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        statement.setString(1, key);
-        statement.setString(2, ticket.getName());
-        statement.setInt(3, selectCoordinatesID());
-        statement.setObject(4, ticket.getCreationDate());
-        statement.setDouble(5, ticket.getPrice());
-        statement.setString(6, ticket.getComment());
-        statement.setObject(7, ticket.getType().toString());
-        statement.setInt(8, selectVenuesID());
-        statement.setString(9, owner);
-        statement.execute();
+            PreparedStatement statement = connection
+                    .prepareStatement("insert into tickets (" +
+                            "_key, " +
+                            "_name, " +
+                            "_coordinate_id, " +
+                            "_creationdate, " +
+                            "_price, " +
+                            "_comment, " +
+                            "_type, " +
+                            "_venue_id, " +
+                            "_owner" +
+                            ") values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            statement.setString(1, key);
+            statement.setString(2, ticket.getName());
+            statement.setInt(3, selectCoordinatesID());
+            statement.setObject(4, ticket.getCreationDate());
+            statement.setDouble(5, ticket.getPrice());
+            statement.setString(6, ticket.getComment());
+            statement.setObject(7, ticket.getType().toString());
+            statement.setInt(8, selectVenuesID());
+            statement.setString(9, owner);
+            statement.execute();
+            connection.commit();
+        }
+        catch (SQLException e) {
+            connection.rollback();
+            throw e;
+        }
     }
 }
