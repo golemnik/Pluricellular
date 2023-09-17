@@ -8,10 +8,6 @@ import com.golem.ticketCell.collection.ticket.Ticket;
 import java.util.List;
 
 public class ShowTCommandCell extends AbstractTicketCommand {
-    public ShowTCommandCell () {
-
-    }
-
     @Override
     public void activate() {
         if (manager.getTicketCollection() == null) {
@@ -26,6 +22,7 @@ public class ShowTCommandCell extends AbstractTicketCommand {
         for (Ticket t : manager.getTicketMap().values()) {
             answer += "- - - -";
             answer += t.toReadString();
+            answer += "\n";
         }
         setAnswer(List.of(answer));
     }
