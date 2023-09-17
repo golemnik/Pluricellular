@@ -21,8 +21,8 @@ public class InsertTCommandCell extends AbstractTicketCommand {
     }
     @Override
     public void activate() {
-        Integer id = getID(signature.get(0));
-        if (id == null || checkID(id)) {
+        Integer key = getKEY(signature.get(0));
+        if (key == null || checkKEY(key)) {
             setAnswer(List.of("This id is already used. Insert failed."));
             return;
         }
@@ -52,7 +52,7 @@ public class InsertTCommandCell extends AbstractTicketCommand {
             ticket.setVenue(venue);
         }
         try {
-            manager.add(String.valueOf(id), ticket, getLogin());
+            manager.add(String.valueOf(key), ticket, getLogin());
             setAnswer(List.of("Element successfully inserted."));
         }
         catch (Exception e) {
@@ -67,7 +67,7 @@ public class InsertTCommandCell extends AbstractTicketCommand {
         return this;
     }
 
-    private Integer getID (String strID) {
+    private Integer getKEY(String strID) {
         Pattern pattern = Pattern.compile("^" + "insert " + SignatureRegex.ID +"?" + "$");
         Matcher m = pattern.matcher(strID);
         if (m.matches() && m.group(1) != null) {
@@ -76,7 +76,7 @@ public class InsertTCommandCell extends AbstractTicketCommand {
         return null;
     }
 
-    private boolean checkID (Integer ID) {
-        return manager.checkID(ID, getLogin());
+    private boolean checkKEY(Integer KEY) {
+        return manager.checkID(KEY, getLogin());
     }
 }

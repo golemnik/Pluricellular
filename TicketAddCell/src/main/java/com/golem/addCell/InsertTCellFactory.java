@@ -32,7 +32,7 @@ public class InsertTCellFactory extends AbstractTCellFactory {
                         "",
                         "Type ticket name. It can't be null or empty:",
                         "Type ticket price. It must be greater than 0, but could be double:",
-                        "Type comment to this ticket. It can be null or empty:",
+                        "Type comment to this ticket:",
                         """
                         Choose type for this ticket. It can be one from the following list:
                         VIP

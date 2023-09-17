@@ -1,7 +1,6 @@
 package com.golem.database;
 
 import com.golem.core.schemas.providedRealisations.CellPrinter;
-import com.golem.database.sqlScripts.DataBase;
 import com.golem.informer.Informer;
 import com.golem.informer.Level;
 import com.golem.ticketCell.access.AbstractAccess;
@@ -229,9 +228,16 @@ public class DatabaseManager extends AbstractAccess {
             connection.createStatement().execute("delete from public.venues");
             connection.createStatement().execute("delete from public.coordinates");
             connection.createStatement().execute("delete from public.addresses");
+            connection.commit();
             getCollection().getCollection().clear();
         }
         catch (Exception e) {
+            try{
+                connection.rollback();
+            }
+            catch (SQLException e2) {
+                e.addSuppressed(e2);
+            }
             Informer.log(Level.ERROR, e);
         }
         finally {
@@ -262,12 +268,18 @@ public class DatabaseManager extends AbstractAccess {
                         .executeUpdate("delete from tickets where id = " + set.getInt(1));
             }
 
-
             connection.createStatement().executeUpdate("delete from tickets where _owner = " + owner);
             connection.createStatement().executeUpdate("delete from venues");
             connection.createStatement().executeUpdate("delete from coordinates");
             connection.createStatement().executeUpdate("delete from addresses");
             connection.commit();
+
+            getCollection()
+                    .getCollection()
+                    .keySet()
+                    .stream()
+                    .filter(x -> getCollection().getCollection().get(x).getOwner().equals(owner))
+                    .forEach(x -> getCollection().getCollection().remove(x));
         }
         catch (Exception e) {
             try{
