@@ -84,7 +84,7 @@ public class DatabaseManager extends AbstractAccess {
                 ticket.setCreationDate(set.getDate(5).toLocalDate());
                 ticket.setPrice(set.getDouble(6));
                 ticket.setComment(set.getString(7));
-                ticket.setType(set.getObject(8, Ticket.TicketType.class));
+                ticket.setType(Ticket.TicketType.valueOf(set.getString(8)));
                 ticket.setVenue(selectVenue(set.getInt(9)));
                 ticket.setOwner(set.getString(10));
                 collection.getCollection().put(set.getString(2), ticket);
@@ -374,7 +374,7 @@ public class DatabaseManager extends AbstractAccess {
         venue.setId(id);
         venue.setName(set.getString(2));
         venue.setCapacity(set.getLong(3));
-        venue.setType(set.getObject(4, Venue.VenueType.class));
+        venue.setType(Venue.VenueType.valueOf(set.getString(4)));
         venue.setAddress(selectAddress(set.getInt(5)));
         return venue;
     }
