@@ -8,9 +8,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 
 public class JsonParser {
@@ -29,6 +27,10 @@ public class JsonParser {
                 temp += (char) bif.read();
             }
 //            System.out.println(">>>" + temp);
+//            Reader reader = new BufferedReader(new InputStreamReader(bif));
+//            System.out.println(gson.fromJson(reader, Clients.class));
+//            return null;
+
             return gson.fromJson(temp, Clients.class);
         } catch (Exception e) {
             System.out.println("Client data information was corrupted:\n" +

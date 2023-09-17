@@ -20,9 +20,9 @@ public class DatabaseManager extends AbstractAccess {
     private Connection connection;
     private Properties properties;
 
-    private final String url = "jdbc:postgresql://pg/studs";
-    private final String user = "368324";
-    private final String password = "secret";
+    private final String url = "jdbc:postgresql://pg:5432/studs";
+    private final String user = "s368324";
+    private final String password = "";
 
     private final String test_url = "jdbc:postgresql://localhost:5432/test1";
     private final String test_user = "postgres";
@@ -46,6 +46,7 @@ public class DatabaseManager extends AbstractAccess {
         properties.setProperty("stringtype", "unspecified");
         try {
             connection = DriverManager.getConnection(test_url, properties);
+            connection.setAutoCommit(false);
             System.out.println("Connected");
             return true;
         }
@@ -59,14 +60,16 @@ public class DatabaseManager extends AbstractAccess {
         w.lock();
         TicketCollection collection = TicketCollection.getInstance();
         Ticket ticket = new Ticket();
-        try {
-            for (int i = 0; i < DataBase.cdb.length; i++) {
-                connection.createStatement().execute(DataBase.cdb[i]);
-            }
-        }
-        catch (Exception e) {
-//            Informer.log(Level.INFO, e);
-        }
+//        try {
+//            for (int i = 0; i < DataBase.cdb.length; i++) {
+//                connection
+//                        .createStatement()
+//                        .execute(DataBase.cdb[0]);
+//            }
+//        }
+//        catch (Exception e) {
+////            Informer.log(Level.INFO, e);
+//        }
         try {
             ResultSet set = connection
                     .createStatement()
@@ -124,8 +127,13 @@ public class DatabaseManager extends AbstractAccess {
             int v_id = set.getInt(2);
             connection
                     .createStatement()
-                    .executeUpdate("delete from tickets where _key = " + key +";" +
-                            "delete from coordinates where id = " + c_id +";" +
+                    .executeUpdate("delete from tickets where _key = " + key +";");
+            connection
+                    .createStatement()
+                    .executeUpdate("delete from coordinates where id = " + c_id +";");
+            connection
+                    .createStatement()
+                    .executeUpdate(
                             "delete from venues where id = " + v_id +";");
         }
         catch (Exception e) {
@@ -164,12 +172,19 @@ public class DatabaseManager extends AbstractAccess {
     public boolean checkID(int ID, String owner) {
         r.lock();
         try {
+//            ResultSet set = connection
+//                    .createStatement()
+//                    .executeQuery("select id from tickets where id = " + ID);
+//            set.next();
+//            return set.getInt(1) != 0;
             return getTicketCollection(owner).getCollection()
                     .values()
                     .stream()
                     .anyMatch(x -> x.getId()==ID);
-        }
-        finally {
+        } catch (Exception e) {
+            Informer.log(Level.ERROR, e);
+            return false;
+        } finally {
             r.unlock();
         }
     }

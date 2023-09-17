@@ -59,7 +59,6 @@ public class InsertTCommandCell extends AbstractTicketCommand {
         return this;
     }
 
-
     private boolean collectionID (String strID) {
         Pattern pattern = Pattern.compile("^" + "insert( " + SignatureRegex.ID +")?" + "$");
         Matcher m = pattern.matcher(strID);

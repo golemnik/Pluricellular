@@ -1,26 +1,4 @@
 {
-  "creationDate": "2023-05-27",
-  "collection": {
-    "123": {
-      "id": 123,
-      "name": "123",
-      "coordinates": {
-        "x": 123,
-        "y": 123
-      },
-      "creationDate": "2023-06-13",
-      "price": 123.0,
-      "comment": "123",
-      "type": "VIP",
-      "venue": {
-        "id": 1,
-        "name": "123",
-        "capacity": 123,
-        "type": "BAR",
-        "address": {
-          "street": "123"
-        }
-      }
-    }
-  }
+  "creationDate": "2023-09-16",
+  "collection": {}
 }

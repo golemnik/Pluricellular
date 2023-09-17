@@ -31,6 +31,7 @@ public class SaveCCommandCell extends AbstractCommand {
         JsonParser jp;
         try {
             jp = new JsonParser(file);
+            System.out.println(clients.getClients());
             jp.parseSave(clients.getClients());
         }
         catch (Exception e) {

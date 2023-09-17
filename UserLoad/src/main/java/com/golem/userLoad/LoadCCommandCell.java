@@ -31,7 +31,10 @@ public class LoadCCommandCell extends AbstractCommand {
         JsonParser jp;
         try {
             jp = new JsonParser(file);
+            System.out.println(jp.parseLoad().getClients());
             clients.setClients(jp.parseLoad().getClients());
+
+//            System.out.println(clients.getClients().getClass());
         }
         catch (Exception e) {
             CellPrinter.setMessage(e.getMessage() +

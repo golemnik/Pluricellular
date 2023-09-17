@@ -95,7 +95,13 @@ public class Transmitter extends AbstractNetConnection {
                     com.activate();
                     logger.info(com.getAnswer());
                 });
-        executor.shutdown();
+        try {
+            serverSocketChannel.close();
+            executor.shutdownNow();
+        }
+        catch (Exception e) {
+            Informer.log(Level.INFO, "Server forced shutdown...");
+        }
     }
 
     private boolean checkSocket (DataContainer container, SocketChannel socketChannel) throws IOException {
@@ -139,7 +145,8 @@ public class Transmitter extends AbstractNetConnection {
                 }
             }
             catch (Exception e) {
-                logger.error("", e);
+//                logger.error("", e);
+                Informer.log(Level.ERROR, "ClientsThread run cycle was interrupted...");
             }
             finally {
                 try {

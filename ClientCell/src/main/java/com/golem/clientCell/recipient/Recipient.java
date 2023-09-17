@@ -64,6 +64,7 @@ public class Recipient extends AbstractNetConnection {
                     ex = command.exitable();
                     continue;
                 }
+//                System.out.println(">>>" + user.getLogin());
                 oos.writeObject(new UserContainer(user.getLogin(), User.encrypt(user.getPassword()), new DataContainer(signatureList)));
                 oos.flush();
                 DataContainer dataContainer = safeConvert(ois.readObject());

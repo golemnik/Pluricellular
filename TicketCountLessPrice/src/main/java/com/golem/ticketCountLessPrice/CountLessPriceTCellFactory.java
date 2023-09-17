@@ -14,7 +14,7 @@ public class CountLessPriceTCellFactory extends AbstractTCellFactory {
         super(new Signature(
                 "count_less_price",
                 "count collection elements less.",
-                SignatureStatus.PROVIDED,
+                SignatureStatus.CONNECTED,
                 new ArrayList<>(List.of("count_less_price " + SignatureRegex.ID)),
                 new ArrayList<>(List.of("")),
                 new ArrayList<>(List.of("unsupported arguments"))));
