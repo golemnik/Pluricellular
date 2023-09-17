@@ -4,24 +4,17 @@ import com.golem.ticketCell.collection.ticket.Ticket;
 
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class TicketCollection implements ConsoleRead{
-    private static TicketCollection instance;
+    private static final TicketCollection instance = new TicketCollection();
 
     public static TicketCollection getInstance() {
-        if (instance != null) {
-            return instance;
-        }
-        instance = new TicketCollection();
-        return instance;
-    }
-    public static TicketCollection getInstance(TicketCollection new_collection) {
-        instance = new_collection;
         return instance;
     }
 
-    private LocalDate creationDate;
-    private LinkedHashMap<String, Ticket> collection = new LinkedHashMap<>();
+    private LocalDate creationDate = LocalDate.now();
+    private Map<String, Ticket> collection = new LinkedHashMap<>();
 
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
@@ -30,24 +23,8 @@ public class TicketCollection implements ConsoleRead{
         return creationDate;
     }
 
-    public void setCollection (LinkedHashMap<String, Ticket> collection) {
-        this.collection = collection;
-    }
-    public LinkedHashMap<String, Ticket> getCollection() {
+    public Map<String, Ticket> getCollection() {
         return collection;
-    }
-    {
-        creationDate=LocalDate.now();
-    }
-    public TicketCollection() {}
-    public TicketCollection(boolean init) {
-        if (init) testLoad();
-    }
-    public void testLoad () {
-        creationDate = LocalDate.now();
-        collection.put("1", new Ticket(true));
-        collection.put("2", new Ticket(true));
-        collection.put("3", new Ticket(true));
     }
 
     public String toReadString() {

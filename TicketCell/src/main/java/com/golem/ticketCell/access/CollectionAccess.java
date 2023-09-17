@@ -3,7 +3,7 @@ package com.golem.ticketCell.access;
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Ticket;
 
-import java.util.LinkedHashMap;
+import java.util.Map;
 
 public interface CollectionAccess {
     Ticket get (String key);
@@ -16,7 +16,7 @@ public interface CollectionAccess {
     void clear (String owner);
     TicketCollection getTicketCollection();
     TicketCollection getTicketCollection(String login);
-    LinkedHashMap<String, Ticket> getTicketMap();
+    Map<String, Ticket> getTicketMap();
 
 //    List<Ticket> getTicketList (); // add rules
 //    void sort();
