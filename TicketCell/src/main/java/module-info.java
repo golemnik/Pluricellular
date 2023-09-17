@@ -11,6 +11,7 @@ open module Pluricellular.TicketCell.main {
     exports com.golem.ticketCell.collection;
     exports com.golem.ticketCell.access;
     exports com.golem.ticketCell.collection.ticket;
+    exports com.golem.ticketCell.exception;
 
     uses AbstractQueenCell;
     uses AbstractTCellFactory;

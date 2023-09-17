@@ -10,6 +10,7 @@ import com.golem.ticketCell.collection.ticket.Address;
 import com.golem.ticketCell.collection.ticket.Coordinates;
 import com.golem.ticketCell.collection.ticket.Ticket;
 import com.golem.ticketCell.collection.ticket.Venue;
+import com.golem.ticketCell.exception.UnaddedTException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -101,13 +102,14 @@ public class DatabaseManager extends AbstractAccess {
     }
 
     @Override
-    public void add(String key, Ticket ticket, String login) {
+    public void add(String key, Ticket ticket, String login) throws UnaddedTException {
         w.lock();
         try {
             insertTickets(key, ticket, login);
             getCollection().getCollection().put(key, ticket);
         } catch (SQLException e) {
             Informer.log(Level.ERROR, e);
+            throw new UnaddedTException(e);
         } finally {
             w.unlock();
         }

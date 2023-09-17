@@ -2,12 +2,13 @@ package com.golem.ticketCell.access;
 
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Ticket;
+import com.golem.ticketCell.exception.UnaddedTException;
 
 import java.util.Map;
 
 public interface CollectionAccess {
     Ticket get (String key);
-    void add (String key, Ticket ticket, String login);
+    void add (String key, Ticket ticket, String login) throws UnaddedTException;
     void delete (String key);
     void delete (Ticket ticket);
     boolean checkID (int ID, String owner);

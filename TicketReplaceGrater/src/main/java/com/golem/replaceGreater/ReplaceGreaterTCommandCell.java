@@ -23,8 +23,14 @@ public class ReplaceGreaterTCommandCell extends AbstractTicketCommand {
     public void activate() {
         List<String> answer = new ArrayList<>();
         if (manager.getTicketMap().get(key).compareTo(ticket) > 0 && change) {
-            manager.add(key, ticket, getLogin());
-            answer.add("Element was replaced.");
+            try {
+                manager.add(key, ticket, getLogin());
+                answer.add("Element was replaced.");
+            }
+            catch (Exception e) {
+                setAnswer(List.of("Element wasn't replaced."));
+                return;
+            }
         }
         answer.add("Collection was successfully updated.");
         setAnswer(answer);

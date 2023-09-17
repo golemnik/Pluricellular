@@ -2,6 +2,7 @@ package com.golem.ticketCell.access;
 
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Ticket;
+import com.golem.ticketCell.exception.UnaddedTException;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -128,7 +129,7 @@ public abstract class AbstractAccess implements CollectionAccess {
     }
 
     @Override
-    public void add(String key, Ticket ticket, String login) {
+    public void add(String key, Ticket ticket, String login) throws UnaddedTException {
         throw new IllegalStateException("Incorrect method usage");
     }
 
