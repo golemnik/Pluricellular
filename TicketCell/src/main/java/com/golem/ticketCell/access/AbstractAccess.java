@@ -37,8 +37,6 @@ public abstract class AbstractAccess implements CollectionAccess {
         }
     }
 
-
-
     @Override
     public boolean checkID(int ID, String owner) {
         w.lock();
@@ -126,20 +124,5 @@ public abstract class AbstractAccess implements CollectionAccess {
                 .sorted(new AccessComparator())
                 .collect(Collectors.toList())
                 .subList(0, 1);
-    }
-
-    @Override
-    public void add(String key, Ticket ticket, String login) throws UnaddedTException {
-        throw new IllegalStateException("Incorrect method usage");
-    }
-
-    @Override
-    public void delete(String key) {
-        throw new IllegalStateException("Incorrect method usage");
-    }
-
-    @Override
-    public void delete(Ticket ticket) {
-        throw new IllegalStateException("Incorrect method usage");
     }
 }
