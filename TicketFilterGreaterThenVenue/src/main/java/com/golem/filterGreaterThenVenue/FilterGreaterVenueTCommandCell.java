@@ -12,18 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilterGreaterVenueTCommandCell extends AbstractTicketCommand {
-    private Venue venue;
-    public FilterGreaterVenueTCommandCell() {
-    }
+    private List<String> signature;
 
     @Override
     public void activate() {
+        Venue venue = new Venue();
+        venue.setId(0);
+        venue.setName(signature.get(7));
+        venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
+        venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type
+        Address address = new Address();
+        address.setStreet(signature.get(10)); // add
+        venue.setAddress(address);
         List<String> list = new ArrayList<>();
         list.add("Elements list:\n");
         for (Ticket t : manager.getTicketCollection().getCollection().values()) {
-            if (venue == null) {
-                continue;
-            }
             if (t.getVenue().compareTo(venue) > 0) {
                 list.add(t.toReadString() + "\n");
             }
@@ -33,14 +36,7 @@ public class FilterGreaterVenueTCommandCell extends AbstractTicketCommand {
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
-        venue = new Venue();
-        venue.setId(0);
-        venue.setName(signature.get(7));
-        venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
-        venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type
-        Address address = new Address();
-        address.setStreet(signature.get(10)); // add
-        venue.setAddress(address);
+        this.signature = signature;
         return this;
     }
 }

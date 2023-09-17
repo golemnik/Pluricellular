@@ -12,19 +12,10 @@ import java.util.List;
 
 public class RemoveGreaterTCommandCell extends AbstractTicketCommand {
     private Ticket ticket;
-    public RemoveGreaterTCommandCell() {
-
-    }
-
+    private List<String> signature;
 
     @Override
     public void activate() {
-        manager.getTicketMap().values().removeIf(x -> x.compareTo(ticket) < 0);
-        setAnswer(List.of("Collection was successfully updated."));
-    }
-
-    @Override
-    public AbstractCommand useSignature(List<String> signature) {
         ticket = new Ticket();
         ticket.setOwner(getLogin());
         ticket.setId(0);
@@ -47,6 +38,13 @@ public class RemoveGreaterTCommandCell extends AbstractTicketCommand {
             venue.setAddress(address);
             ticket.setVenue(venue);
         }
+        manager.getTicketMap().values().removeIf(x -> x.compareTo(ticket) < 0);
+        setAnswer(List.of("Collection was successfully updated."));
+    }
+
+    @Override
+    public AbstractCommand useSignature(List<String> signature) {
+        this.signature = signature;
         return this;
     }
 }

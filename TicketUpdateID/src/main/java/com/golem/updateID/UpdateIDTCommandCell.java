@@ -11,25 +11,16 @@ import com.golem.ticketCell.collection.ticket.Venue;
 import java.util.List;
 
 public class UpdateIDTCommandCell extends AbstractTicketCommand {
-    private Ticket ticket;
-    public UpdateIDTCommandCell() {
-    }
+    private List<String> signature;
 
     @Override
     public void activate() {
-        if (ticket != null) {
-            CellPrinter.setMessage(ticket.toReadString());
-        }
-    }
-
-    @Override
-    public AbstractCommand useSignature(List<String> signature) {
         if (!manager.checkID(Integer.parseInt(signature.get(0).split(" ")[1]), getLogin())) {
-            setAnswer(List.of("Element with this id is not exists."));
-            return this;
+        setAnswer(List.of("Element with this id is not exists."));
+        return;
         }
 
-        ticket = new Ticket();
+        Ticket ticket = new Ticket();
         ticket.setOwner(getLogin());
         ticket.setId(Integer.parseInt(signature.get(0).split(" ")[1]));
         manager.getTicketMap().put(String.valueOf(ticket.getId()), ticket);
@@ -53,6 +44,14 @@ public class UpdateIDTCommandCell extends AbstractTicketCommand {
             ticket.setVenue(venue);
         }
         setAnswer(List.of("Element successfully updated."));
+        if (ticket != null) {
+            CellPrinter.setMessage(ticket.toReadString());
+        }
+    }
+
+    @Override
+    public AbstractCommand useSignature(List<String> signature) {
+        this.signature = signature;
         return this;
     }
 }

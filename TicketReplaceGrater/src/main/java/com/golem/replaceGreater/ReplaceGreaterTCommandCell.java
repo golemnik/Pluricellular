@@ -12,39 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReplaceGreaterTCommandCell extends AbstractTicketCommand {
-    private Ticket ticket;
-    private String key;
-    private boolean change = false;
-    public ReplaceGreaterTCommandCell() {
-
-    }
+    private List<String> signature;
 
     @Override
     public void activate() {
-        List<String> answer = new ArrayList<>();
-        if (manager.getTicketMap().get(key).compareTo(ticket) > 0 && change) {
-            try {
-                manager.add(key, ticket, getLogin());
-                answer.add("Element was replaced.");
-            }
-            catch (Exception e) {
-                setAnswer(List.of("Element wasn't replaced."));
-                return;
-            }
-        }
-        answer.add("Collection was successfully updated.");
-        setAnswer(answer);
-    }
-
-    @Override
-    public AbstractCommand useSignature(List<String> signature) {
-        key = signature.get(0).split(" ")[1];
+        String key = signature.get(0).split(" ")[1];
         if (manager.checkKey(key, getLogin())) {
             setAnswer(List.of("Element with this key is not exists."));
-            return this;
+            return;
         }
-        change = true;
-        ticket = new Ticket();
+        boolean change = true;
+        Ticket ticket = new Ticket();
         ticket.setOwner(getLogin());
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
@@ -64,6 +42,24 @@ public class ReplaceGreaterTCommandCell extends AbstractTicketCommand {
             venue.setAddress(address);
             ticket.setVenue(venue);
         }
+        List<String> answer = new ArrayList<>();
+        if (manager.getTicketMap().get(key).compareTo(ticket) > 0) {
+            try {
+                manager.add(key, ticket, getLogin());
+                answer.add("Element was replaced.");
+            }
+            catch (Exception e) {
+                setAnswer(List.of("Element wasn't replaced."));
+                return;
+            }
+        }
+        answer.add("Collection was successfully updated.");
+        setAnswer(answer);
+    }
+
+    @Override
+    public AbstractCommand useSignature(List<String> signature) {
+        this.signature = signature;
         return this;
     }
 }

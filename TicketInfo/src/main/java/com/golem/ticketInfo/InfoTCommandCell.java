@@ -8,11 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InfoTCommandCell extends AbstractTicketCommand {
-    public InfoTCommandCell() {
-
-    }
-
-
     @Override
     public void activate() {
         if (manager.getTicketCollection() != null) {

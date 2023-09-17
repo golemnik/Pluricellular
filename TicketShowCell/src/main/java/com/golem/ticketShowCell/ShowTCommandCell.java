@@ -18,7 +18,7 @@ public class ShowTCommandCell extends AbstractTicketCommand {
             setAnswer(List.of("Collection is not exist."));
             return;
         }
-        if (manager.getTicketMap().size() == 0) {
+        if (manager.getTicketMap().isEmpty()) {
             setAnswer(List.of("Collection is empty. Nothing to show."));
             return;
         }

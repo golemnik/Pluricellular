@@ -6,20 +6,20 @@ import com.golem.ticketCell.access.AbstractTicketCommand;
 import java.util.List;
 
 public class RemoveKeyTCommandCell extends AbstractTicketCommand {
-    public RemoveKeyTCommandCell() {
-    }
+    private List<String> signature;
     @Override
     public void activate() {
+        if (manager.checkKey(signature.get(0).split(" ")[1], getLogin())) {
+        manager.getTicketMap().remove(signature.get(0).split(" ")[1]);
+        setAnswer(List.of("Element successfully removed."));
+        return;
+    }
+        setAnswer(List.of("Element with this key is not exists."));
     }
 
     @Override
     public AbstractCommand useSignature(List<String> signature) {
-        if (manager.checkKey(signature.get(0).split(" ")[1], getLogin())) {
-            manager.getTicketMap().remove(signature.get(0).split(" ")[1]);
-            setAnswer(List.of("Element successfully removed."));
-            return this;
-        }
-        setAnswer(List.of("Element with this key is not exists."));
+        this.signature = signature;
         return this;
     }
 }

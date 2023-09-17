@@ -11,26 +11,16 @@ import java.util.List;
  */
 public class SaveCCommandCell extends AbstractCommand {
     private Clients clients;
-    private final String file = "clients.json";
-
-    public SaveCCommandCell() {
-    }
 
     public void setClients(Clients clients) {
         this.clients = clients;
     }
 
     @Override
-    public AbstractCommand useSignature(List<String> signature) {
-        setAnswer(List.of("saving registered clients.."));
-        return this;
-    }
-
-    @Override
     public void activate() {
         JsonParser jp;
         try {
-            jp = new JsonParser(file);
+            jp = new JsonParser("clients.json");
             System.out.println(clients.getClients());
             jp.parseSave(clients.getClients());
         }
@@ -41,4 +31,10 @@ public class SaveCCommandCell extends AbstractCommand {
             jp.parseSave(clients.getClients());
         }
     }
+    @Override
+    public AbstractCommand useSignature(List<String> signature) {
+        setAnswer(List.of("saving registered clients.."));
+        return this;
+    }
+
 }
