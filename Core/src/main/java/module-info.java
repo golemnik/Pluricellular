@@ -30,15 +30,12 @@ module ColonyCore {
     uses AbstractTerminal;
 
     provides Cell with BasicCell, CorruptedCommandCell,
-            CoreCell, ExitCommandCell, ReloadGenomeCommandCell;
+            CoreCell, ExitCommandCell;
     provides AbstractQueenCell with BroodQueen, SystemQueen;
-    provides SystemCommand with ExitCommandCell, ReloadGenomeCommandCell;
+    provides SystemCommand with ExitCommandCell;
     provides AbstractCellFactory with BasicCellFactory, FakeFactory;
-    provides AbstractSystemCellFactory with ExitCellFactory, ReloadGenomeCellFactory;
+    provides AbstractSystemCellFactory with ExitCellFactory;
 
     provides AbstractBroodMother with BasicBroodMotherCell;
     provides AbstractTerminal with BasicTerminalCell;
 }
-
-// java --module-path .\build\libs\Pluricellular-1.0.jar -m core/com.golem.core.Main
-// use it to build simple core and full path to main class.

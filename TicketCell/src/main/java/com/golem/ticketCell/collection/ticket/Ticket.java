@@ -291,23 +291,5 @@ public class Ticket implements Comparable <Ticket>, ConsoleRead {
         BUDGETARY,
         CHEAP
     }
-
-    public class Supporter {
-        public static Ticket setter (Ticket ticket,
-                                     int id,
-                                     String name,
-                                     Coordinates coordinates,
-                                     LocalDate creationDate,
-                                     Double price,
-                                     String comment,
-                                     TicketType type,
-                                     Venue venue) {
-
-
-
-            return ticket;
-        }
-    }
-
 }
 

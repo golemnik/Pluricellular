@@ -2,9 +2,6 @@ package com.golem.ticketInfo;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.ticketCell.access.AbstractTicketCommand;
-import com.golem.ticketCell.collection.TicketCollection;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class InfoTCommandCell extends AbstractTicketCommand {

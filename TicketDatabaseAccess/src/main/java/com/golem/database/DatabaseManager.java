@@ -68,7 +68,7 @@ public class DatabaseManager extends AbstractAccess {
 //            }
 //        }
 //        catch (Exception e) {
-////            Informer.log(Level.INFO, e);
+//            Informer.log(Level.INFO, e);
 //        }
         try {
             ResultSet set = connection
@@ -77,6 +77,7 @@ public class DatabaseManager extends AbstractAccess {
             set.next();
             collection.setCreationDate(set.getDate(1).toLocalDate());
             set = connection.createStatement().executeQuery("select * from tickets");
+            connection.commit();
             while (set.next()) {
                 ticket.setId(set.getInt(1));
                 ticket.setName(set.getString(3));
@@ -86,11 +87,9 @@ public class DatabaseManager extends AbstractAccess {
                 ticket.setComment(set.getString(7));
                 ticket.setType(Ticket.TicketType.valueOf(set.getString(8)));
                 ticket.setVenue(selectVenue(set.getInt(9)));
-                ticket.setOwner(set.getString(10));
-                collection.getCollection().put(set.getString(2), ticket);
-            }
-            connection.commit();
-            Informer.log(Level.INFO, "Collection restored from database");
+                ticket.setOwner(set.getString(10));collection.getCollection().put(set.getString(2), ticket);
+                ticket = new Ticket();
+            }Informer.log(Level.INFO, "Collection restored from database");
         }
         catch (Exception e) {
             Informer.log(Level.ERROR, e);
@@ -253,7 +252,8 @@ public class DatabaseManager extends AbstractAccess {
                     .filter(x -> getCollection().getCollection().get(x).getOwner().equals(owner))
                     .forEach(x -> getCollection().getCollection().remove(x));
 
-            ResultSet set = connection.createStatement().executeQuery("select * from tickets where _owner = " + owner);
+            ResultSet set = connection.createStatement()
+                    .executeQuery("select * from tickets where _owner = " + owner);
             while (set.next()) {
                 connection.createStatement()
                         .executeUpdate("delete from coordinates where id = " + set.getInt(4));
@@ -266,6 +266,7 @@ public class DatabaseManager extends AbstractAccess {
                         .executeUpdate("delete from venues where id = " + set.getInt(9));
                 connection.createStatement()
                         .executeUpdate("delete from tickets where id = " + set.getInt(1));
+                connection.commit();
             }
 
             connection.createStatement().executeUpdate("delete from tickets where _owner = " + owner);

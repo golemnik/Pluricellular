@@ -19,7 +19,7 @@ public class ShowTCommandCell extends AbstractTicketCommand {
             return;
         }
         String answer = "";
-        for (Ticket t : manager.getTicketMap().values()) {
+        for (Ticket t : manager.getTicketCollection().getCollection().values()) {
             answer += "- - - -";
             answer += t.toReadString();
             answer += "\n";
