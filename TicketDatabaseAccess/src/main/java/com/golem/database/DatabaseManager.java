@@ -104,6 +104,8 @@ public class DatabaseManager extends AbstractAccess {
         w.lock();
         try {
             insertTickets(key, ticket, login);
+            ticket.setId(selectTicketID());
+            ticket.getVenue().setId(selectVenuesID());
             getCollection().getCollection().put(key, ticket);
         } catch (SQLException e) {
             Informer.log(Level.ERROR, e);
@@ -184,15 +186,14 @@ public class DatabaseManager extends AbstractAccess {
     public boolean checkID(int ID, String owner) {
         r.lock();
         try {
-//            ResultSet set = connection
-//                    .createStatement()
-//                    .executeQuery("select id from tickets where id = " + ID);
-//            set.next();
-//            return set.getInt(1) != 0;
+            ResultSet set = connection
+                    .createStatement()
+                    .executeQuery("select id from tickets where id = '" + ID + "'");
+            set.next();
             return getTicketCollection(owner).getCollection()
                     .values()
                     .stream()
-                    .anyMatch(x -> x.getId()==ID);
+                    .anyMatch(x -> x.getId()==ID) && (set.getInt(1) == ID);
         } catch (Exception e) {
             Informer.log(Level.ERROR, e);
             return false;
@@ -420,5 +421,14 @@ public class DatabaseManager extends AbstractAccess {
             connection.rollback();
             throw e;
         }
+
+
+    }
+    protected int selectTicketID () throws SQLException {
+        ResultSet set = connection
+                .createStatement()
+                .executeQuery("select currval ('tickets_id_seq')");
+        set.next();
+        return set.getInt(1);
     }
 }
