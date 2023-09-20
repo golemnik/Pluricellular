@@ -19,7 +19,6 @@ import java.util.Properties;
 public class DatabaseManager extends AbstractAccess {
     private Connection connection;
     private Properties properties;
-
     private final String url = "jdbc:postgresql://pg:5432/studs";
     private final String user = "s368324";
     private final String password = "";
