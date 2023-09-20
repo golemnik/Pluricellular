@@ -16,7 +16,7 @@ public class UpdateIDTCommandCell extends AbstractTicketCommand {
     @Override
     public void activate() {
         if (!manager.checkID(Integer.parseInt(signature.get(0).split(" ")[1]), getLogin())) {
-        setAnswer(List.of("Element with this id is not exists."));
+        setAnswer(List.of("Element with this id: is not exists // doesn't owned by current client."));
         return;
         }
 
