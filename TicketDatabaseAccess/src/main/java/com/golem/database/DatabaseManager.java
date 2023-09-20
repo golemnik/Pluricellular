@@ -246,32 +246,21 @@ public class DatabaseManager extends AbstractAccess {
     public void clear (String owner) {
         w.lock();
         try {
-            getCollection().getCollection().keySet()
-                    .stream()
-                    .filter(x -> getCollection().getCollection().get(x).getOwner().equals(owner))
-                    .forEach(x -> getCollection().getCollection().remove(x));
-
             ResultSet set = connection.createStatement()
-                    .executeQuery("select * from tickets where _owner = " + owner);
+                    .executeQuery("select id, _coordinate_id, _venue_id from tickets where _owner = '" + owner + "'");
             while (set.next()) {
                 connection.createStatement()
-                        .executeUpdate("delete from coordinates where id = " + set.getInt(4));
+                        .executeUpdate("delete from tickets where id = '" + set.getInt(1) + "'");
+                connection.createStatement()
+                        .executeUpdate("delete from coordinates where id = '" + set.getInt(2) + "'");
                 ResultSet vSet = connection.createStatement()
-                        .executeQuery("select _address_id from venues where id = " + set.getString(9));
+                        .executeQuery("select _address_id from venues where id = '" + set.getInt(3) + "'");
                 vSet.next();
                 connection.createStatement()
-                        .executeUpdate("delete from addresses where id = " + vSet.getInt(1));
+                        .executeUpdate("delete from venues where id = '" + set.getInt(3) + "'");
                 connection.createStatement()
-                        .executeUpdate("delete from venues where id = " + set.getInt(9));
-                connection.createStatement()
-                        .executeUpdate("delete from tickets where id = " + set.getInt(1));
-                connection.commit();
+                        .executeUpdate("delete from addresses where id = '" + vSet.getInt(1) + "'");
             }
-
-            connection.createStatement().executeUpdate("delete from tickets where _owner = " + owner);
-            connection.createStatement().executeUpdate("delete from venues");
-            connection.createStatement().executeUpdate("delete from coordinates");
-            connection.createStatement().executeUpdate("delete from addresses");
             connection.commit();
 
             getCollection()
