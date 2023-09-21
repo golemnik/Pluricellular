@@ -6,6 +6,7 @@ import com.golem.updateID.UpdateIDTCommandCell;
 module Pluricellular.TicketUpdateID.main {
     requires ColonyCore;
     requires Pluricellular.TicketCell.main;
+    requires Pluricellular.Informer.main;
 
     uses Cell;
     uses AbstractTCellFactory;

@@ -12,11 +12,11 @@ import java.util.List;
 public class UpdateIDTCellFactory extends AbstractTCellFactory {
     public UpdateIDTCellFactory() {
         super (new Signature(
-                "update_id",
-                "update ticket at the collection.",
+                "update",
+                "update ticket by id at the collection.",
                 SignatureStatus.CONNECTED,
                 new ArrayList<>(List.of(
-                        "^" + "update_id " + SignatureRegex.ID + "$",
+                        "^" + "update " + SignatureRegex.ID + "$",
                         "^" + SignatureRegex._string + "$", //t name
                         "^" + SignatureRegex.PRICE + "$", //t price
                         "^" + SignatureRegex._string + "$", // t comm

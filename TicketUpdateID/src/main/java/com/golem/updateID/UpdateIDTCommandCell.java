@@ -2,12 +2,16 @@ package com.golem.updateID;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
+import com.golem.informer.Informer;
+import com.golem.informer.Level;
 import com.golem.ticketCell.access.AbstractTicketCommand;
 import com.golem.ticketCell.collection.ticket.Address;
 import com.golem.ticketCell.collection.ticket.Coordinates;
 import com.golem.ticketCell.collection.ticket.Ticket;
 import com.golem.ticketCell.collection.ticket.Venue;
+import com.golem.ticketCell.exception.NotUpdatedTException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class UpdateIDTCommandCell extends AbstractTicketCommand {
@@ -23,7 +27,7 @@ public class UpdateIDTCommandCell extends AbstractTicketCommand {
         Ticket ticket = new Ticket();
         ticket.setOwner(getLogin());
         ticket.setId(Integer.parseInt(signature.get(0).split(" ")[1]));
-        manager.getTicketMap().put(String.valueOf(ticket.getId()), ticket);
+        ticket.setCreationDate(LocalDate.now());
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
         ticket.setComment(signature.get(3)); // t comment
@@ -43,9 +47,13 @@ public class UpdateIDTCommandCell extends AbstractTicketCommand {
             venue.setAddress(address);
             ticket.setVenue(venue);
         }
-        setAnswer(List.of("Element successfully updated."));
-        if (ticket != null) {
-            CellPrinter.setMessage(ticket.toReadString());
+        try {
+            manager.update(ticket, getLogin());
+            setAnswer(List.of("Element successfully updated."));
+        }
+        catch (NotUpdatedTException e) {
+            Informer.log(Level.ERROR, e);
+            setAnswer(List.of("Element wasn't updated."));
         }
     }
 

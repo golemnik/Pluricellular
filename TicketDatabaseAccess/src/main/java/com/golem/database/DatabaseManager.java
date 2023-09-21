@@ -10,7 +10,8 @@ import com.golem.ticketCell.collection.ticket.Address;
 import com.golem.ticketCell.collection.ticket.Coordinates;
 import com.golem.ticketCell.collection.ticket.Ticket;
 import com.golem.ticketCell.collection.ticket.Venue;
-import com.golem.ticketCell.exception.UnaddedTException;
+import com.golem.ticketCell.exception.NotAddedTException;
+import com.golem.ticketCell.exception.NotUpdatedTException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class DatabaseManager extends AbstractAccess {
     }
 
     @Override
-    public void add(String key, Ticket ticket, String login) throws UnaddedTException {
+    public void add(String key, Ticket ticket, String login) throws NotAddedTException {
         w.lock();
         try {
             insertTickets(key, ticket, login);
@@ -121,7 +122,32 @@ public class DatabaseManager extends AbstractAccess {
             getCollection().getCollection().put(key, ticket);
         } catch (SQLException e) {
             Informer.log(Level.ERROR, e);
-            throw new UnaddedTException(e);
+            throw new NotAddedTException(e);
+        } finally {
+            w.unlock();
+        }
+    }
+
+    @Override
+    public void update(Ticket ticket, String login) throws NotUpdatedTException {
+        w.lock();
+        try {
+            String key = getTicketCollection().getCollection().keySet()
+                    .stream()
+                    .filter(x -> getCollection().getCollection().get(x).getId() == ticket.getId())
+                    .findFirst()
+                    .orElse(null);
+            if (key == null) {
+                throw new NotUpdatedTException();
+            }
+            del(key);
+            System.out.println(">> " + key);
+            add(key, ticket, login);
+        } catch (NotAddedTException e) {
+            Informer.log(Level.ERROR, e);
+            throw new NotUpdatedTException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         } finally {
             w.unlock();
         }
@@ -131,9 +157,7 @@ public class DatabaseManager extends AbstractAccess {
     public void delete(String key) {
         w.lock();
         try {
-            connection
-                    .createStatement()
-                    .executeUpdate("delete from tickets where _key = '" + key + "'");
+            del(key);
             connection.commit();
             getCollection().getCollection().remove(key);
         }
@@ -149,6 +173,11 @@ public class DatabaseManager extends AbstractAccess {
         finally {
             w.unlock();
         }
+    }
+    private void del (String key) throws SQLException {
+        connection
+                .createStatement()
+                .executeUpdate("delete from tickets where _key = '" + key + "'");
     }
 
     @Override

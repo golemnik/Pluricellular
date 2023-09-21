@@ -2,7 +2,6 @@ package com.golem.ticketCell.access;
 
 import com.golem.ticketCell.collection.TicketCollection;
 import com.golem.ticketCell.collection.ticket.Ticket;
-import com.golem.ticketCell.exception.UnaddedTException;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;

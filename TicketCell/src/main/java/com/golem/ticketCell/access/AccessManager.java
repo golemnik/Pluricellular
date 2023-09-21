@@ -1,6 +1,7 @@
 package com.golem.ticketCell.access;
 
 import com.golem.ticketCell.collection.ticket.Ticket;
+import com.golem.ticketCell.exception.NotUpdatedTException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +21,11 @@ public class AccessManager extends AbstractAccess {
         finally {
             w.unlock();
         }
+    }
 
+    @Override
+    public void update(Ticket ticket, String login) throws NotUpdatedTException {
+        throw new IllegalStateException("not implemented here");
     }
 
     @Override
