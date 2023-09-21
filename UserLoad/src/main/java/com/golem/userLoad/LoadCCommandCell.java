@@ -6,6 +6,7 @@ import com.golem.serverCell.clients.Clients;
 import com.golem.serverCell.clients.RegClient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -36,7 +37,13 @@ public class LoadCCommandCell extends AbstractCommand {
             CellPrinter.setMessage(e.getMessage() +
                     "\nDue error to load from file, clients list will be loaded from system file <<reserved_clients.json>>");
             jp = new JsonParser("reserved_clients.json");
-            clients.setClients(jp.parseLoad().getClients());
+            Clients loaded_clients = jp.parseLoad();
+            if (loaded_clients != null) {
+                clients.setClients(loaded_clients.getClients());
+            }
+            else {
+                clients.setClients(new HashMap<>());
+            }
         }
     }
 
