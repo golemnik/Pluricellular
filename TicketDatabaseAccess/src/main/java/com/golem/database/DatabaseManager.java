@@ -1,6 +1,7 @@
 package com.golem.database;
 
 import com.golem.core.schemas.providedRealisations.CellPrinter;
+import com.golem.database.sqlScripts.DataBase;
 import com.golem.informer.Informer;
 import com.golem.informer.Level;
 import com.golem.ticketCell.access.AbstractAccess;
@@ -19,13 +20,12 @@ import java.util.Properties;
 public class DatabaseManager extends AbstractAccess {
     private Connection connection;
     private Properties properties;
-    private final String url = "jdbc:postgresql://pg:5432/studs";
-    private final String user = "s368324";
-    private final String password = "";
-
-    private final String test_url = "jdbc:postgresql://localhost:5432/test1";
-    private final String test_user = "postgres";
-    private final String test_password = "pgAdmin";
+    private final String url = "jdbc:postgresql://" +
+            System.getProperty("dbHost","localhost") + ":" +
+            System.getProperty("dbPort","5432") + "/" +
+            System.getProperty("dbName","test1");
+    private final String user = System.getProperty("dbUser", "postgres");
+    private final String password = System.getProperty("dbPassword","pgAdmin");
 
     {
         init();
@@ -40,11 +40,14 @@ public class DatabaseManager extends AbstractAccess {
     private boolean init () {
         properties = new Properties();
         properties.setProperty("ssl", "false");
-        properties.setProperty("user", test_user);
-        properties.setProperty("password", test_password);
+        properties.setProperty("user", user);
+        properties.setProperty("password", password);
         properties.setProperty("stringtype", "unspecified");
+        System.out.println("url: " + url);
+        System.out.println("user: " + user);
+        System.out.println("password: " + password);
         try {
-            connection = DriverManager.getConnection(test_url, properties);
+            connection = DriverManager.getConnection(url, properties);
             connection.setAutoCommit(false);
             Informer.log(Level.INFO, "Connected");
             return true;
@@ -59,16 +62,25 @@ public class DatabaseManager extends AbstractAccess {
         w.lock();
         TicketCollection collection = TicketCollection.getInstance();
         Ticket ticket = new Ticket();
-//        try {
-//            for (int i = 0; i < DataBase.cdb.length; i++) {
-//                connection
-//                        .createStatement()
-//                        .execute(DataBase.cdb[0]);
-//            }
-//        }
-//        catch (Exception e) {
-//            Informer.log(Level.INFO, e);
-//        }
+        try {
+            ResultSet set = connection.createStatement().executeQuery(DataBase.check);
+            set.next();
+            if (!set.getBoolean(1)) {
+                for (int i = 0; i < DataBase.cdb.length; i++) {
+                    connection
+                            .createStatement()
+                            .execute(DataBase.cdb[i]);
+                }
+                connection.commit();
+                Informer.log(Level.INFO, "Database created in current system...");
+            }
+            else {
+                Informer.log(Level.INFO, "Database already exists in current system...");
+            }
+        }
+        catch (Exception e) {
+            Informer.log(Level.INFO, e);
+        }
         try {
             ResultSet set = connection
                     .createStatement()
@@ -119,22 +131,9 @@ public class DatabaseManager extends AbstractAccess {
     public void delete(String key) {
         w.lock();
         try {
-            ResultSet set = connection
-                    .createStatement()
-                    .executeQuery("select _coordinate_id, _venue_id from tickets where _key = '" + key + "'");
-            set.next();
-            int c_id = set.getInt(1);
-            int v_id = set.getInt(2);
             connection
                     .createStatement()
                     .executeUpdate("delete from tickets where _key = '" + key + "'");
-            connection
-                    .createStatement()
-                    .executeUpdate("delete from coordinates where id = '" + c_id +"'");
-            connection
-                    .createStatement()
-                    .executeUpdate(
-                            "delete from venues where id = '" + v_id + "'");
             connection.commit();
             getCollection().getCollection().remove(key);
         }
@@ -156,17 +155,8 @@ public class DatabaseManager extends AbstractAccess {
     public void delete(Ticket ticket) {
         w.lock();
         try {
-            ResultSet set = connection
-                    .createStatement()
-                    .executeQuery("select _coordinate_id, _venue_id from tickets where id = " + ticket.getId());
-            set.next();
-            int c_id = set.getInt(1);
-            int v_id = set.getInt(2);
-            connection
-                    .createStatement()
-                    .executeUpdate("delete from tickets where id = " + ticket.getId() +";" +
-                            "delete from coordinates where id = " + c_id +";" +
-                            "delete from venues where id = " + v_id +";");
+            connection.createStatement()
+                    .executeUpdate("delete from tickets where id = '" + ticket.getId() +"'");
             connection.commit();
         }
         catch (Exception e) {
@@ -225,9 +215,6 @@ public class DatabaseManager extends AbstractAccess {
         w.lock();
         try {
             connection.createStatement().execute("delete from public.tickets");
-            connection.createStatement().execute("delete from public.venues");
-            connection.createStatement().execute("delete from public.coordinates");
-            connection.createStatement().execute("delete from public.addresses");
             connection.commit();
             getCollection().getCollection().clear();
         }
@@ -253,15 +240,6 @@ public class DatabaseManager extends AbstractAccess {
             while (set.next()) {
                 connection.createStatement()
                         .executeUpdate("delete from tickets where id = '" + set.getInt(1) + "'");
-                connection.createStatement()
-                        .executeUpdate("delete from coordinates where id = '" + set.getInt(2) + "'");
-                ResultSet vSet = connection.createStatement()
-                        .executeQuery("select _address_id from venues where id = '" + set.getInt(3) + "'");
-                vSet.next();
-                connection.createStatement()
-                        .executeUpdate("delete from venues where id = '" + set.getInt(3) + "'");
-                connection.createStatement()
-                        .executeUpdate("delete from addresses where id = '" + vSet.getInt(1) + "'");
             }
             connection.commit();
 

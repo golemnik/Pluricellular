@@ -1,8 +1,9 @@
 package com.golem.database.sqlScripts;
 
 public class DataBase {
+    public static final String check = "select exists (select 1 from pg_type where typname = 'tickettype')";
     public static final String[] cdb = {"""         
-            create type TicketType as enum (
+            create type tickettype as enum (
                 'VIP',
                 'USUAL',
                 'BUDGETARY',
@@ -10,7 +11,7 @@ public class DataBase {
             );
             """,
             """
-            create type VenueType as enum (
+            create type venuetype as enum (
                 'BAR',
                 'LOFT',
                 'OPEN_AREA',
@@ -21,40 +22,40 @@ public class DataBase {
             """
             create table if not exists coordinates (
                 id serial unique primary key,
-                _x decimal,
-                _y decimal
+                _x decimal not null,
+                _y decimal not null
             );
             """,
             """
             create table if not exists addresses (
                 id serial unique primary key,
-                _street text
+                _street text not null
             );
             """,
             """
             create table if not exists venues (
                  id serial unique primary key,
-                 _name text,
-                 _capacity decimal,
-                 _type VenueType,
-                 _address_id integer,
-                 foreign key (_address_id) references addresses (id)
+                 _name text not null,
+                 _capacity decimal not null,
+                 _type venuetype not null,
+                 _address_id integer not null,
+                 foreign key (_address_id) references addresses (id) on delete cascade
             );
             """,
             """
             create table if not exists tickets (
                 id serial unique primary key,
-                _key text unique,
-                _name text,
-                _coordinate_id integer,
-                _creationDate date,
-                _price double precision,
+                _key text unique not null,
+                _name text not null,
+                _coordinate_id integer not null,
+                _creationDate date not null,
+                _price double precision not null,
                 _comment text,
-                _type TicketType,
-                _venue_id integer,
-                _owner text,
-                foreign key (_venue_id) references venues (id),
-                foreign key (_coordinate_id) references coordinates (id)
+                _type tickettype not null,
+                _venue_id integer not null,
+                _owner text not null,
+                foreign key (_venue_id) references venues (id) on delete cascade,
+                foreign key (_coordinate_id) references coordinates (id) on delete cascade
             );
             """,
             """
