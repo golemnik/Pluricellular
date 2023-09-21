@@ -9,13 +9,18 @@ import com.golem.ticketCell.collection.ticket.Ticket;
 import com.golem.ticketCell.collection.ticket.Venue;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RemoveGreaterKeyTCommandCell extends AbstractTicketCommand {
     private String ticketKey;
 
     @Override
     public void activate() {
-        manager.getTicketCollection().getCollection().keySet().removeIf(s -> s.compareTo(ticketKey) > 0);
+        List<String> list = manager.getTicketCollection().getCollection().keySet()
+                .stream()
+                .filter(x -> x.compareTo(ticketKey) > 0)
+                .toList();
+        list.forEach(x -> manager.delete(x));
         setAnswer(List.of("Collection was successfully updated."));
     }
 
