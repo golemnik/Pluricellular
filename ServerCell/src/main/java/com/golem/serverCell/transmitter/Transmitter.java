@@ -22,6 +22,7 @@ import java.nio.channels.SocketChannel;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -34,11 +35,13 @@ public class Transmitter extends AbstractNetConnection {
     private final int PORT = 60888;
     private Clients registeredClients = Clients.getInstance();
     private ExecutorService executor;
+    private ExecutorService executor_reply;
     private final int POOL_SIZE = 100;
     boolean ex = false;
     private boolean activateServer () {
         try {
             executor = Executors.newFixedThreadPool(POOL_SIZE);
+            executor_reply = new ForkJoinPool(POOL_SIZE);
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.bind(new InetSocketAddress(HOSTNAME, PORT));
             serverSocketChannel.configureBlocking(false);
@@ -129,7 +132,7 @@ public class Transmitter extends AbstractNetConnection {
         private final ConnectedClient client;
         public ClientsThread (SocketChannel socket, AbstractTerminal terminal, Clients clients) {
             this.socket = socket;
-            client = new ConnectedClient(executor, socket, terminal, clients);
+            client = new ConnectedClient(executor, executor_reply, socket, terminal, clients);
         }
         @Override
         public void run() {

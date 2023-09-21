@@ -11,6 +11,7 @@ import java.io.*;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 import com.golem.netCell.containers.ContainerType;
@@ -25,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 
 public class ConnectedClient {
     private ExecutorService executor;
+    private ExecutorService executor_reply;
     private static final Logger logger = LogManager.getLogger(ConnectedClient.class);
     private final SocketChannel channel;
     private final AbstractTerminal terminal;
@@ -33,8 +35,9 @@ public class ConnectedClient {
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private Clients clients;
-    public ConnectedClient (ExecutorService executor, SocketChannel channel, AbstractTerminal terminal, Clients clients) {
+    public ConnectedClient (ExecutorService executor, ExecutorService executor_reply, SocketChannel channel, AbstractTerminal terminal, Clients clients) {
         this.executor = executor;
+        this.executor_reply = executor_reply;
         this.channel = channel;
         this.terminal = terminal;
         this.clients = clients;
@@ -77,17 +80,11 @@ public class ConnectedClient {
             else {
                 dataContainer = userContainer.dataContainer;
             }
-
             logger.info("Client {} sent command: {}; container {}",
                     channel, dataContainer.data.toString(), userContainer.login);
             AbstractCommand command = terminal.getBroodMother()
                     .createCell(dataContainer.data.get(0).split(" ")[0], dataContainer.data, userContainer.login);
-            command.activate();
-            List<String> answer = command.getAnswer();
-            if (answer == null) {
-                answer = new ArrayList<>(List.of("Message received"));
-            }
-            executor.execute(new ReplayThread(oos, answer));
+            executor.execute(new CreateAnwserThread(command, executor_reply, oos));
             return true;
         }
         catch (Exception e) {
@@ -118,6 +115,27 @@ public class ConnectedClient {
         return new DataContainer(new ArrayList<>(List.of("corrupted", "Client was not found")));
     }
 
+    class CreateAnwserThread implements Runnable {
+        private AbstractCommand command;
+        private ExecutorService executor;
+        private ObjectOutputStream oos;
+        public CreateAnwserThread (AbstractCommand command, ExecutorService executor, ObjectOutputStream oos) {
+            this.command = command;
+            this.executor = executor;
+            this.oos = oos;
+        }
+        @Override
+        public void run() {
+            logger.info("New CreateAnwserThread:");
+            command.activate();
+            List<String> answer = command.getAnswer();
+            if (answer == null) {
+                answer = new ArrayList<>(List.of("Message received"));
+            }
+            executor.execute(new ReplayThread(oos, answer));
+
+        }
+    }
     class ReplayThread implements Runnable {
         private final List<String> answer;
         private final ObjectOutputStream oos;
