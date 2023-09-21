@@ -12,10 +12,10 @@ import java.util.List;
 public class CountLessPriceTCellFactory extends AbstractTCellFactory {
     public CountLessPriceTCellFactory () {
         super(new Signature(
-                "count_less_price",
+                "count_less_than_price",
                 "count collection elements less.",
                 SignatureStatus.CONNECTED,
-                new ArrayList<>(List.of("count_less_price " + SignatureRegex.ID)),
+                new ArrayList<>(List.of("count_less_than_price " + SignatureRegex.PRICE)),
                 new ArrayList<>(List.of("")),
                 new ArrayList<>(List.of("unsupported arguments"))));
     }

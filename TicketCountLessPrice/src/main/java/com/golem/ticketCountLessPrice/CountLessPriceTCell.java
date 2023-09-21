@@ -10,17 +10,16 @@ import java.util.List;
 
 public class CountLessPriceTCell extends AbstractTicketCommand implements Cell {
     private Double ticketPrice;
-    public CountLessPriceTCell(){}
 
     @Override
     public void activate() {
-        int counter = 0;
-        for (String s : manager.getTicketMap().keySet()) {
-            counter += manager.getTicketMap().get(s).getPrice() < ticketPrice ? 1 : 0;
-        }
+        Long counter = manager.getTicketCollection().getCollection().values()
+                .stream()
+                .filter(x -> x.getPrice() < ticketPrice)
+                .count();
         setAnswer(List.of("Amount elements which price less than <<" +
-                CellPrinter.Colorist.PURPLE(ticketPrice.toString()) + ">>:\n"+
-                CellPrinter.Colorist.PURPLE(String.valueOf(counter))));
+                CellPrinter.Colorist.PURPLE(ticketPrice.toString()) + ">>: ",
+                String.valueOf(counter)));
     }
 
     @Override
