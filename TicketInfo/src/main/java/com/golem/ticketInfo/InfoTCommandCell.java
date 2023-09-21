@@ -9,7 +9,7 @@ public class InfoTCommandCell extends AbstractTicketCommand {
     public void activate() {
         if (manager.getTicketCollection() != null) {
             setAnswer(List.of("Collection info status:",
-                    String.valueOf(manager.getTicketMap().size()),
+                    String.valueOf(manager.getTicketCollection().getCollection().size()),
                     manager.getTicketCollection().getCreationDate().toString()
             ));
             return;
