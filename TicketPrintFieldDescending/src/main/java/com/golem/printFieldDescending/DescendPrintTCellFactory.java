@@ -11,10 +11,10 @@ import java.util.List;
 public class DescendPrintTCellFactory extends AbstractTCellFactory {
     public DescendPrintTCellFactory() {
         super (new Signature(
-                "print_field_type",
+                "print_field_descending_type",
                 "display the value of the type field of all elements in descending order.",
                 SignatureStatus.CONNECTED,
-                new ArrayList<>(List.of("print_field_type")),
+                new ArrayList<>(List.of("print_field_descending_type")),
                 new ArrayList<>(List.of("")),
                 new ArrayList<>(List.of("unsupported arguments"))));
     }
