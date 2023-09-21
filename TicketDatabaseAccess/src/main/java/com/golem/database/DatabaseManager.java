@@ -243,12 +243,13 @@ public class DatabaseManager extends AbstractAccess {
             }
             connection.commit();
 
-            getCollection()
+            List<String> list = getCollection()
                     .getCollection()
                     .keySet()
                     .stream()
                     .filter(x -> getCollection().getCollection().get(x).getOwner().equals(owner))
-                    .forEach(x -> getCollection().getCollection().remove(x));
+                    .toList();
+            list.forEach(x -> getCollection().getCollection().remove(x));
         }
         catch (Exception e) {
             try{
