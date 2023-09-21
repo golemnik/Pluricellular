@@ -38,7 +38,10 @@ public class RemoveGreaterTCommandCell extends AbstractTicketCommand {
             venue.setAddress(address);
             ticket.setVenue(venue);
         }
-        manager.getTicketMap().values().removeIf(x -> x.compareTo(ticket) < 0);
+        manager.getTicketCollection().getCollection().keySet()
+                .stream()
+                .filter(x -> manager.getTicketCollection().getCollection().get(x).compareTo(ticket) < 0)
+                .forEach(x -> manager.delete(x));
         setAnswer(List.of("Collection was successfully updated."));
     }
 

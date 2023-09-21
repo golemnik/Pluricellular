@@ -12,12 +12,10 @@ import java.util.List;
 
 public class RemoveGreaterKeyTCommandCell extends AbstractTicketCommand {
     private String ticketKey;
-    public RemoveGreaterKeyTCommandCell() {
-    }
 
     @Override
     public void activate() {
-        manager.getTicketMap().keySet().removeIf(s -> s.compareTo(ticketKey) > 0);
+        manager.getTicketCollection().getCollection().keySet().removeIf(s -> s.compareTo(ticketKey) > 0);
         setAnswer(List.of("Collection was successfully updated."));
     }
 
@@ -26,5 +24,4 @@ public class RemoveGreaterKeyTCommandCell extends AbstractTicketCommand {
         ticketKey = signature.get(0).split(" ")[1];
         return this;
     }
-
 }
