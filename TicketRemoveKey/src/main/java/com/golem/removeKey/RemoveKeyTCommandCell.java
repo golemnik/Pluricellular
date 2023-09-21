@@ -9,11 +9,12 @@ public class RemoveKeyTCommandCell extends AbstractTicketCommand {
     private List<String> signature;
     @Override
     public void activate() {
-        if (manager.checkKey(signature.get(0).split(" ")[1], getLogin())) {
-        manager.getTicketMap().remove(signature.get(0).split(" ")[1]);
-        setAnswer(List.of("Element successfully removed."));
-        return;
-    }
+        String key = signature.get(0).split(" ")[1];
+        if (manager.checkKey(key, getLogin())) {
+            manager.delete(key);
+            setAnswer(List.of("Element successfully removed."));
+            return;
+        }
         setAnswer(List.of("Element with this key is not exists."));
     }
 

@@ -121,21 +121,22 @@ public class DatabaseManager extends AbstractAccess {
         try {
             ResultSet set = connection
                     .createStatement()
-                    .executeQuery("select _coordinate_id, _venue_id from tickets where _key = " + key);
+                    .executeQuery("select _coordinate_id, _venue_id from tickets where _key = '" + key + "'");
             set.next();
             int c_id = set.getInt(1);
             int v_id = set.getInt(2);
             connection
                     .createStatement()
-                    .executeUpdate("delete from tickets where _key = " + key +";");
+                    .executeUpdate("delete from tickets where _key = '" + key + "'");
             connection
                     .createStatement()
-                    .executeUpdate("delete from coordinates where id = " + c_id +";");
+                    .executeUpdate("delete from coordinates where id = '" + c_id +"'");
             connection
                     .createStatement()
                     .executeUpdate(
-                            "delete from venues where id = " + v_id +";");
+                            "delete from venues where id = '" + v_id + "'");
             connection.commit();
+            getCollection().getCollection().remove(key);
         }
         catch (Exception e) {
             try{
