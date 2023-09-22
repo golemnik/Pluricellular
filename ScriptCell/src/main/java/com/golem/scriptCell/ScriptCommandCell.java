@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 public class ScriptCommandCell extends AbstractCommand {
     private List<String> signature;
+
     private final List<String> openedFiles = new ArrayList<>();
     private boolean recursion = false;
     private List <List<String>> commandsQueue = new ArrayList<>();
