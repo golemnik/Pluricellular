@@ -17,12 +17,12 @@ public class FilterGreaterVenueTCommandCell extends AbstractTicketCommand {
     @Override
     public void activate() {
         Venue venue = new Venue();
-        venue.setId(0);
-        venue.setName(signature.get(7));
-        venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
-        venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type
+        venue.setId(Integer.MAX_VALUE);
+        venue.setName(signature.get(1));
+        venue.setCapacity(Long.parseLong(signature.get(2))); //v cap
+        venue.setType(Venue.VenueType.valueOf(signature.get(3))); //v type
         Address address = new Address();
-        address.setStreet(signature.get(10)); // add
+        address.setStreet(signature.get(4)); // add
         venue.setAddress(address);
         List<String> list = new ArrayList<>();
         list.add("Elements list:\n");

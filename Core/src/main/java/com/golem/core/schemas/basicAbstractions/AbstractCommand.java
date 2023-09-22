@@ -21,6 +21,10 @@ public abstract class AbstractCommand implements Cell {
     public boolean exitable () {
         return false;
     }
+
+    @Override
+    public void activate() {}
+
     public abstract AbstractCommand useSignature (List<String> signature);
 
     public AbstractCommand setLogin (String login) {

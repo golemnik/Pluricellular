@@ -16,7 +16,7 @@ public class FilterGreaterVenueTCellFactory extends AbstractTCellFactory {
                 "remove all tickets greater then object was inputted during this command.",
                 SignatureStatus.CONNECTED,
                 new ArrayList<>(List.of(
-                        "(filter_greater_than_venue",
+                        "filter_greater_than_venue",
                         SignatureRegex._string, // v name
                         SignatureRegex.CAP, // v cap
                         SignatureRegex.VTYPE, //v type
