@@ -4,6 +4,8 @@ import com.golem.core.schemas.basicAbstractions.AbstractCommand;
 import com.golem.core.schemas.basicInterfaces.BroodMotherCell;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
 import com.golem.fileCell.fileReader.SimpleReader;
+import com.golem.informer.Informer;
+import com.golem.informer.Level;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,6 +58,7 @@ public class ScriptCommandCell extends AbstractCommand {
     private List<String> fileLoad (String fileName) {
         if (openedFiles.stream().anyMatch(x -> x.equals(fileName))){
             recursion = true;
+            Informer.log(Level.INFO, "Found recursion for script execute: " + fileName);
             return new ArrayList<>();
         }
         try {
@@ -102,7 +105,7 @@ public class ScriptCommandCell extends AbstractCommand {
         boolean corrupt;
         for (List<String> ls : queue) {
             corrupt = false;
-            signature = broodMother.getFactoryCommands().get(ls.get(0)).getSignature().patternSignature();
+            signature = broodMother.getFactoryCommands().get(ls.get(0).split(" ")[0]).getSignature().patternSignature();
             if (signature.size() != ls.size()) {
                 result.add(new ArrayList<>());
                 continue;

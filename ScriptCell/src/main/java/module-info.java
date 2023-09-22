@@ -7,6 +7,7 @@ import com.golem.scriptCell.ScriptCommandCell;
 module Pluricellular.ScriptCell.main {
     requires ColonyCore;
     requires Pluricellular.FileSystemCell.main;
+    requires Pluricellular.Informer.main;
 
     uses SimpleReader;
 
