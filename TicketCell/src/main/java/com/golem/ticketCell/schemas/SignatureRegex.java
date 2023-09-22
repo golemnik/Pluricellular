@@ -90,6 +90,10 @@ public class SignatureRegex {
             "(" +
             "^.+" +
             ")";
+    public final static String COMMENT =
+            "(" +
+            "^.*" +
+            ")";
     public final static String PRICE =
             "+?" +
             "(" +

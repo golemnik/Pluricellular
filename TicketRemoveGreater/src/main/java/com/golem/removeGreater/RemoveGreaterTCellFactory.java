@@ -19,7 +19,7 @@ public class RemoveGreaterTCellFactory extends AbstractTCellFactory {
                         "^" + "remove_greater" + "$",
                         "^" + SignatureRegex._string + "$", //t name
                         "^" + SignatureRegex.PRICE + "$", //t price
-                        "^" + SignatureRegex._string + "$", // t comm
+                        "^" + SignatureRegex.COMMENT + "$", // t comm
                         "^" + SignatureRegex.TTYPE + "$", // t type
                         "^" + SignatureRegex.COORD_X, // t x
                         "^" + SignatureRegex.COORD_Y + "$", //t y
