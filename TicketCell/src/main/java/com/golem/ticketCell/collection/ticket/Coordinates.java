@@ -37,8 +37,11 @@ public class Coordinates implements Comparable <Coordinates>, ConsoleRead {
 
     @Override
     public int compareTo(Coordinates o) {
-        return (int) (Math.sqrt(Math.pow(getX().doubleValue(), 2) + Math.pow(getY().doubleValue(), 2)) -
-                Math.sqrt(Math.pow(o.getX().doubleValue(), 2) + Math.pow(o.getY().doubleValue(), 2)));
+        if (o == null) return 1;
+        int compare;
+        if ((compare = getX().compareTo(o.getX())) != 0) return compare;
+        if ((compare = getY().compareTo(o.getY())) != 0) return compare;
+        return 0;
     }
 
     @Override

@@ -18,7 +18,7 @@ public class RemoveGreaterTCommandCell extends AbstractTicketCommand {
     public void activate() {
         ticket = new Ticket();
         ticket.setOwner(getLogin());
-        ticket.setId(0);
+        ticket.setId(Integer.MAX_VALUE);
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
         ticket.setComment(signature.get(3)); // t comment
@@ -29,7 +29,7 @@ public class RemoveGreaterTCommandCell extends AbstractTicketCommand {
         ticket.setCoordinates(coord);
         if (signature.get(7) != null) { // v name
             Venue venue = new Venue();
-            venue.setId(0);
+            venue.setId(Integer.MAX_VALUE);
             venue.setName(signature.get(7));
             venue.setCapacity(Long.parseLong(signature.get(8))); //v cap
             venue.setType(Venue.VenueType.valueOf(signature.get(9))); //v type
@@ -38,10 +38,11 @@ public class RemoveGreaterTCommandCell extends AbstractTicketCommand {
             venue.setAddress(address);
             ticket.setVenue(venue);
         }
-        manager.getTicketCollection().getCollection().keySet()
+        List<String> list = manager.getTicketCollection(getLogin()).getCollection().keySet()
                 .stream()
-                .filter(x -> manager.getTicketCollection().getCollection().get(x).compareTo(ticket) < 0)
-                .forEach(x -> manager.delete(x));
+                .filter(x -> manager.getTicketCollection().getCollection().get(x).compareTo(ticket) > 0)
+                .toList();
+        list.forEach(x -> manager.delete(x));
         setAnswer(List.of("Collection was successfully updated."));
     }
 

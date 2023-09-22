@@ -246,6 +246,7 @@ public class Ticket implements Comparable <Ticket>, ConsoleRead {
      */
     @Override
     public int compareTo(Ticket o) {
+        if (o == null) return 1;
         int compare;
         if ((compare = getName().compareTo(o.getName())) != 0) return compare;
         if ((compare = getCoordinates().compareTo(o.getCoordinates())) != 0) return compare;
