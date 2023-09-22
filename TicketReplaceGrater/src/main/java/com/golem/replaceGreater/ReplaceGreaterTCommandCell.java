@@ -8,6 +8,7 @@ import com.golem.ticketCell.collection.ticket.Coordinates;
 import com.golem.ticketCell.collection.ticket.Ticket;
 import com.golem.ticketCell.collection.ticket.Venue;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +18,13 @@ public class ReplaceGreaterTCommandCell extends AbstractTicketCommand {
     @Override
     public void activate() {
         String key = signature.get(0).split(" ")[1];
-        if (manager.checkKey(key, getLogin())) {
+        if (!manager.checkKey(key, getLogin())) {
             setAnswer(List.of("Element with this key is not exists."));
             return;
         }
-        boolean change = true;
         Ticket ticket = new Ticket();
         ticket.setOwner(getLogin());
+        ticket.setCreationDate(LocalDate.now());
         ticket.setName(signature.get(1)); // t name
         ticket.setPrice(Double.parseDouble(signature.get(2))); // t price
         ticket.setComment(signature.get(3)); // t comment
@@ -43,15 +44,18 @@ public class ReplaceGreaterTCommandCell extends AbstractTicketCommand {
             ticket.setVenue(venue);
         }
         List<String> answer = new ArrayList<>();
-        if (manager.getTicketMap().get(key).compareTo(ticket) > 0) {
-            try {
-                manager.add(key, ticket, getLogin());
+        try {
+            Ticket old_ticket = manager.getTicketCollection().getCollection().get(key);
+            ticket.setId(old_ticket.getId());
+            ticket.getVenue().setId(old_ticket.getVenue().getId());
+            if (old_ticket.compareTo(ticket) < 0) {
+                manager.update(ticket, getLogin());
                 answer.add("Element was replaced.");
             }
-            catch (Exception e) {
-                setAnswer(List.of("Element wasn't replaced."));
-                return;
-            }
+        }
+        catch (Exception e) {
+            setAnswer(List.of("Element wasn't replaced."));
+            return;
         }
         answer.add("Collection was successfully updated.");
         setAnswer(answer);

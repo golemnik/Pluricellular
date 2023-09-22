@@ -141,7 +141,6 @@ public class DatabaseManager extends AbstractAccess {
                 throw new NotUpdatedTException();
             }
             del(key);
-            System.out.println(">> " + key);
             add(key, ticket, login);
         } catch (NotAddedTException e) {
             Informer.log(Level.ERROR, e);
