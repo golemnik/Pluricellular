@@ -20,7 +20,7 @@ public class ExecuteScriptCellFactory extends AbstractCellFactory {
     }
     @Override
     public AbstractCommand create(List<String> signature) {
-        ExecuteScriptCommandCell cell = new ExecuteScriptCommandCell();
+        ScriptCommandCell cell = new ScriptCommandCell();
         cell.addBroodMother(getBroodMother());
         return cell.useSignature(signature);
     }

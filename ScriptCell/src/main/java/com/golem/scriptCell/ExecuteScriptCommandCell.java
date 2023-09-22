@@ -22,13 +22,13 @@ public class ExecuteScriptCommandCell extends AbstractCommand implements Cell {
     public void addBroodMother (BroodMotherCell broodMother) {
         this.broodMother = broodMother;
     }
+
     @Override
     public void activate() {
         List <String> anwser = new ArrayList<>();
         try {
             List<String > dataList;
             AbstractCommand cellCommand;
-
             int counter = commandsQueue.size();
             if (!commandsQueue.isEmpty() && !skip && !globalFail) {
                 for (int i = 0; i < counter; i++) {

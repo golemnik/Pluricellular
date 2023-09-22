@@ -2,7 +2,7 @@ import com.golem.core.schemas.basicAbstractions.AbstractCellFactory;
 import com.golem.core.schemas.basicInterfaces.Cell;
 import com.golem.fileCell.fileReader.SimpleReader;
 import com.golem.scriptCell.ExecuteScriptCellFactory;
-import com.golem.scriptCell.ExecuteScriptCommandCell;
+import com.golem.scriptCell.ScriptCommandCell;
 
 module Pluricellular.ScriptCell.main {
     requires ColonyCore;
@@ -11,5 +11,5 @@ module Pluricellular.ScriptCell.main {
     uses SimpleReader;
 
     provides AbstractCellFactory with ExecuteScriptCellFactory;
-    provides Cell with ExecuteScriptCommandCell;
+    provides Cell with ScriptCommandCell;
 }
