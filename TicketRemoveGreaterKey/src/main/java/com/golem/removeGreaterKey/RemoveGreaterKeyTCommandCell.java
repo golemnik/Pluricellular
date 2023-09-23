@@ -16,7 +16,7 @@ public class RemoveGreaterKeyTCommandCell extends AbstractTicketCommand {
 
     @Override
     public void activate() {
-        List<String> list = manager.getTicketCollection().getCollection().keySet()
+        List<String> list = manager.getTicketCollection(getLogin()).getCollection().keySet()
                 .stream()
                 .filter(x -> x.compareTo(ticketKey) > 0)
                 .toList();

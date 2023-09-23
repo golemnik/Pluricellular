@@ -1,6 +1,7 @@
 package com.golem.scriptCell;
 
 import com.golem.core.schemas.basicAbstractions.AbstractCommand;
+import com.golem.core.schemas.basicAbstractions.AbstractSystemCellFactory;
 import com.golem.core.schemas.basicInterfaces.BroodMotherCell;
 import com.golem.core.schemas.providedRealisations.CellPrinter;
 import com.golem.fileCell.fileReader.SimpleReader;
@@ -80,19 +81,20 @@ public class ScriptCommandCell extends AbstractCommand {
                 counter--;
                 continue;
             }
-            if (broodMother.getFactoryCommands().get(s) != null) {
-                if (!args.isEmpty()) {
-                    result.add(new ArrayList<>(args));
-                    args = new ArrayList<>();
-                }
-                args.add(s);
-                counter += broodMother.getFactoryCommands().get(args.get(0))
-                        .getSignature()
-                        .patternSignature()
-                        .size() - 1;
+            if (!args.isEmpty()) {
+                result.add(new ArrayList<>(args));
+                args = new ArrayList<>();
+            }
+            String com = s.split(" ")[0];
+            AbstractSystemCellFactory factory = broodMother.getFactoryCommands().get(com);
+            if (factory != null) {
+            args.add(s);
+            counter += factory.getSignature()
+                    .patternSignature()
+                    .size() - 1;
             }
             else {
-                args.add(s);
+                Informer.log(Level.INFO, "Unsupported command found");
             }
         }
         result.add(args);
